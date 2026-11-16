@@ -107,7 +107,7 @@ def write_assets() -> None:
         base_commit=commit or None,
         source_sha256=manifest,
     )
-    (ASSETS / 'BUILD_INFO.json').write_text(json.dumps(info, indent=2) + '\n')
+    (ASSETS / 'BUILD_INFO.json').write_text(json.dumps(info, indent=2) + '\n', encoding='utf-8')
 
 
 def build_native() -> None:
@@ -262,7 +262,8 @@ def write_checksums() -> Path:
         if path.is_file() and path.name != 'SHA256SUMS'
     ]
     target = INSTALLERS / 'SHA256SUMS'
-    target.write_text('\n'.join(lines) + '\n')
+    # Bytes keep LF line endings on Windows, so `sha256sum -c` works on any OS.
+    target.write_bytes(('\n'.join(lines) + '\n').encode('utf-8'))
     return target
 
 
