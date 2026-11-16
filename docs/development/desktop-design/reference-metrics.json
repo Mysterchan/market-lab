@@ -1,0 +1,164 @@
+{
+  "components": [
+    {
+      "selector": ".m-windowbar",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "background": "rgb(20, 23, 27)",
+      "color": "rgb(219, 225, 235)",
+      "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "fontSize": "15px",
+      "lineHeight": "22.5px",
+      "borderColor": "rgb(219, 225, 235) rgb(219, 225, 235) rgb(44, 50, 59)"
+    },
+    {
+      "selector": ".m-sidebar",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "background": "rgb(22, 25, 30)",
+      "color": "rgb(219, 225, 235)",
+      "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "fontSize": "15px",
+      "lineHeight": "22.5px",
+      "borderColor": "rgb(219, 225, 235) rgb(44, 50, 59) rgb(219, 225, 235) rgb(219, 225, 235)"
+    },
+    {
+      "selector": ".m-breadcrumb",
+      "rect": {
+        "x": 0,
+        "y": 54,
+        "width": 990,
+        "height": 38.5
+      },
+      "background": "rgba(0, 0, 0, 0)",
+      "color": "rgb(177, 189, 206)",
+      "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "fontSize": "13px",
+      "lineHeight": "19.5px",
+      "borderColor": "rgb(177, 189, 206)"
+    },
+    {
+      "selector": ".m-run-header",
+      "rect": {
+        "x": 0,
+        "y": 92.5,
+        "width": 990,
+        "height": 90.09375
+      },
+      "background": "rgba(0, 0, 0, 0)",
+      "color": "rgb(219, 225, 235)",
+      "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "fontSize": "15px",
+      "lineHeight": "22.5px",
+      "borderColor": "rgb(219, 225, 235)"
+    },
+    {
+      "selector": ".m-account-strip",
+      "rect": {
+        "x": 0,
+        "y": 183.59375,
+        "width": 704,
+        "height": 86
+      },
+      "background": "rgb(28, 32, 38)",
+      "color": "rgb(219, 225, 235)",
+      "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "fontSize": "15px",
+      "lineHeight": "22.5px",
+      "borderColor": "rgb(219, 225, 235) rgb(219, 225, 235) rgb(44, 50, 59)"
+    },
+    {
+      "selector": ".m-chart-toolbar",
+      "rect": {
+        "x": 0,
+        "y": 283.59375,
+        "width": 704,
+        "height": 25.5
+      },
+      "background": "rgba(0, 0, 0, 0)",
+      "color": "rgb(219, 225, 235)",
+      "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "fontSize": "15px",
+      "lineHeight": "22.5px",
+      "borderColor": "rgb(219, 225, 235)"
+    },
+    {
+      "selector": ".m-price-chart",
+      "rect": {
+        "x": 10,
+        "y": 371.09375,
+        "width": 687,
+        "height": 276
+      },
+      "background": "rgba(0, 0, 0, 0)",
+      "color": "rgb(219, 225, 235)",
+      "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "fontSize": "15px",
+      "lineHeight": "22.5px",
+      "borderColor": "rgb(219, 225, 235)"
+    },
+    {
+      "selector": ".m-table-tabs",
+      "rect": {
+        "x": 0,
+        "y": 648.09375,
+        "width": 704,
+        "height": 45
+      },
+      "background": "rgba(0, 0, 0, 0)",
+      "color": "rgb(219, 225, 235)",
+      "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "fontSize": "15px",
+      "lineHeight": "22.5px",
+      "borderColor": "rgb(219, 225, 235) rgb(219, 225, 235) rgb(44, 50, 59)"
+    },
+    {
+      "selector": ".m-inspector",
+      "rect": {
+        "x": 704,
+        "y": 183.59375,
+        "width": 286,
+        "height": 692
+      },
+      "background": "rgb(28, 32, 38)",
+      "color": "rgb(219, 225, 235)",
+      "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "fontSize": "15px",
+      "lineHeight": "22.5px",
+      "borderColor": "rgb(219, 225, 235) rgb(219, 225, 235) rgb(219, 225, 235) rgb(44, 50, 59)"
+    },
+    {
+      "selector": ".m-statusbar",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "background": "rgb(20, 23, 27)",
+      "color": "rgb(177, 189, 206)",
+      "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+      "fontSize": "13px",
+      "lineHeight": "19.5px",
+      "borderColor": "rgb(44, 50, 59) rgb(177, 189, 206) rgb(177, 189, 206)"
+    }
+  ],
+  "theme": "dark",
+  "viewport": {
+    "width": 990,
+    "height": 828,
+    "dpr": 2
+  },
+  "root": {
+    "width": 990,
+    "height": 828
+  }
+}

@@ -1,0 +1,7 @@
+# Keep LF line endings in every checkout, so exports and digests match on Windows.
+* text=auto eol=lf
+*.bin binary
+*.png binary
+*.jpg binary
+*.mp4 binary
+*.whl binary

@@ -1,0 +1,6 @@
+# The source distribution carries the C++ sources so pip can compile the native library.
+graft src
+graft include
+include tools/native_build.py
+include LICENSE NOTICE THIRD_PARTY_NOTICES.md
+global-exclude *.o *.dylib *.so *.dll __pycache__ *.pyc

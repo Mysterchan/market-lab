@@ -1,0 +1,22 @@
+WEBVTT
+
+00:00:00.600 --> 00:00:02.600
+Select a local recording. Expand its row to inspect the file or create an experiment.
+
+00:00:02.600 --> 00:00:05.200
+Choose your market, decision maker and independent simulated account. No broker is connected.
+
+00:00:05.200 --> 00:00:09.200
+The experiment opens paused. Inspect market depth and the order estimate before submitting.
+
+00:00:09.200 --> 00:00:11.400
+The real simulation records the fill and fees. Market updates preserve unfinished order inputs.
+
+00:00:11.400 --> 00:00:13.500
+End the experiment to save its result. This report is read-only; opening it does not resume trading.
+
+00:00:13.500 --> 00:00:16.500
+Inspect, seek or play the verified financial events. The Agent and model are not called again.
+
+00:00:16.500 --> 00:00:18.500
+Create a versioned Agent, prepare its Python environment, and use it in the same trading workspace.

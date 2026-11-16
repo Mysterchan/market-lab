@@ -1,0 +1,1315 @@
+<div id="ml-workbench-render" aria-label="Market Lab refined trading workbench">
+  <header class="m-windowbar">
+    <div class="m-wordmark"><span class="m-mark">m<span>∕</span></span>market lab<span class="m-build">research</span></div>
+    <span class="m-window-title">AAPL opening session</span>
+    <div class="m-window-actions"><span class="m-local"><i data-lucide="hard-drive" aria-hidden="true"></i>Local</span><button class="m-icon cursor-interaction" data-theme aria-label="Switch light or dark appearance"><i data-lucide="sun-moon" aria-hidden="true"></i></button></div>
+  </header>
+  <div class="m-layout">
+    <aside class="m-sidebar">
+      <div class="m-workspace-label"><span class="m-avatar">J</span><span>My workspace<small>Local research</small></span></div>
+      <nav aria-label="Workspace"><button class="m-nav cursor-interaction" data-section="experiments" aria-pressed="true"><i data-lucide="flask-conical" aria-hidden="true"></i>Experiments<span class="m-nav-count">8</span></button><button class="m-nav cursor-interaction" data-section="agents" aria-pressed="false"><i data-lucide="bot" aria-hidden="true"></i>Agents<span class="m-nav-count">3</span></button><button class="m-nav cursor-interaction" data-section="data" aria-pressed="false"><i data-lucide="database" aria-hidden="true"></i>Market data</button></nav>
+      <div class="m-sidebar-divider"></div><div class="m-label">Recent experiments</div>
+      <button class="m-run-selected cursor-interaction" data-return><span class="m-live-dot"></span><span>Opening session<small>AAPL · Range scout</small></span></button>
+      <div class="m-run-other"><i data-lucide="circle-check" aria-hidden="true"></i><span>Afternoon baseline<small>AAPL · Buy and hold</small></span></div><div class="m-run-other"><i data-lucide="circle-check" aria-hidden="true"></i><span>Morning observer<small>AAPL · Observer</small></span></div>
+      <div class="m-sidebar-bottom"><div class="m-sidebar-divider"></div><span class="m-data-ready"><i data-lucide="shield-check" aria-hidden="true"></i>Simulation workspace</span><span class="m-sample">UI study · illustrative data</span></div>
+    </aside>
+    <main class="m-workbench">
+      <div class="m-breadcrumb"><span>Experiments</span><i data-lucide="chevron-right" aria-hidden="true"></i><span>Opening session</span><span class="m-run-id">#024</span></div>
+      <div class="m-run-header"><div><h2>AAPL opening session</h2><div class="m-run-meta"><span class="m-agent-mini">RS</span>Range scout<span class="m-meta-dot">·</span>Revision 3<span class="m-meta-dot">·</span>Live 1×</div></div><div class="m-run-controls"><span class="m-run-state"><span class="m-live-dot"></span><span data-status>Running</span></span><button class="m-button cursor-interaction" data-pause><i data-lucide="pause" aria-hidden="true"></i><span>Pause</span></button><button class="m-icon cursor-interaction" data-stop aria-label="Stop experiment"><i data-lucide="square" aria-hidden="true"></i></button></div></div>
+      <div class="m-body-grid">
+        <div class="m-main-column">
+          <section class="m-account-strip" aria-label="Account overview"><div><span>Portfolio value</span><strong>$100,002<span class="m-decimal">.10</span></strong></div><div><span>Net P&amp;L</span><strong class="m-positive">+$2.10<small>+0.002%</small></strong></div><div><span>Cash balance</span><strong>$98,177<span class="m-decimal">.50</span></strong></div></section>
+          <section class="m-chart-section" aria-label="Historical market chart"><header class="m-chart-toolbar"><div class="m-instrument"><strong>AAPL</strong><span>NASDAQ</span></div><div class="m-chart-options"><div class="m-timeframes" aria-label="Candle interval"><button class="cursor-interaction" data-interval="1" aria-pressed="true">1m</button><button class="cursor-interaction" data-interval="5" aria-pressed="false">5m</button></div><span class="m-currency">USD</span></div></header><div class="m-quote-line"><strong>182<span>.46</span></strong><span class="m-positive">+0.32 <span class="m-quote-percent">(0.18%)</span></span><span class="m-quote-time">09:59:18 ET</span></div><div class="m-ohlc" data-ohlc>O <b>182.39</b> H <b>182.49</b> L <b>182.37</b> C <b>182.46</b></div><div class="m-chart-wrap"><svg class="m-price-chart" role="img" aria-label="Illustrative AAPL one-minute candles and volume from 09:30 to 09:59 Eastern Time"></svg><div class="m-chart-tooltip" hidden></div></div></section>
+          <section class="m-account-tables" aria-label="Trading records"><div class="m-table-tabs" role="tablist" aria-label="Account records"><button class="cursor-interaction" role="tab" id="ml-orders-tab" aria-controls="ml-orders" aria-selected="true" data-table="orders">Orders<span data-orders-count>2</span></button><button class="cursor-interaction" role="tab" id="ml-positions-tab" aria-controls="ml-positions" aria-selected="false" data-table="positions">Positions<span>1</span></button><button class="cursor-interaction" role="tab" id="ml-fills-tab" aria-controls="ml-fills" aria-selected="false" data-table="fills">Fills<span>1</span></button><span class="m-table-note">This experiment</span></div>
+          <div class="m-table-scroll" id="ml-orders" role="tabpanel" aria-labelledby="ml-orders-tab"><table><thead><tr><th>Order</th><th>Side</th><th class="m-num">Filled / qty</th><th class="m-num">Limit</th><th>Status</th></tr></thead><tbody><tr data-row="entry"><td><button class="m-order-name cursor-interaction" data-order="entry">Opening entry<i data-lucide="arrow-up-right" aria-hidden="true"></i></button><small>09:58:44</small></td><td><span class="m-side m-buy">Buy</span></td><td class="m-num"><span>10 <span class="m-muted">/ 25</span></span><div class="m-fill-track"><span></span></div></td><td class="m-num">182.21</td><td><span class="m-partial">Partial fill</span></td></tr><tr data-row="exit"><td><button class="m-order-name cursor-interaction" data-order="exit">Take profit<i data-lucide="arrow-up-right" aria-hidden="true"></i></button><small>09:58:46</small></td><td><span class="m-side m-sell">Sell</span></td><td class="m-num">0 <span class="m-muted">/ 3</span></td><td class="m-num">182.80</td><td><span class="m-open">Open</span></td></tr></tbody></table></div>
+          <div class="m-table-scroll" id="ml-positions" role="tabpanel" aria-labelledby="ml-positions-tab" hidden><table><thead><tr><th>Symbol</th><th class="m-num">Shares</th><th class="m-num">Average cost</th><th class="m-num">Market value</th><th class="m-num">Unrealized P&amp;L</th></tr></thead><tbody><tr><td><strong>AAPL</strong><small>Apple Inc.</small></td><td class="m-num">10</td><td class="m-num">182.25</td><td class="m-num">1,824.60</td><td class="m-num m-positive">+2.10</td></tr></tbody></table></div>
+          <div class="m-table-scroll" id="ml-fills" role="tabpanel" aria-labelledby="ml-fills-tab" hidden><table><thead><tr><th>Time · ET</th><th>Order</th><th class="m-num">Shares</th><th class="m-num">Price</th><th class="m-num">Fee</th></tr></thead><tbody><tr><td>09:58:45.018</td><td>Opening entry</td><td class="m-num">10</td><td class="m-num">182.21</td><td class="m-num">0.40</td></tr></tbody></table></div></section>
+        </div>
+        <aside class="m-inspector" aria-label="Agent activity and selected order"><div class="m-inspector-tabs" role="tablist" aria-label="Inspector"><button class="cursor-interaction" id="ml-agent-tab" role="tab" aria-controls="ml-agent-pane" aria-selected="true" data-inspector="agent">Agent activity</button><button class="cursor-interaction" id="ml-order-tab" role="tab" aria-controls="ml-order-pane" aria-selected="false" data-inspector="order">Order details</button></div>
+        <div id="ml-agent-pane" class="m-inspector-content" role="tabpanel" aria-labelledby="ml-agent-tab"><div class="m-agent-heading"><span class="m-agent-identity">RS</span><div><strong>Range scout</strong><span>Scheduled agent · every 30s</span></div><i data-lucide="bot" aria-hidden="true"></i></div><div class="m-wait-state"><span class="m-wait-orb"></span><span data-agent-state>Waiting for next task</span><span class="m-wait-time">12s</span></div><div class="m-cycle-heading"><span>Latest cycle</span><span>#23 · 09:59:00</span></div>
+        <div class="m-timeline"><div class="m-timeline-item"><span class="m-timeline-icon"><i data-lucide="check" aria-hidden="true"></i></span><div class="m-event-head"><strong>Market data checked</strong><time>09:59:00</time></div><details class="m-tool"><summary><i data-lucide="braces" aria-hidden="true"></i>market.quote<span>0.8 ms</span></summary><dl><dt>Symbol</dt><dd>AAPL</dd><dt>Best bid</dt><dd>182.45</dd><dt>Best ask</dt><dd>182.47</dd><dt>Observed</dt><dd>09:59:00.012 ET</dd></dl></details></div><div class="m-timeline-item"><span class="m-timeline-icon"><i data-lucide="check" aria-hidden="true"></i></span><div class="m-event-head"><strong>Account reviewed</strong><time>09:59:00</time></div><details class="m-tool"><summary><i data-lucide="braces" aria-hidden="true"></i>account.snapshot<span>1.1 ms</span></summary><dl><dt>Cash</dt><dd>$98,177.50</dd><dt>Position</dt><dd>10 AAPL</dd><dt>Open orders</dt><dd>2</dd></dl></details></div><div class="m-timeline-item m-decision"><span class="m-timeline-icon"><i data-lucide="message-square" aria-hidden="true"></i></span><div class="m-event-head"><strong>Decision summary</strong><time>09:59:02</time></div><p>Keep the existing limit orders. Wait for the next market observation.</p><span class="m-no-trade"><i data-lucide="minus" aria-hidden="true"></i>No new trade</span></div></div><div class="m-agent-next"><i data-lucide="clock-3" aria-hidden="true"></i><span>Next task<strong>09:59:30 ET</strong></span></div><button class="m-transcript-link cursor-interaction" data-transcript>View cycle transcript<i data-lucide="arrow-up-right" aria-hidden="true"></i></button></div>
+        <div id="ml-order-pane" class="m-inspector-content" role="tabpanel" aria-labelledby="ml-order-tab" hidden><div class="m-detail-title"><span class="m-side m-buy" data-detail-side>Buy</span><h3 data-detail-title>Opening entry</h3><span class="m-partial" data-detail-status>Partial fill</span></div><dl class="m-order-details"><dt>Symbol</dt><dd>AAPL</dd><dt>Order type</dt><dd>Limit</dd><dt>Limit price</dt><dd data-detail-price>$182.21</dd><dt>Quantity</dt><dd data-detail-quantity>25 shares</dd><dt>Filled</dt><dd data-detail-filled>10 shares</dd><dt>Remaining</dt><dd data-detail-remaining>15 shares</dd><dt>Submitted · ET</dt><dd data-detail-time>09:58:44.821</dd></dl><div class="m-detail-note"><i data-lucide="info" aria-hidden="true"></i><p data-detail-note>15 shares remain open at the original limit. Filled shares stay in the account.</p></div><button class="m-button cursor-interaction" data-show-fill>Show related fill</button></div>
+        </aside>
+      </div>
+    </main>
+  </div>
+  <footer class="m-statusbar"><div><span class="m-health-dot"></span><span>Historical simulation</span><span class="m-status-divider">/</span><span>AAPL · regular session</span></div><div><span data-clock-label>Clock advancing</span><span class="m-status-divider">·</span><span class="m-clock">09:59:18 ET</span></div></footer>
+  <dialog class="m-dialog"><div class="m-dialog-head"><strong data-dialog-title>Cycle transcript</strong><button class="m-icon cursor-interaction" data-close-dialog aria-label="Close dialog"><i data-lucide="x" aria-hidden="true"></i></button></div><div class="m-dialog-body" data-dialog-body></div></dialog>
+</div>
+<style>
+      #ml-workbench-render {
+        --m-bg: light-dark(#ffffff,#191c21);
+        --m-header: light-dark(#f3f4f6,#14171b);
+        --m-sidebar: light-dark(#f7f8fa,#16191e);
+        --m-panel: light-dark(#fafbfd,#1c2026);
+        --m-hover: light-dark(#edf0f4,#242a32);
+        --m-selected: light-dark(#e8edf6,#242f40);
+        --m-text: light-dark(#222936,#dbe1eb);
+        --m-bright: light-dark(#101927,#f3f5f9);
+        --m-muted: light-dark(#4f5d70,#b1bdce);
+        --m-faint: light-dark(#657389,#7d899b);
+        --m-rule: light-dark(#d4dae3,#2c323b);
+        --m-soft-rule: light-dark(#f0f2f6,#242a32);
+        --m-blue: light-dark(#315fa8,#8cacec);
+        --m-green: light-dark(#16785e,#68c7ac);
+        --m-red: light-dark(#b15963,#d58b93);
+        --m-amber: light-dark(#805e22,#c9b17a);
+        --m-green-bg: light-dark(#eaf5f0,#20362f);
+        --m-red-bg: light-dark(#faedef,#38272e);
+        --m-focus: light-dark(#315fa8,#8cacec);
+        --m-row-padding: 12px;
+        --m-font: 15px;
+        --m-label-font: 14px;
+        --m-meta-font: 13px;
+        font-family:
+                    -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        font-size: var(--m-font);
+        line-height: 1.5;
+        color: var(--m-text);
+        background: var(--m-bg);
+        border: 1px solid var(--m-rule);
+        border-radius: 8px;
+        overflow: hidden;
+        text-align: left;
+        font-feature-settings: "cv11", "ss01";
+        font-variant-numeric: tabular-nums;
+      }
+      #ml-workbench-render * {
+        box-sizing: border-box;
+      }
+      #ml-workbench-render [hidden] {
+        display: none !important;
+      }
+      #ml-workbench-render button {
+        font: inherit;
+        color: inherit;
+        border: none;
+        background: none;
+        display: inline-flex;
+        gap: 7px;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        border-radius: 4px;
+        white-space: nowrap;
+      }
+      #ml-workbench-render button:focus-visible,
+      #ml-workbench-render summary:focus-visible {
+        outline: 2px solid var(--m-focus);
+        outline-offset: 2px;
+      }
+      #ml-workbench-render button:disabled {
+        opacity: 0.45;
+      }
+      #ml-workbench-render button:hover {
+        background: var(--m-hover);
+      }
+      #ml-workbench-render [data-lucide] {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+        stroke-width: 1.65;
+      }
+      #ml-workbench-render .m-windowbar {
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 108px 0 17px;
+        background: var(--m-header);
+        border-bottom: 1px solid var(--m-rule);
+        gap: 14px;
+      }
+      #ml-workbench-render .m-wordmark {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: var(--m-label-font);
+        font-weight: 600;
+        letter-spacing: -0.2px;
+        color: var(--m-bright);
+      }
+      #ml-workbench-render .m-mark {
+        font-family: Georgia, serif;
+        font-size: 21px;
+        font-style: italic;
+        line-height: 1;
+        letter-spacing: -4px;
+        color: var(--m-blue);
+        margin-right: 6px;
+      }
+      #ml-workbench-render .m-mark span {
+        font-family: inherit;
+        font-size: 23px;
+        font-style: normal;
+        margin-left: 2px;
+      }
+      #ml-workbench-render .m-build {
+        margin-left: 7px;
+        padding-left: 12px;
+        border-left: 1px solid var(--m-rule);
+        font-weight: 400;
+        color: var(--m-muted);
+      }
+      #ml-workbench-render .m-window-title {
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+      }
+      #ml-workbench-render .m-window-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      #ml-workbench-render .m-local {
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      #ml-workbench-render .m-icon {
+        padding: 7px;
+        color: var(--m-muted);
+      }
+      #ml-workbench-render .m-layout {
+        display: grid;
+        grid-template-columns: 208px minmax(0, 1fr);
+      }
+      #ml-workbench-render .m-sidebar {
+        background: var(--m-sidebar);
+        border-right: 1px solid var(--m-rule);
+        padding: 22px 10px 13px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      #ml-workbench-render .m-workspace-label {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 0 6px 23px;
+        font-size: var(--m-meta-font);
+        font-weight: 500;
+        color: var(--m-bright);
+      }
+      #ml-workbench-render .m-avatar {
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        width: 25px;
+        height: 25px;
+        border: 1px solid var(--m-rule);
+        border-radius: 6px;
+        background: var(--m-bg);
+        font-weight: 600;
+        color: var(--m-muted);
+      }
+      #ml-workbench-render small {
+        display: block;
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+        font-weight: 400;
+        letter-spacing: 0;
+        margin-top: 3px;
+      }
+      #ml-workbench-render .m-workspace-label small {
+        font-size: var(--m-meta-font);
+      }
+      #ml-workbench-render nav {
+        display: grid;
+        gap: 3px;
+      }
+      #ml-workbench-render .m-nav {
+        padding: 8px 9px;
+        justify-content: flex-start;
+        font-size: var(--m-label-font);
+        color: var(--m-muted);
+        position: relative;
+        width: 100%;
+      }
+      #ml-workbench-render .m-nav[aria-pressed="true"] {
+        color: var(--m-bright);
+        background: var(--m-hover);
+        font-weight: 500;
+      }
+      #ml-workbench-render .m-nav[aria-pressed="true"]:before {
+        content: "";
+        position: absolute;
+        left: -10px;
+        top: 8px;
+        bottom: 8px;
+        width: 2px;
+        background: var(--m-blue);
+      }
+      #ml-workbench-render .m-nav-count {
+        margin-left: auto;
+        color: var(--m-muted);
+        font-size: var(--m-meta-font);
+        font-variant-numeric: tabular-nums;
+        font-weight: 400;
+      }
+      #ml-workbench-render .m-sidebar-divider {
+        height: 1px;
+        background: var(--m-rule);
+        margin: 19px 6px;
+      }
+      #ml-workbench-render .m-label {
+        font-size: var(--m-meta-font);
+        letter-spacing: 0.35px;
+        color: var(--m-muted);
+        padding: 0 9px 11px;
+        text-transform: uppercase;
+      }
+      #ml-workbench-render .m-run-selected,
+      #ml-workbench-render .m-run-other {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 10px 9px;
+        width: 100%;
+        text-align: left;
+        justify-content: flex-start;
+        font-size: var(--m-meta-font);
+      }
+      #ml-workbench-render .m-run-selected {
+        background: var(--m-selected);
+        color: var(--m-bright);
+      }
+      #ml-workbench-render .m-run-selected small,
+      #ml-workbench-render .m-run-other small {
+        font-size: var(--m-meta-font);
+        white-space: normal;
+      }
+      #ml-workbench-render .m-run-other {
+        color: var(--m-muted);
+        margin-top: 4px;
+      }
+      #ml-workbench-render .m-run-other svg {
+        width: 12px;
+        margin-top: 2px;
+        color: var(--m-faint);
+      }
+      #ml-workbench-render .m-live-dot {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--m-green);
+        flex-shrink: 0;
+      }
+      #ml-workbench-render .m-run-selected .m-live-dot {
+        margin-top: 5px;
+      }
+      #ml-workbench-render .m-sidebar-bottom {
+        margin-top: auto;
+        padding-top: 65px;
+      }
+      #ml-workbench-render .m-data-ready {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+        padding: 0 6px;
+      }
+      #ml-workbench-render .m-data-ready svg {
+        width: 12px;
+      }
+      #ml-workbench-render .m-sample {
+        display: block;
+        font-size: var(--m-meta-font);
+        color: var(--m-faint);
+        padding: 8px 6px 0;
+      }
+      #ml-workbench-render .m-workbench {
+        min-width: 0;
+      }
+      #ml-workbench-render .m-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+        padding: 17px 23px 0;
+      }
+      #ml-workbench-render .m-breadcrumb svg {
+        width: 11px;
+        height: 11px;
+        color: var(--m-faint);
+      }
+      #ml-workbench-render .m-breadcrumb > span:nth-of-type(2) {
+        color: var(--m-text);
+      }
+      #ml-workbench-render .m-run-id {
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: var(--m-meta-font);
+        border: 1px solid var(--m-rule);
+        border-radius: 3px;
+        padding: 0 4px;
+        color: var(--m-faint);
+        margin-left: 2px;
+      }
+      #ml-workbench-render .m-run-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 23px 21px;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      #ml-workbench-render h2 {
+        font-size: 22px;
+        line-height: 1.3;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+        margin: 0 0 9px;
+        color: var(--m-bright);
+      }
+      #ml-workbench-render .m-run-meta {
+        display: flex;
+        gap: 7px;
+        align-items: center;
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+      }
+      #ml-workbench-render .m-agent-mini {
+        font-size: var(--m-meta-font);
+        font-weight: 600;
+        color: var(--m-blue);
+        background: var(--m-selected);
+        width: 18px;
+        height: 18px;
+        display: grid;
+        place-items: center;
+        border-radius: 4px;
+      }
+      #ml-workbench-render .m-meta-dot {
+        color: var(--m-faint);
+      }
+      #ml-workbench-render .m-run-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      #ml-workbench-render .m-run-state {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--m-green);
+        font-size: var(--m-meta-font);
+        margin-right: 9px;
+      }
+      #ml-workbench-render .m-button {
+        min-height: 36px;
+        font-size: var(--m-label-font);
+        padding: 6px 10px;
+        border: 1px solid var(--m-rule);
+        background: var(--m-bg);
+        box-shadow: 0 1px 1px light-dark(#14223a08, #00000018);
+      }
+      #ml-workbench-render .m-run-controls .m-button {
+        border: 1px solid var(--m-rule);
+      }
+      #ml-workbench-render .m-body-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 286px;
+        border-top: 1px solid var(--m-rule);
+      }
+      #ml-workbench-render .m-main-column {
+        min-width: 0;
+      }
+      #ml-workbench-render .m-account-strip {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 1.1fr;
+        gap: 13px;
+        padding: 18px 22px 17px;
+        border-bottom: 1px solid var(--m-rule);
+        background: var(--m-panel);
+      }
+      #ml-workbench-render .m-account-strip > div > span {
+        display: block;
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+        margin-bottom: 5px;
+      }
+      #ml-workbench-render .m-account-strip strong {
+        font-size: 17px;
+        font-weight: 500;
+        letter-spacing: -0.5px;
+        display: block;
+        color: var(--m-bright);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      #ml-workbench-render .m-decimal {
+        color: var(--m-muted);
+      }
+      #ml-workbench-render .m-account-strip .m-positive {
+        color: var(--m-green);
+      }
+      #ml-workbench-render .m-account-strip small {
+        display: inline;
+        margin-left: 7px;
+        font-size: var(--m-meta-font);
+        letter-spacing: 0;
+        color: var(--m-green);
+      }
+      #ml-workbench-render .m-positive {
+        color: var(--m-green);
+      }
+      #ml-workbench-render .m-chart-section {
+        padding-top: 14px;
+      }
+      #ml-workbench-render .m-chart-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 0 20px;
+      }
+      #ml-workbench-render .m-instrument {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      #ml-workbench-render .m-instrument strong {
+        color: var(--m-bright);
+        font-size: var(--m-label-font);
+        font-weight: 600;
+        letter-spacing: 0.2px;
+      }
+      #ml-workbench-render .m-instrument > span {
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+        letter-spacing: 0.3px;
+      }
+      #ml-workbench-render .m-chart-options {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+      }
+      #ml-workbench-render .m-timeframes {
+        display: flex;
+        gap: 2px;
+      }
+      #ml-workbench-render .m-timeframes button {
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+        padding: 3px 7px;
+      }
+      #ml-workbench-render .m-timeframes button[aria-pressed="true"] {
+        background: var(--m-hover);
+        color: var(--m-text);
+      }
+      #ml-workbench-render .m-currency {
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+      }
+      #ml-workbench-render .m-quote-line {
+        display: flex;
+        align-items: baseline;
+        gap: 11px;
+        padding: 5px 20px 0;
+      }
+      #ml-workbench-render .m-quote-line > strong {
+        font-size: 25px;
+        font-weight: 500;
+        letter-spacing: -1px;
+        color: var(--m-bright);
+        font-variant-numeric: tabular-nums;
+      }
+      #ml-workbench-render .m-quote-line > strong > span {
+        color: var(--m-muted);
+      }
+      #ml-workbench-render .m-quote-line > .m-positive {
+        font-size: var(--m-meta-font);
+        font-variant-numeric: tabular-nums;
+      }
+      #ml-workbench-render .m-quote-time {
+        font-size: var(--m-meta-font);
+        color: var(--m-faint);
+        margin-left: auto;
+        font-variant-numeric: tabular-nums;
+      }
+      #ml-workbench-render .m-ohlc {
+        font:
+          11px/1.5 ui-monospace,
+          SFMono-Regular,
+          Consolas,
+          monospace;
+        color: var(--m-muted);
+        padding: 3px 20px 0;
+        word-spacing: 2px;
+        min-height: 18px;
+      }
+      #ml-workbench-render .m-ohlc b {
+        font-weight: 400;
+        color: var(--m-text);
+      }
+      #ml-workbench-render .m-chart-wrap {
+        position: relative;
+        padding: 0 7px 0 10px;
+      }
+      #ml-workbench-render .m-price-chart {
+        display: block;
+        width: 100%;
+        height: 276px;
+      }
+      #ml-workbench-render .m-price-chart text {
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: var(--m-meta-font);
+        fill: var(--m-faint);
+        font-variant-numeric: tabular-nums;
+      }
+      #ml-workbench-render .m-chart-tooltip {
+        position: absolute;
+        top: 10px;
+        left: 15px;
+        pointer-events: none;
+        background: var(--m-panel);
+        color: var(--m-text);
+        border: 1px solid var(--m-rule);
+        border-radius: 4px;
+        padding: 4px 7px;
+        font:
+          11px ui-monospace,
+          SFMono-Regular,
+          Consolas,
+          monospace;
+        z-index: 2;
+      }
+      #ml-workbench-render .m-account-tables {
+        border-top: 1px solid var(--m-rule);
+      }
+      #ml-workbench-render .m-table-tabs {
+        display: flex;
+        align-items: center;
+        gap: 19px;
+        padding: 0 20px;
+        border-bottom: 1px solid var(--m-rule);
+      }
+      #ml-workbench-render .m-table-tabs button {
+        position: relative;
+        border-radius: 0;
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+        padding: 11px 0;
+        gap: 5px;
+      }
+      #ml-workbench-render .m-table-tabs button[aria-selected="true"] {
+        color: var(--m-bright);
+      }
+      #ml-workbench-render .m-table-tabs button[aria-selected="true"]:after {
+        content: "";
+        height: 2px;
+        background: var(--m-blue);
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+      }
+      #ml-workbench-render .m-table-tabs button > span {
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+        padding: 0 4px;
+        background: var(--m-hover);
+        border-radius: 3px;
+      }
+      #ml-workbench-render .m-table-note {
+        font-size: var(--m-meta-font);
+        color: var(--m-faint);
+        margin-left: auto;
+      }
+      #ml-workbench-render .m-table-scroll {
+        overflow-x: auto;
+        min-height: 151px;
+      }
+      #ml-workbench-render table {
+        width: 100%;
+        border-collapse: collapse;
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+      }
+      #ml-workbench-render th {
+        font-size: var(--m-meta-font);
+        font-weight: 400;
+        color: var(--m-muted);
+        padding: 8px 9px;
+        text-align: left;
+        background: var(--m-panel);
+        border-bottom: 1px solid var(--m-soft-rule);
+      }
+      #ml-workbench-render td {
+        font-size: var(--m-meta-font);
+        padding: var(--m-row-padding) 9px;
+        border-bottom: 1px solid var(--m-soft-rule);
+        color: var(--m-text);
+      }
+      #ml-workbench-render th:first-child,
+      #ml-workbench-render td:first-child {
+        padding-left: 20px;
+      }
+      #ml-workbench-render th:last-child,
+      #ml-workbench-render td:last-child {
+        padding-right: 20px;
+      }
+      #ml-workbench-render .m-num {
+        text-align: right;
+      }
+      #ml-workbench-render td small {
+        font-size: var(--m-meta-font);
+        color: var(--m-faint);
+        margin-top: 4px;
+      }
+      #ml-workbench-render .m-order-name {
+        font-size: var(--m-meta-font);
+        padding: 0;
+        justify-content: flex-start;
+      }
+      #ml-workbench-render .m-order-name svg {
+        width: 11px;
+        height: 11px;
+        color: var(--m-faint);
+        opacity: 0.65;
+      }
+      #ml-workbench-render tr[data-row]:hover,
+      #ml-workbench-render tr[data-row].m-row-selected {
+        background: var(--m-selected);
+      }
+      #ml-workbench-render .m-side {
+        display: inline-flex;
+        align-items: center;
+        font-size: var(--m-meta-font);
+        border-radius: 3px;
+        padding: 1px 5px;
+        font-weight: 500;
+      }
+      #ml-workbench-render .m-buy {
+        background: var(--m-green-bg);
+        color: var(--m-green);
+      }
+      #ml-workbench-render .m-sell {
+        background: var(--m-red-bg);
+        color: var(--m-red);
+      }
+      #ml-workbench-render .m-partial {
+        color: var(--m-amber);
+        font-size: var(--m-meta-font);
+      }
+      #ml-workbench-render .m-open {
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+      }
+      #ml-workbench-render .m-muted {
+        color: var(--m-muted);
+      }
+      #ml-workbench-render .m-fill-track {
+        height: 2px;
+        background: var(--m-soft-rule);
+        margin-top: 5px;
+        width: 45px;
+        margin-left: auto;
+        border-radius: 1px;
+      }
+      #ml-workbench-render .m-fill-track > span {
+        display: block;
+        height: 100%;
+        width: 40%;
+        background: var(--m-amber);
+      }
+      #ml-workbench-render .m-inspector {
+        background: var(--m-panel);
+        border-left: 1px solid var(--m-rule);
+        min-width: 0;
+      }
+      #ml-workbench-render .m-inspector-tabs {
+        display: flex;
+        align-items: center;
+        gap: 17px;
+        border-bottom: 1px solid var(--m-rule);
+        padding: 0 17px;
+        height: 38px;
+      }
+      #ml-workbench-render .m-inspector-tabs button {
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+        padding: 10px 0;
+        height: 100%;
+        position: relative;
+        border-radius: 0;
+      }
+      #ml-workbench-render .m-inspector-tabs button[aria-selected="true"] {
+        color: var(--m-text);
+      }
+      #ml-workbench-render
+        .m-inspector-tabs
+        button[aria-selected="true"]:after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: var(--m-blue);
+      }
+      #ml-workbench-render .m-inspector-content {
+        padding: 20px 17px 16px;
+      }
+      #ml-workbench-render .m-agent-heading {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      #ml-workbench-render .m-agent-identity {
+        width: 30px;
+        height: 30px;
+        border: 1px solid var(--m-rule);
+        background: var(--m-selected);
+        color: var(--m-blue);
+        border-radius: 6px;
+        display: grid;
+        place-items: center;
+        font-size: var(--m-meta-font);
+        font-weight: 500;
+      }
+      #ml-workbench-render .m-agent-heading strong {
+        display: block;
+        font-weight: 500;
+        font-size: var(--m-label-font);
+        color: var(--m-bright);
+      }
+      #ml-workbench-render .m-agent-heading div > span {
+        display: block;
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+        margin-top: 2px;
+      }
+      #ml-workbench-render .m-agent-heading > svg {
+        margin-left: auto;
+        color: var(--m-faint);
+      }
+      #ml-workbench-render .m-wait-state {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+        padding: 13px 0 19px;
+        border-bottom: 1px solid var(--m-rule);
+      }
+      #ml-workbench-render .m-wait-orb {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--m-amber);
+      }
+      #ml-workbench-render .m-wait-time {
+        margin-left: auto;
+        font-size: var(--m-meta-font);
+        font-family: ui-monospace, SFMono-Regular, monospace;
+        color: var(--m-faint);
+      }
+      #ml-workbench-render .m-cycle-heading {
+        display: flex;
+        justify-content: space-between;
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+        padding: 17px 0 15px;
+      }
+      #ml-workbench-render .m-cycle-heading > span:first-child {
+        font-size: var(--m-meta-font);
+        color: var(--m-text);
+      }
+      #ml-workbench-render .m-timeline {
+        margin-left: 7px;
+      }
+      #ml-workbench-render .m-timeline-item {
+        position: relative;
+        border-left: 1px solid var(--m-rule);
+        padding: 0 0 19px 17px;
+      }
+      #ml-workbench-render .m-timeline-icon {
+        position: absolute;
+        left: -7px;
+        top: 0;
+        width: 13px;
+        height: 16px;
+        background: var(--m-panel);
+        display: grid;
+        place-items: center;
+        color: var(--m-green);
+      }
+      #ml-workbench-render .m-timeline-icon svg {
+        width: 11px;
+        height: 11px;
+        stroke-width: 1.8;
+      }
+      #ml-workbench-render .m-event-head {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 9px;
+      }
+      #ml-workbench-render .m-event-head strong {
+        font-size: var(--m-meta-font);
+        font-weight: 500;
+        color: var(--m-text);
+      }
+      #ml-workbench-render .m-event-head time {
+        font-size: var(--m-meta-font);
+        color: var(--m-faint);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      #ml-workbench-render .m-tool {
+        font-size: var(--m-meta-font);
+        border: 1px solid var(--m-rule);
+        border-radius: 4px;
+        background: var(--m-bg);
+      }
+      #ml-workbench-render .m-tool summary {
+        list-style: none;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        padding: 7px;
+        white-space: nowrap;
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        color: var(--m-muted);
+        cursor: default;
+      }
+      #ml-workbench-render .m-tool summary::-webkit-details-marker {
+        display: none;
+      }
+      #ml-workbench-render .m-tool summary > span {
+        margin-left: auto;
+        color: var(--m-faint);
+        font-size: var(--m-meta-font);
+        font-family: inherit;
+      }
+      #ml-workbench-render .m-tool summary svg {
+        width: 11px;
+        height: 11px;
+        color: var(--m-blue);
+      }
+      #ml-workbench-render .m-tool dl {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 5px 8px;
+        padding: 8px;
+        margin: 0;
+        border-top: 1px solid var(--m-rule);
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+      }
+      #ml-workbench-render dd {
+        margin: 0;
+        font-variant-numeric: tabular-nums;
+      }
+      #ml-workbench-render .m-tool dd {
+        color: var(--m-text);
+        text-align: right;
+      }
+      #ml-workbench-render .m-tool dt {
+        white-space: nowrap;
+      }
+      #ml-workbench-render .m-decision {
+        padding-bottom: 0;
+        border-left-color: transparent;
+      }
+      #ml-workbench-render .m-decision .m-timeline-icon {
+        color: var(--m-blue);
+      }
+      #ml-workbench-render .m-decision p {
+        font-size: var(--m-meta-font);
+        line-height: 1.7;
+        margin: 0 0 10px;
+        color: var(--m-text);
+      }
+      #ml-workbench-render .m-no-trade {
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+        display: flex;
+        gap: 5px;
+        align-items: center;
+      }
+      #ml-workbench-render .m-no-trade svg {
+        width: 11px;
+      }
+      #ml-workbench-render .m-agent-next {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding: 19px 0 13px;
+        margin-top: 19px;
+        border-top: 1px solid var(--m-rule);
+        color: var(--m-faint);
+      }
+      #ml-workbench-render .m-agent-next > span {
+        display: flex;
+        justify-content: space-between;
+        flex: 1;
+        color: var(--m-muted);
+        font-size: var(--m-meta-font);
+      }
+      #ml-workbench-render .m-agent-next strong {
+        font-size: var(--m-meta-font);
+        font-weight: 400;
+        color: var(--m-text);
+        font-variant-numeric: tabular-nums;
+      }
+      #ml-workbench-render .m-transcript-link {
+        font-size: var(--m-meta-font);
+        color: var(--m-blue);
+        padding: 0;
+        gap: 5px;
+      }
+      #ml-workbench-render .m-transcript-link svg {
+        width: 11px;
+        height: 11px;
+      }
+      #ml-workbench-render .m-statusbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        padding: 6px 14px;
+        background: var(--m-header);
+        border-top: 1px solid var(--m-rule);
+        font-size: var(--m-meta-font);
+        color: var(--m-muted);
+      }
+      #ml-workbench-render .m-statusbar > div {
+        display: flex;
+        gap: 7px;
+        align-items: center;
+      }
+      #ml-workbench-render .m-health-dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--m-green);
+        margin-right: 3px;
+      }
+      #ml-workbench-render .m-status-divider {
+        color: var(--m-faint);
+      }
+      #ml-workbench-render .m-clock {
+        font-variant-numeric: tabular-nums;
+        color: var(--m-text);
+      }
+      #ml-workbench-render .m-detail-title {
+        display: grid;
+        justify-items: start;
+        gap: 10px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--m-rule);
+      }
+      #ml-workbench-render .m-detail-title h3 {
+        font-size: 15px;
+        font-weight: 500;
+        margin: 0;
+        color: var(--m-bright);
+      }
+      #ml-workbench-render .m-order-details {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 13px;
+        margin: 19px 0;
+        color: var(--m-muted);
+        font-size: var(--m-meta-font);
+      }
+      #ml-workbench-render .m-order-details dd {
+        color: var(--m-text);
+      }
+      #ml-workbench-render .m-detail-note {
+        display: flex;
+        gap: 8px;
+        border-top: 1px solid var(--m-rule);
+        padding-top: 17px;
+        color: var(--m-muted);
+      }
+      #ml-workbench-render .m-detail-note svg {
+        margin-top: 2px;
+        width: 12px;
+      }
+      #ml-workbench-render .m-detail-note p {
+        font-size: var(--m-meta-font);
+        line-height: 1.7;
+        margin: 0 0 20px;
+      }
+      #ml-workbench-render .m-dialog {
+        color: var(--m-text);
+        background: var(--m-bg);
+        border: 1px solid var(--m-rule);
+        border-radius: 8px;
+        padding: 0;
+        width: min(460px, calc(100% - 32px));
+        max-height: 80%;
+        box-shadow: 0 16px 64px #00000038;
+      }
+      #ml-workbench-render .m-dialog::backdrop {
+        background: #0c12174d;
+      }
+      #ml-workbench-render .m-dialog-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 15px;
+        background: var(--m-panel);
+        border-bottom: 1px solid var(--m-rule);
+      }
+      #ml-workbench-render .m-dialog-head strong {
+        font-size: var(--m-label-font);
+        font-weight: 500;
+      }
+      #ml-workbench-render .m-dialog-body {
+        padding: 19px;
+        font-size: var(--m-label-font);
+        line-height: 1.8;
+      }
+      #ml-workbench-render .m-dialog-body p {
+        margin: 0 0 13px;
+        color: var(--m-muted);
+      }
+      #ml-workbench-render .m-dialog-body pre {
+        white-space: pre-wrap;
+        font-size: var(--m-meta-font);
+        color: var(--m-text);
+      }
+      @media (min-width: 1200px) {
+        #ml-workbench-render .m-layout {
+          grid-template-columns: 216px minmax(0, 1fr);
+        }
+        #ml-workbench-render .m-body-grid {
+          grid-template-columns: minmax(0, 1fr) 320px;
+        }
+        #ml-workbench-render .m-main-column td {
+          font-size: var(--m-meta-font);
+        }
+        #ml-workbench-render .m-inspector-content {
+          padding: 21px;
+        }
+        #ml-workbench-render .m-event-head strong {
+          font-size: var(--m-meta-font);
+        }
+        #ml-workbench-render .m-tool {
+          font-size: var(--m-meta-font);
+        }
+      }
+      @media (max-width: 900px) {
+        #ml-workbench-render .m-layout {
+          grid-template-columns: 144px minmax(0, 1fr);
+        }
+        #ml-workbench-render .m-body-grid {
+          grid-template-columns: minmax(0, 1fr) 230px;
+        }
+        #ml-workbench-render .m-sidebar {
+          padding-left: 7px;
+          padding-right: 7px;
+        }
+        #ml-workbench-render .m-nav {
+          padding-left: 7px;
+          font-size: var(--m-meta-font);
+        }
+        #ml-workbench-render .m-workspace-label {
+          font-size: var(--m-meta-font);
+          padding-left: 2px;
+          gap: 6px;
+        }
+        #ml-workbench-render .m-avatar {
+          width: 22px;
+          height: 22px;
+        }
+        #ml-workbench-render .m-account-strip {
+          padding: 16px;
+          gap: 8px;
+        }
+        #ml-workbench-render .m-account-strip strong {
+          font-size: 15px;
+        }
+        #ml-workbench-render .m-account-strip small {
+          display: none;
+        }
+        #ml-workbench-render .m-quote-time {
+          display: none;
+        }
+        #ml-workbench-render .m-table-note {
+          display: none;
+        }
+        #ml-workbench-render .m-inspector-content {
+          padding: 17px 12px;
+        }
+        #ml-workbench-render .m-inspector-tabs {
+          padding: 0 12px;
+          gap: 14px;
+        }
+        #ml-workbench-render .m-event-head time {
+          font-size: var(--m-meta-font);
+        }
+        #ml-workbench-render .m-run-header {
+          padding-left: 18px;
+          padding-right: 18px;
+        }
+        #ml-workbench-render .m-run-state {
+          margin-right: 1px;
+        }
+        #ml-workbench-render .m-window-title {
+          display: none;
+        }
+      }
+      @media (max-width: 900px) {
+        #ml-workbench-render .m-body-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        #ml-workbench-render .m-inspector {
+          border-left: 0;
+          border-top: 1px solid var(--m-rule);
+        }
+        #ml-workbench-render .m-inspector-content {
+          padding: 20px;
+        }
+        #ml-workbench-render .m-agent-heading {
+          max-width: 350px;
+        }
+        #ml-workbench-render .m-inspector-content .m-wait-state,
+        #ml-workbench-render .m-cycle-heading,
+        #ml-workbench-render .m-timeline,
+        #ml-workbench-render .m-agent-next {
+          max-width: 400px;
+        }
+        #ml-workbench-render .m-inspector-tabs {
+          padding: 0 20px;
+        }
+        #ml-workbench-render .m-windowbar {
+          padding-right: 95px;
+        }
+        #ml-workbench-render .m-window-actions .m-local {
+          display: none;
+        }
+        #ml-workbench-render .m-table-tabs {
+          gap: 20px;
+        }
+        #ml-workbench-render .m-account-strip strong {
+          font-size: 17px;
+        }
+      }
+      @media (max-width: 480px) {
+        #ml-workbench-render .m-layout {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        #ml-workbench-render .m-sidebar {
+          padding: 6px 10px;
+          border-right: 0;
+          border-bottom: 1px solid var(--m-rule);
+        }
+        #ml-workbench-render .m-sidebar nav {
+          display: flex;
+          gap: 10px;
+        }
+        #ml-workbench-render .m-nav {
+          width: auto;
+          gap: 5px;
+          font-size: var(--m-meta-font);
+          padding: 6px 8px;
+        }
+        #ml-workbench-render .m-nav[aria-pressed="true"]:before {
+          display: none;
+        }
+        #ml-workbench-render .m-workspace-label,
+        #ml-workbench-render .m-sidebar-divider,
+        #ml-workbench-render .m-label,
+        #ml-workbench-render .m-run-selected,
+        #ml-workbench-render .m-run-other,
+        #ml-workbench-render .m-sidebar-bottom,
+        #ml-workbench-render .m-nav-count {
+          display: none;
+        }
+        #ml-workbench-render .m-run-header {
+          padding: 11px 15px 16px;
+          gap: 16px;
+        }
+        #ml-workbench-render .m-run-header h2 {
+          font-size: 18px;
+        }
+        #ml-workbench-render .m-breadcrumb {
+          padding-left: 15px;
+          font-size: var(--m-meta-font);
+        }
+        #ml-workbench-render .m-account-strip {
+          padding: 15px;
+          gap: 6px;
+        }
+        #ml-workbench-render .m-account-strip strong {
+          font-size: 14px;
+        }
+        #ml-workbench-render .m-account-strip > div > span {
+          font-size: var(--m-meta-font);
+        }
+        #ml-workbench-render .m-windowbar {
+          padding-left: 13px;
+        }
+        #ml-workbench-render .m-build {
+          display: none;
+        }
+        #ml-workbench-render .m-quote-percent {
+          display: none;
+        }
+        #ml-workbench-render .m-statusbar > div:first-child {
+          display: none;
+        }
+        #ml-workbench-render .m-table-tabs {
+          padding-left: 15px;
+        }
+        #ml-workbench-render th:first-child,
+        #ml-workbench-render td:first-child {
+          padding-left: 15px;
+        }
+      }
+      @media (pointer: coarse) {
+        #ml-workbench-render button,
+        #ml-workbench-render summary {
+          min-height: 52px;
+        }
+      }
+
+
+
+#ml-workbench-render .m-nav { min-height: 40px; font-size: var(--m-label-font); }
+#ml-workbench-render .m-table-tabs button { min-height: 42px; font-size: var(--m-label-font); }
+#ml-workbench-render .m-main-column td { font-size: var(--m-label-font); }
+</style>
+<script>
+(()=>{
+const root=document.getElementById('ml-workbench-render');const $=s=>root.querySelector(s);const $$=s=>Array.from(root.querySelectorAll(s));
+const state={interval:1,theme:'auto',inspector:true,spacing:12,paused:false,stopped:false,order:'entry'};
+const closeValues=[182.16,182.13,182.08,182.12,182.19,182.18,182.24,182.21,182.17,182.22,182.27,182.31,182.26,182.29,182.24,182.20,182.21,182.28,182.33,182.30,182.36,182.32,182.38,182.42,182.37,182.41,182.35,182.40,182.39,182.46];
+const base=closeValues.map((c,i)=>{const o=i?closeValues[i-1]:182.12;return{o,c,h:Math.max(o,c)+(.018+(i%4)*.009),l:Math.min(o,c)-(.017+(i%3)*.011),v:80+((i*43+37)%180),i};});
+let points=[],layout=null;
+function chart(){const svg=$('.m-price-chart');const w=Math.max(210,svg.getBoundingClientRect().width);const h=276;const right=w-72,left=9,top=14,bottom=202;const gap=(right-left)/Math.ceil(base.length/state.interval);points=[];for(let i=0;i<base.length;i+=state.interval){const rows=base.slice(i,i+state.interval);points.push({o:rows[0].o,c:rows[rows.length-1].c,h:Math.max(...rows.map(r=>r.h)),l:Math.min(...rows.map(r=>r.l)),v:rows.reduce((sum,r)=>sum+r.v,0),i});}const y=p=>bottom-(p-181.98)/.60*(bottom-top);let s='';for(const p of [182.0,182.2,182.4,182.6]){const py=y(p);s+=`<line x1="${left}" y1="${py}" x2="${right}" y2="${py}" stroke="var(--m-soft-rule)"/><text x="${right+10}" y="${py+3}">${p.toFixed(2)}</text>`;}s+=`<line x1="${right}" y1="${top}" x2="${right}" y2="224" stroke="var(--m-soft-rule)"/>`;const vmax=Math.max(...points.map(p=>p.v));points.forEach((p,j)=>{const x=left+gap*(j+.5),body=Math.max(2,Math.min(7,gap*.6)),col=p.c>=p.o?'var(--m-green)':'var(--m-red)';s+=`<line x1="${x}" y1="${y(p.h)}" x2="${x}" y2="${y(p.l)}" stroke="${col}" stroke-width="1"/><rect x="${x-body/2}" y="${Math.min(y(p.o),y(p.c))}" width="${body}" height="${Math.max(1.2,Math.abs(y(p.o)-y(p.c)))}" rx=".45" fill="${col}"/><rect x="${x-body/2}" y="${224-(p.v/vmax)*27}" width="${body}" height="${(p.v/vmax)*27}" fill="${col}" opacity=".3"/>`;});
+const lastY=y(182.46);s+=`<line x1="${left}" y1="${lastY}" x2="${right}" y2="${lastY}" stroke="var(--m-green)" opacity=".5" stroke-dasharray="3 4"/><rect x="${right+2}" y="${lastY-10}" width="64" height="20" rx="2" fill="var(--m-green-bg)"/><text x="${right+7}" y="${lastY+3}" style="fill:var(--m-green)">182.46</text>`;
+const tickIndices=w<370?[0,15]:[0,10,20];tickIndices.forEach(i=>{const x=left+(right-left)*(i/30);s+=`<text x="${Math.min(x+1,right-35)}" y="244">09:${String(30+i).padStart(2,'0')}</text>`;});s+=`<text x="${right+8}" y="220" style="font-size:11px">VOL</text><g data-crosshair visibility="hidden"><line data-cross-x x1="0" x2="0" y1="${top}" y2="225" stroke="var(--m-muted)" stroke-dasharray="2 3" opacity=".5"/><line data-cross-y x1="${left}" x2="${right}" y1="0" y2="0" stroke="var(--m-muted)" stroke-dasharray="2 3" opacity=".5"/></g>`;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.innerHTML=s;layout={w,right,left,top,bottom,gap};}
+new ResizeObserver(chart).observe($('.m-price-chart'));chart();
+$('.m-price-chart').addEventListener('pointermove',e=>{if(!layout)return;const rect=e.currentTarget.getBoundingClientRect();const x=Math.max(layout.left,Math.min(layout.right,e.clientX-rect.left));const p=points[Math.max(0,Math.min(points.length-1,Math.floor((x-layout.left)/layout.gap)))];const y=Math.max(layout.top,Math.min(layout.bottom,e.clientY-rect.top));$('[data-crosshair]').setAttribute('visibility','visible');$('[data-cross-x]').setAttribute('x1',x);$('[data-cross-x]').setAttribute('x2',x);$('[data-cross-y]').setAttribute('y1',y);$('[data-cross-y]').setAttribute('y2',y);const tip=$('.m-chart-tooltip');tip.hidden=false;tip.textContent=`09:${String(30+p.i).padStart(2,'0')} · $${p.c.toFixed(2)}`;$('[data-ohlc]').innerHTML=`O <b>${p.o.toFixed(2)}</b> H <b>${p.h.toFixed(2)}</b> L <b>${p.l.toFixed(2)}</b> C <b>${p.c.toFixed(2)}</b>`;});$('.m-price-chart').addEventListener('pointerleave',()=>{$('[data-crosshair]').setAttribute('visibility','hidden');$('.m-chart-tooltip').hidden=true;});
+$$('[data-interval]').forEach(b=>b.addEventListener('click',()=>{state.interval=Number(b.dataset.interval);$$('[data-interval]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));chart();}));
+function table(name){$$('[data-table]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.table===name)));['orders','positions','fills'].forEach(n=>$('#ml-'+n).hidden=n!==name);}
+$$('[data-table]').forEach(b=>b.addEventListener('click',()=>table(b.dataset.table)));
+function inspector(name){$$('[data-inspector]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.inspector===name)));$('#ml-agent-pane').hidden=name!=='agent';$('#ml-order-pane').hidden=name!=='order';}
+$$('[data-inspector]').forEach(b=>b.addEventListener('click',()=>inspector(b.dataset.inspector)));
+function order(name){state.order=name;const entry=name==='entry';$$('[data-row]').forEach(r=>r.classList.toggle('m-row-selected',r.dataset.row===name));$('[data-detail-title]').textContent=entry?'Opening entry':'Take profit';const side=$('[data-detail-side]');side.textContent=entry?'Buy':'Sell';side.className='m-side '+(entry?'m-buy':'m-sell');$('[data-detail-status]').textContent=state.stopped?'Cancelled':entry?'Partial fill':'Open';$('[data-detail-price]').textContent=entry?'$182.21':'$182.80';$('[data-detail-quantity]').textContent=entry?'25 shares':'3 shares';$('[data-detail-filled]').textContent=entry?'10 shares':'0 shares';$('[data-detail-remaining]').textContent=state.stopped?'0 shares':entry?'15 shares':'3 shares';$('[data-detail-time]').textContent=entry?'09:58:44.821':'09:58:46.103';$('[data-detail-note]').textContent=state.stopped?'Unfilled shares were cancelled when the experiment stopped. Filled shares remain in the account.':entry?'15 shares remain open at the original limit. Filled shares stay in the account.':'3 shares are reserved for this sell order. It remains open at the original limit.';$('[data-show-fill]').disabled=!entry;inspector('order');}
+$$('[data-order]').forEach(b=>b.addEventListener('click',()=>order(b.dataset.order)));$('[data-show-fill]').addEventListener('click',()=>table('fills'));
+function appearance(){root.style.colorScheme=state.theme==='auto'?'light dark':state.theme;root.style.setProperty('--m-row-padding',state.spacing+'px');$('.m-inspector').hidden=!state.inspector;$('.m-body-grid').style.gridTemplateColumns=state.inspector?'':'minmax(0,1fr)';}
+$('[data-theme]').addEventListener('click',()=>{const currentlyDark=state.theme==='dark'||(state.theme==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);state.theme=currentlyDark?'light':'dark';appearance();});
+$('[data-pause]').addEventListener('click',()=>{if(state.stopped)return;state.paused=!state.paused;$('[data-status]').textContent=state.paused?'Paused':'Running';$('[data-pause] span').textContent=state.paused?'Resume':'Pause';$('[data-clock-label]').textContent=state.paused?'Clock paused':'Clock advancing';$('[data-agent-state]').textContent=state.paused?'Paused with experiment':'Waiting for next task';$('.m-wait-time').textContent=state.paused?'—':'12s';});
+const dialog=$('.m-dialog');function openDialog(title,body){$('[data-dialog-title]').textContent=title;$('[data-dialog-body]').innerHTML=body;dialog.showModal();}$('[data-close-dialog]').addEventListener('click',()=>dialog.close());
+$('[data-stop]').addEventListener('click',()=>{if(state.stopped)return;openDialog('Stop this experiment?',`<p>Cancel the remaining 15 buy shares and the 3-share sell order. Keep the 10 filled shares.</p><p>This is an interactive design study; no real experiment is running.</p><button class="m-button cursor-interaction" data-confirm-stop>Stop experiment</button>`);$('[data-confirm-stop]').addEventListener('click',()=>{state.stopped=true;$('[data-status]').textContent='Stopped';$('[data-pause]').disabled=true;$('[data-stop]').disabled=true;$('[data-clock-label]').textContent='Experiment ended';$('[data-agent-state]').textContent='Agent stopped';$('.m-wait-time').textContent='—';$('.m-agent-next strong').textContent='—';$$('[data-row] td:last-child').forEach(el=>el.innerHTML='<span class="m-muted">Cancelled</span>');$('[data-orders-count]').textContent='0';dialog.close();});});
+$('[data-transcript]').addEventListener('click',()=>openDialog('Cycle #23 · visible activity',`<p>09:59:00 · market.quote → AAPL bid 182.45 / ask 182.47</p><p>09:59:00 · account.snapshot → 10 AAPL, two open orders</p><p>09:59:02 · Decision summary: Keep the existing limit orders. Wait for the next market observation.</p><p>09:59:02 · Cycle finished with no new trade.</p>`));
+$$('[data-section]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.section==='experiments')return;const agent=b.dataset.section==='agents';openDialog(agent?'Agent · Range scout':'Market data · AAPL',agent?'<p>Revision 3 · platform template</p><p>Schedule: every 30 seconds after completion.</p><p>Available tools: market.quote, account.snapshot, orders.submit_limit, orders.cancel.</p>':'<p>Historical regular-session data. Prepared and ready.</p><p>Only data available at the experiment time is visible to the agent.</p>');}));$('[data-return]').addEventListener('click',()=>{inspector('agent');table('orders');});
+appearance();if(globalThis.Tweak){const tweak=new Tweak({container:root,onChange:appearance});tweak.addSelect(state,'theme',{label:'Appearance',options:[{label:'System',value:'auto'},{label:'Graphite',value:'dark'},{label:'Paper',value:'light'}]});tweak.addSlider(state,'spacing',{label:'Table row spacing',min:8,max:18,unit:'px'});tweak.addToggle(state,'inspector',{label:'Agent inspector'});}
+})();
+</script>

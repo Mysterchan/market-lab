@@ -1,0 +1,71 @@
+name: Documentation website
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'docs/**'
+      - 'sim_platform/**'
+      - 'src/**'
+      - 'include/**'
+      - 'examples/**'
+      - 'README.md'
+      - 'tools/build_pages.py'
+      - 'requirements-site.txt'
+      - '.github/workflows/pages.yml'
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'sim_platform/**'
+      - 'src/**'
+      - 'include/**'
+      - 'examples/**'
+      - 'README.md'
+      - 'tools/build_pages.py'
+      - 'requirements-site.txt'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: documentation-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install documentation renderer
+        run: python -m pip install -r requirements-site.txt
+      - name: Build and check all local links
+        run: python tools/build_pages.py
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: build/pages
+          retention-days: 7
+
+  deploy:
+    # Publish the default branch; pull requests only build and check the site.
+    if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy documentation
+        id: deployment
+        uses: actions/deploy-pages@v4

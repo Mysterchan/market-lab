@@ -1,0 +1,89 @@
+name: Dependency and code security
+
+# Known-vulnerability audit of every pinned requirement, CodeQL analysis of the Python,
+# JavaScript and C++ code, and a CycloneDX software bill of materials per release.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '17 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: pip-audit
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Audit pinned requirements
+        # Accepted exceptions, each reviewed: black 24.8.0 is a development-only
+        # formatter that never ships; its fixed releases drop Python 3.9, which Market
+        # Lab still supports. Remove these when Python 3.9 support ends.
+        run: |
+          python -m pip install pip-audit==2.9.0
+          ignore="--ignore-vuln PYSEC-2026-2121 --ignore-vuln PYSEC-2026-2120"
+          ignore="$ignore --ignore-vuln GHSA-cg8m-r9f2-5wm2"
+          for file in requirements.txt requirements-dev.txt requirements-desktop.txt \
+                      requirements-packaging.txt; do
+            echo "::group::$file"
+            pip-audit --strict --requirement "$file" $ignore
+            echo "::endgroup::"
+          done
+
+  sbom:
+    name: Software bill of materials
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Write CycloneDX SBOMs
+        run: |
+          python -m pip install cyclonedx-bom==6.1.1
+          mkdir -p build/sbom
+          cyclonedx-py requirements requirements.txt -o build/sbom/market-lab-core.cdx.json
+          cyclonedx-py requirements requirements-desktop.txt -o build/sbom/market-lab-desktop.cdx.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: build/sbom/*.json
+
+  codeql:
+    name: CodeQL / ${{ matrix.language }}
+    runs-on: ubuntu-24.04
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [python, javascript-typescript, c-cpp]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.language == 'c-cpp' && 'manual' || 'none' }}
+      - name: Build native code
+        if: matrix.language == 'c-cpp'
+        run: make all
+      - uses: github/codeql-action/analyze@v4
+        with:
+          category: /language:${{ matrix.language }}
+          # A private repository without code scanning cannot receive the results, so
+          # they are kept as a SARIF artifact; set upload to always once it can.
+          upload: never
+          output: sarif
+      - uses: actions/upload-artifact@v4
+        with:
+          name: codeql-${{ matrix.language }}
+          path: sarif

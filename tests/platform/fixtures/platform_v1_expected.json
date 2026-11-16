@@ -1,0 +1,236 @@
+{
+  "scenario": "fixed-account-demo",
+  "result": "passed",
+  "money_scale": 10000,
+  "profile_id": "8eca1fd4e0784d8ab77be1403a2a4185",
+  "account_id": "cbf30ede786d426ab0bca42a5af0d9f5",
+  "other_account_id": "c7d15a51d65c48d5ae1f3431ca12324c",
+  "run_id": "0d96553ae7c34efa9d115ed7f38954e8",
+  "after_intent": {
+    "account_id": "cbf30ede786d426ab0bca42a5af0d9f5",
+    "profile_id": "8eca1fd4e0784d8ab77be1403a2a4185",
+    "currency": "USD",
+    "cash": 100000000,
+    "positions": [],
+    "fees": 0,
+    "realized_pnl": 0,
+    "sequence": 2,
+    "orders": []
+  },
+  "final": {
+    "account_id": "cbf30ede786d426ab0bca42a5af0d9f5",
+    "profile_id": "8eca1fd4e0784d8ab77be1403a2a4185",
+    "currency": "USD",
+    "cash": 94380000,
+    "positions": [
+      {
+        "symbol": "AAPL",
+        "quantity": 6,
+        "cost": 6006000
+      }
+    ],
+    "fees": 20000,
+    "realized_pnl": 386000,
+    "sequence": 7,
+    "orders": [
+      {
+        "order_id": "buy-order",
+        "intent_id": "0d96553ae7c34efa9d115ed7f38954e8:intent:buy-1",
+        "run_id": "0d96553ae7c34efa9d115ed7f38954e8",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 10,
+        "limit_price": 1000000,
+        "filled": 10,
+        "status": "filled"
+      },
+      {
+        "order_id": "sell-order",
+        "intent_id": "0d96553ae7c34efa9d115ed7f38954e8:intent:sell-1",
+        "run_id": "0d96553ae7c34efa9d115ed7f38954e8",
+        "symbol": "AAPL",
+        "side": "sell",
+        "quantity": 4,
+        "limit_price": 1100000,
+        "filled": 4,
+        "status": "filled"
+      }
+    ]
+  },
+  "checks": [
+    "intent is not fill",
+    "fixed cash/quantity/fee/P&L",
+    "duplicate fill",
+    "account isolation",
+    "event replay",
+    "reopen",
+    "policy state"
+  ],
+  "active_run_id": "263e3fc074554f70890ef33ca9551248",
+  "maker_id": "45740ab3beb94a3f94db50fd1c3adfc5",
+  "expected_events": [
+    {
+      "account_id": "cbf30ede786d426ab0bca42a5af0d9f5",
+      "sequence": 1,
+      "event_id": "opening",
+      "run_id": null,
+      "time_ns": null,
+      "kind": "opened",
+      "data": {
+        "cash": 100000000
+      }
+    },
+    {
+      "account_id": "cbf30ede786d426ab0bca42a5af0d9f5",
+      "sequence": 2,
+      "event_id": "0d96553ae7c34efa9d115ed7f38954e8:intent:buy-1",
+      "run_id": "0d96553ae7c34efa9d115ed7f38954e8",
+      "time_ns": 10,
+      "kind": "intent",
+      "data": {
+        "intent": {
+          "client_id": "buy-1",
+          "limit_price": 1000000,
+          "quantity": 10,
+          "side": "buy",
+          "symbol": "AAPL"
+        },
+        "intent_id": "0d96553ae7c34efa9d115ed7f38954e8:intent:buy-1",
+        "maker_id": "45740ab3beb94a3f94db50fd1c3adfc5",
+        "run_id": "0d96553ae7c34efa9d115ed7f38954e8"
+      }
+    },
+    {
+      "account_id": "cbf30ede786d426ab0bca42a5af0d9f5",
+      "sequence": 3,
+      "event_id": "accepted:buy-order",
+      "run_id": "0d96553ae7c34efa9d115ed7f38954e8",
+      "time_ns": 11,
+      "kind": "accepted",
+      "data": {
+        "intent_id": "0d96553ae7c34efa9d115ed7f38954e8:intent:buy-1",
+        "order_id": "buy-order"
+      }
+    },
+    {
+      "account_id": "cbf30ede786d426ab0bca42a5af0d9f5",
+      "sequence": 4,
+      "event_id": "fill:buy-fill",
+      "run_id": "0d96553ae7c34efa9d115ed7f38954e8",
+      "time_ns": 12,
+      "kind": "fill",
+      "data": {
+        "fee": 10000,
+        "order_id": "buy-order",
+        "price": 1000000,
+        "quantity": 10
+      }
+    },
+    {
+      "account_id": "cbf30ede786d426ab0bca42a5af0d9f5",
+      "sequence": 5,
+      "event_id": "0d96553ae7c34efa9d115ed7f38954e8:intent:sell-1",
+      "run_id": "0d96553ae7c34efa9d115ed7f38954e8",
+      "time_ns": 20,
+      "kind": "intent",
+      "data": {
+        "intent": {
+          "client_id": "sell-1",
+          "limit_price": 1100000,
+          "quantity": 4,
+          "side": "sell",
+          "symbol": "AAPL"
+        },
+        "intent_id": "0d96553ae7c34efa9d115ed7f38954e8:intent:sell-1",
+        "maker_id": "45740ab3beb94a3f94db50fd1c3adfc5",
+        "run_id": "0d96553ae7c34efa9d115ed7f38954e8"
+      }
+    },
+    {
+      "account_id": "cbf30ede786d426ab0bca42a5af0d9f5",
+      "sequence": 6,
+      "event_id": "accepted:sell-order",
+      "run_id": "0d96553ae7c34efa9d115ed7f38954e8",
+      "time_ns": 21,
+      "kind": "accepted",
+      "data": {
+        "intent_id": "0d96553ae7c34efa9d115ed7f38954e8:intent:sell-1",
+        "order_id": "sell-order"
+      }
+    },
+    {
+      "account_id": "cbf30ede786d426ab0bca42a5af0d9f5",
+      "sequence": 7,
+      "event_id": "fill:sell-fill",
+      "run_id": "0d96553ae7c34efa9d115ed7f38954e8",
+      "time_ns": 22,
+      "kind": "fill",
+      "data": {
+        "fee": 10000,
+        "order_id": "sell-order",
+        "price": 1100000,
+        "quantity": 4
+      }
+    },
+    {
+      "account_id": "cbf30ede786d426ab0bca42a5af0d9f5",
+      "sequence": 8,
+      "event_id": "263e3fc074554f70890ef33ca9551248:intent:pending",
+      "run_id": "263e3fc074554f70890ef33ca9551248",
+      "time_ns": 100,
+      "kind": "intent",
+      "data": {
+        "intent": {
+          "client_id": "pending",
+          "limit_price": 1000000,
+          "quantity": 1,
+          "side": "buy",
+          "symbol": "AAPL"
+        },
+        "intent_id": "263e3fc074554f70890ef33ca9551248:intent:pending",
+        "maker_id": "45740ab3beb94a3f94db50fd1c3adfc5",
+        "run_id": "263e3fc074554f70890ef33ca9551248"
+      }
+    }
+  ],
+  "expected_snapshot": {
+    "account_id": "cbf30ede786d426ab0bca42a5af0d9f5",
+    "profile_id": "8eca1fd4e0784d8ab77be1403a2a4185",
+    "currency": "USD",
+    "cash": 94380000,
+    "positions": [
+      {
+        "symbol": "AAPL",
+        "quantity": 6,
+        "cost": 6006000
+      }
+    ],
+    "fees": 20000,
+    "realized_pnl": 386000,
+    "sequence": 8,
+    "orders": [
+      {
+        "order_id": "buy-order",
+        "intent_id": "0d96553ae7c34efa9d115ed7f38954e8:intent:buy-1",
+        "run_id": "0d96553ae7c34efa9d115ed7f38954e8",
+        "symbol": "AAPL",
+        "side": "buy",
+        "quantity": 10,
+        "limit_price": 1000000,
+        "filled": 10,
+        "status": "filled"
+      },
+      {
+        "order_id": "sell-order",
+        "intent_id": "0d96553ae7c34efa9d115ed7f38954e8:intent:sell-1",
+        "run_id": "0d96553ae7c34efa9d115ed7f38954e8",
+        "symbol": "AAPL",
+        "side": "sell",
+        "quantity": 4,
+        "limit_price": 1100000,
+        "filled": 4,
+        "status": "filled"
+      }
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "synthetic_data": true,
+  "model_calls": 0,
+  "filled": true,
+  "replay_matched": true,
+  "replay_events_verified": true,
+  "replay_model_calls": 0,
+  "duration_seconds": 18.5,
+  "frames": 185,
+  "fps": 10,
+  "captions": [
+    {
+      "start": 0.6,
+      "end": 2.6,
+      "text": "Select a local recording. Expand its row to inspect the file or create an experiment.",
+      "chapter": "01 / MARKET DATA"
+    },
+    {
+      "start": 2.6,
+      "end": 5.2,
+      "text": "Choose your market, decision maker and independent simulated account. No broker is connected.",
+      "chapter": "02 / PREPARE"
+    },
+    {
+      "start": 5.2,
+      "end": 9.2,
+      "text": "The experiment opens paused. Inspect market depth and the order estimate before submitting.",
+      "chapter": "03 / TRADING WORKSPACE"
+    },
+    {
+      "start": 9.2,
+      "end": 11.4,
+      "text": "The real simulation records the fill and fees. Market updates preserve unfinished order inputs.",
+      "chapter": "04 / INSPECT THE RECORD"
+    },
+    {
+      "start": 11.4,
+      "end": 13.5,
+      "text": "End the experiment to save its result. This report is read-only; opening it does not resume trading.",
+      "chapter": "05 / SAVED RESULTS"
+    },
+    {
+      "start": 13.5,
+      "end": 16.5,
+      "text": "Inspect, seek or play the verified financial events. The Agent and model are not called again.",
+      "chapter": "06 / VERIFIED REPLAY"
+    },
+    {
+      "start": 16.5,
+      "end": 18.5,
+      "text": "Create a versioned Agent, prepare its Python environment, and use it in the same trading workspace.",
+      "chapter": "NEXT / AGENTS"
+    }
+  ],
+  "wall_seconds": 19.04
+}

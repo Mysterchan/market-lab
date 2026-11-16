@@ -1,0 +1,142 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+# The PyPI name; "market-lab" is too close to the existing "marketlab" project.
+# The command is still market-lab and the import package sim_platform.
+name = "market-lab-research"
+dynamic = ["version"]
+description = "Local research workbench for testing AI trading agents against human, rule and model baselines"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.9,<3.13"
+authors = [{name = "Market Lab contributors"}]
+keywords = ["quantitative finance", "backtesting", "trading agents", "LLM", "market simulation"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial :: Investment",
+]
+dependencies = [
+    "SQLAlchemy>=2.0.54,<2.1",
+    "alembic>=1.16.5,<1.17",
+]
+
+[project.optional-dependencies]
+desktop = ["PySide6==6.8.3"]
+parquet = ["pyarrow>=14"]
+dataframes = ["pandas>=2.0"]
+dev = ["black==24.8.0", "ruff==0.8.6", "mypy==1.11.2", "coverage[toml]==7.6.1"]
+
+[project.scripts]
+market-lab = "sim_platform.cli.main:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "sim_platform.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["sim_platform*"]
+
+[tool.setuptools.package-data]
+# Desktop renderer assets, bundled licences and the native library when a build ships it.
+"*" = ["*.html", "*.js", "*.css", "*.txt", "_native/*"]
+# Reference Agent projects are folders of user code, not Python packages.
+"sim_platform.reference_agents" = ["*/*.py", "*/*.md", "*/*.json"]
+
+[tool.coverage.run]
+source = ["sim_platform"]
+branch = true
+# Child processes (Agent hosts, model workers) are measured only when coverage is
+# configured for subprocesses; the parent process covers the platform paths.
+omit = ["sim_platform/desktop/smoke.py"]
+
+[tool.coverage.report]
+skip_empty = true
+show_missing = false
+
+[tool.black]
+line-length = 100
+target-version = ["py39"]
+skip-string-normalization = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+# E/F: syntax and unused names. B: likely bugs. PIE/RET: needless or inconsistent
+# statements. C90: functions too branchy to review in one reading.
+select = ["E4", "E7", "E9", "F", "B", "PIE", "RET", "C90"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 20
+
+[tool.ruff.lint.per-file-ignores]
+# Tests read a property only to assert that it raises, and poll with closures in loops.
+"tests/**/*.py" = ["B018", "B023", "E402"]
+# Standalone measurement/capture scripts: long linear mains and polling closures.
+"tools/*.py" = ["E402", "B007", "B023", "C901"]
+# One linear end-to-end walkthrough of the Desktop; splitting it would hide the sequence.
+"sim_platform/desktop/smoke.py" = ["C901"]
+# This package intentionally exports its repository base.
+"sim_platform/persistence/sql/repositories/__init__.py" = ["F401"]
+
+[tool.mypy]
+# Type checking is adopted package by package. `files` lists what is checked today;
+# add a package here once its functions are annotated. Everything listed must pass.
+python_version = "3.9"
+files = [
+    "sim_platform/domain",
+    "sim_platform/sdk",
+    "sim_platform/execution",
+    "sim_platform/market",
+    "sim_platform/decisions",
+    "sim_platform/replay",
+    "sim_platform/models",
+    "sim_platform/research",
+    "sim_platform/experiments",
+    "sim_platform/persistence",
+    "sim_platform/application",
+    "sim_platform/agents",
+    "sim_platform/cli",
+    "sim_platform/desktop",
+    "sim_platform/examples",
+    "sim_platform/resources.py",
+    "sim_platform/design.py",
+]
+disallow_untyped_defs = true
+warn_unused_ignores = true
+# Checked modules may import packages that are not annotated yet.
+follow_imports = "silent"
+ignore_missing_imports = true
+
+[tool.cibuildwheel]
+# The native library is loaded through ctypes and does not use the Python C API, so one
+# py3-none-<platform> wheel per platform serves Python 3.9-3.12 (see setup.py).
+build = "cp312-*"
+skip = "*-musllinux_*"
+environment = { MARKET_LAB_REQUIRE_NATIVE = "1", MACOSX_DEPLOYMENT_TARGET = "12.0" }
+test-command = "python -c \"from sim_platform.market.native import resolve_library_path as r; p = r(); assert p.is_file() and '_native' in p.parts, p\" && market-lab --version && market-lab demo"
+
+[tool.cibuildwheel.linux]
+archs = ["native"]
+
+[tool.cibuildwheel.macos]
+archs = ["native"]
+
+[tool.cibuildwheel.windows]
+archs = ["AMD64"]
+
+[[tool.mypy.overrides]]
+# These modules need "type: ignore" only when PySide6's stubs are installed; CI checks
+# without the Desktop extra, where the same comments would be reported as unused.
+module = ["sim_platform.desktop.web.frontend_bridge", "sim_platform.desktop.web.workers"]
+warn_unused_ignores = false

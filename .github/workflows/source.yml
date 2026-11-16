@@ -1,0 +1,241 @@
+name: Source build and tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push to the same branch or pull request makes an older run pointless.
+concurrency:
+  group: source-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source:
+    name: Source / ${{ matrix.os }} / ${{ matrix.build }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            build: make
+          - os: macos-latest
+            build: cmake
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Export this exact commit
+        run: python tools/build_source_release.py --ref HEAD --output build/releases
+      - name: Open candidate outside the Git checkout
+        run: |
+          mkdir -p "${{ runner.temp }}/market-lab-source"
+          tar -xzf build/releases/*-source.tar.gz -C "${{ runner.temp }}/market-lab-source" --strip-components=1
+      - name: Install candidate dependencies
+        working-directory: ${{ runner.temp }}/market-lab-source
+        run: python -m pip install -r requirements-dev.txt
+      - name: Check formatting and lint in exported source
+        working-directory: ${{ runner.temp }}/market-lab-source
+        run: make python-quality
+      - name: Check English documentation and local links
+        working-directory: ${{ runner.temp }}/market-lab-source
+        run: python tools/check_documentation.py
+      - name: Make acceptance
+        if: matrix.build == 'make'
+        working-directory: ${{ runner.temp }}/market-lab-source
+        run: make test
+      - name: CMake acceptance with complete platform discovery
+        if: matrix.build == 'cmake'
+        working-directory: ${{ runner.temp }}/market-lab-source
+        run: |
+          cmake -S . -B build -DPython3_EXECUTABLE=$(which python)
+          cmake --build build --parallel 2
+          ctest --test-dir build --output-on-failure
+      - name: Check first-run CLI commands
+        working-directory: ${{ runner.temp }}/market-lab-source
+        run: |
+          python -m sim_platform --version
+          python -m sim_platform --help
+          python -m sim_platform demo
+          python -m sim_platform execution-demo
+      - name: Build and install the Python package
+        working-directory: ${{ runner.temp }}/market-lab-source
+        run: |
+          python -m pip wheel . --no-deps -w build/wheel
+          python -m venv "${{ runner.temp }}/wheel-check"
+          "${{ runner.temp }}/wheel-check/bin/python" -m pip install build/wheel/*.whl
+          "${{ runner.temp }}/wheel-check/bin/market-lab" --version
+
+  coverage:
+    name: Coverage / Ubuntu / Python ${{ matrix.python }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.9', '3.10', '3.11', '3.12']
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Build native components
+        run: make all
+      - name: Platform tests under coverage
+        run: python -m coverage run -m unittest discover -s tests/platform -p 'test_*.py'
+      - name: Coverage report
+        run: |
+          python -m coverage report --format=markdown >> "$GITHUB_STEP_SUMMARY"
+          python -m coverage report
+
+  desktop:
+    name: Desktop / Ubuntu / Python 3.12
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      QT_QPA_PLATFORM: xcb
+      QT_QUICK_BACKEND: software
+      QTWEBENGINE_CHROMIUM_FLAGS: --disable-gpu
+      LIBGL_ALWAYS_SOFTWARE: '1'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install Desktop dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            xvfb xauth libgl1-mesa-dri libegl1 libgl1 libopengl0 \
+            libx11-xcb1 libxkbcommon-x11-0 \
+            libxcb1 libxcb-cursor0 libxcb-icccm4 libxcb-image0 \
+            libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 \
+            libxcb-render0 libxcb-shape0 libxcb-shm0 libxcb-sync1 \
+            libxcb-xfixes0 libxcb-xkb1
+          python -m pip install -r requirements-desktop.txt
+      - name: Check Qt runtime libraries
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+          from PySide6.QtCore import QLibraryInfo
+
+          paths = (
+              Path(QLibraryInfo.path(QLibraryInfo.LibraryPath.PluginsPath))
+              / 'platforms' / 'libqxcb.so',
+              Path(QLibraryInfo.path(QLibraryInfo.LibraryPath.LibraryExecutablesPath))
+              / 'QtWebEngineProcess',
+          )
+          for path in paths:
+              print(f'Checking {path.name}', flush=True)
+              result = subprocess.run(['ldd', str(path)], capture_output=True, text=True)
+              print(result.stdout, flush=True)
+              print(result.stderr, flush=True)
+              if result.returncode or 'not found' in result.stdout:
+                  raise SystemExit(f'Qt runtime dependencies are missing for {path.name}')
+          PY
+      - name: Run enabled Desktop suites
+        run: xvfb-run --auto-servernum --server-args="-screen 0 1440x1000x24" make test-desktop
+
+  windows:
+    name: Windows / Python 3.12 / native, platform and Desktop
+    runs-on: windows-2022
+    timeout-minutes: 60
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt -r requirements-desktop.txt uv==0.13.4 setuptools
+      - name: Build the native market library with MSVC
+        run: python tools/native_build.py build/libitch_market.dll
+      - name: Platform tests
+        run: python -m unittest discover -s tests/platform -p "test_*.py"
+      - name: Desktop tests
+        env:
+          TRADING_DESKTOP_TESTS: '1'
+        run: python -X faulthandler -m unittest discover -s tests/platform -p "test_desktop*.py"
+      - name: Install the wheel and run the demo
+        run: |
+          python -m pip wheel . --no-deps -w build/wheel
+          python -m venv build/wheel-check
+          build/wheel-check/Scripts/python -m pip install (Get-ChildItem build/wheel/*.whl).FullName
+          build/wheel-check/Scripts/market-lab demo
+
+  linux-sandbox:
+    name: Linux / Agent sandbox (bubblewrap, podman)
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install sandboxes and dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap podman
+          python -m pip install -r requirements-dev.txt uv==0.13.4
+      - name: Build native components
+        run: make all
+      - name: Sandboxed Agent tests
+        env:
+          MARKET_LAB_SANDBOX_KINDS: bubblewrap
+        run: python -m unittest discover -s tests/platform -p test_agent_sandbox.py -v
+
+  public-api:
+    name: Public API record
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - name: Fail on an unrecorded public API change
+        run: python tools/check_public_api.py
+
+  notebooks:
+    name: Example notebooks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-dev.txt
+      - run: make all
+      - name: Run every notebook top to bottom
+        env:
+          MARKET_LAB_NOTEBOOK_TESTS: '1'
+        run: python -m unittest discover -s tests/platform -p test_notebooks.py -v
+
+  api-reference:
+    name: API reference and website
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt -r requirements-site.txt
+      - run: python tools/build_pages.py

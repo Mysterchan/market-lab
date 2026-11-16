@@ -1,0 +1,58 @@
+name: Bug report
+description: Something produced a wrong result, crashed or did not work as documented.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include API keys, account files or private market data.
+        Report security problems privately (see SECURITY.md).
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Commands, Desktop steps or a minimal Python snippet.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Results or statistics are wrong
+        - Fills, orders or account balances
+        - Agent runtime or model calls
+        - Market data import or Replay
+        - Desktop
+        - Command line or Python API
+        - Installation or build
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Market Lab version or commit
+      placeholder: python -m sim_platform --version
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: OS and Python version
+      placeholder: macOS 15.1, Python 3.12.7
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Run with --log-level debug and paste the redacted output.
+      render: text

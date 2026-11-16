@@ -1,0 +1,5 @@
+# Static documentation rendering only; the app does not depend on this package.
+Markdown==3.7
+# The versioned API reference (tools/build_api_reference.py).
+Sphinx==7.4.7
+furo==2024.8.6

@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: >-
+  If you use Market Lab in research, please cite it as below, with the version you
+  used and the methodology page of that version.
+title: "Market Lab: a local research workbench for testing AI trading agents against human, rule and neural-network baselines"
+type: software
+authors:
+  - name: Market Lab contributors
+license: Apache-2.0
+version: 1.0.0
+keywords:
+  - quantitative finance
+  - backtesting
+  - trading agents
+  - large language models
+  - market simulation
+  - reproducibility
+repository-code: "https://github.com/Mysterchan/market-lab"
+url: "https://mysterchan.github.io/market-lab/"

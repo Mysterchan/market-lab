@@ -1,0 +1,3 @@
+# Optional desktop dependency; CLI/core remain usable without Qt.
+-r requirements.txt
+PySide6==6.8.3

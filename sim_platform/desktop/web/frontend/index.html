@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' qrc:; script-src 'self' qrc:; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'"
+    />
+    <title>Market Lab</title>
+    <link rel="stylesheet" href="tokens.css" />
+    <link rel="stylesheet" href="desktop.css" />
+  </head>
+  <body>
+    <div id="app">
+      <p class="startup" role="status">Opening local workspace…</p>
+    </div>
+    <div id="notice" role="status" aria-live="polite"></div>
+    <dialog id="commands">
+      <form method="dialog">
+        <div class="command-input">
+          <input
+            id="command-search"
+            aria-label="Search pages and actions"
+            placeholder="Go to a page or experiment…"
+          /><button>Cancel</button>
+        </div>
+      </form>
+      <div id="command-results"></div>
+    </dialog>
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+    <script src="../chart.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

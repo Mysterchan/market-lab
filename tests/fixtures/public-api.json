@@ -1,0 +1,434 @@
+{
+ "sim_platform": {
+  "ContractError": {
+   "kind": "class",
+   "members": {},
+   "signature": null
+  },
+  "Platform": {
+   "kind": "class",
+   "members": {
+    "abort_execution_run": "(self, profile_id: 'str', run_id: 'str') -> 'ExecutionSnapshot'",
+    "accounts": "(self, profile_id: 'str') -> 'List[AccountDetails]'",
+    "agent": "(self, profile_id: 'str', agent_id: 'str', revision: 'Optional[int]' = None) -> 'AgentRevisionDetails'",
+    "agent_environment": "(self, profile_id: 'str', agent_id: 'str', revision: 'Optional[int]' = None) -> 'Optional[JsonObject]'",
+    "agent_experiment": "(self, profile_id: 'str', experiment_id: 'str') -> 'AgentExperimentDetails'",
+    "agent_experiments": "(self, profile_id: 'str', *, limit: 'int' = 100, after_id: 'Optional[str]' = None) -> 'List[AgentExperimentDetails]'",
+    "agent_journal": "(self, profile_id: 'str', run_id: 'str') -> 'List[JsonObject]'",
+    "agent_log_archive": "(self, profile_id: 'str', run_id: 'str') -> 'Optional[JsonObject]'",
+    "agent_project": "(self, profile_id: 'str', agent_id: 'str', revision: 'Optional[int]' = None) -> 'JsonObject'",
+    "agent_project_file": "(self, profile_id: 'str', agent_id: 'str', path: 'str', revision: 'Optional[int]' = None) -> 'str'",
+    "agents": "(self, profile_id: 'str', *, limit: 'int' = 100, after_id: 'Optional[str]' = None) -> 'List[AgentRevisionDetails]'",
+    "archive_agent_log": "(self, profile_id: 'str', run_id: 'str', path: 'PathInput') -> 'ArchiveReceipt'",
+    "archive_market": "(self, profile_id: 'str', run_id: 'str', archive: 'JsonObject') -> 'None'",
+    "check_agent_project": "(self, source: 'PathInput') -> 'JsonObject'",
+    "check_model_credential": "(self, reference: 'str') -> 'None'",
+    "close": "(self) -> 'None'",
+    "closed": null,
+    "configure_experiment_model": "(self, experiment: 'AgentResearchController', profile: 'ModelProfile', *, provider: 'Optional[ModelProvider]' = None) -> 'ModelProfile'",
+    "create_account": "(self, profile_id: 'str', name: 'str', cash: 'int', currency: 'str' = 'USD') -> 'str'",
+    "create_agent": "(self, profile_id: 'str', definition: 'JsonObject') -> 'AgentRevisionDetails'",
+    "create_agent_log": "(self, profile_id: 'str', experiment_id: 'str', run_id: 'str', path: 'PathInput') -> 'AgentOperationLog'",
+    "create_decision_run": "(self, profile_id: 'str', account_id: 'str', maker_id: 'str', symbol: 'str', policy: 'Policy', config: 'Optional[DecisionConfig]' = None, execution_config: 'Optional[ExecutionConfig]' = None) -> 'str'",
+    "create_execution_run": "(self, profile_id: 'str', account_id: 'str', maker_id: 'str', symbol: 'str', config: 'Optional[ExecutionConfig]' = None) -> 'str'",
+    "create_maker": "(self, profile_id: 'str', name: 'str', kind: 'MakerKind', version: 'str', config: 'Optional[JsonObject]' = None) -> 'str'",
+    "create_managed_decision_run": "(self, profile_id: 'str', account_id: 'str', symbol: 'str', policy: 'Policy', config: 'DecisionConfig', execution_config: 'ExecutionConfig', *, source: 'Optional[JsonObject]' = None, allow_short: 'bool' = False) -> 'Tuple[str, str]'",
+    "create_profile": "(self, name: 'str') -> 'str'",
+    "create_run": "(self, profile_id: 'str', account_id: 'str', maker_id: 'str', universe: 'List[str]', config: 'Optional[JsonObject]' = None) -> 'str'",
+    "decision_records": "(self, profile_id: 'str', run_id: 'str', *, limit: 'Optional[int]' = None) -> 'List[JsonObject]'",
+    "decision_runner": "(self, profile_id: 'str', run_id: 'str', maker_id: 'str', market: 'MarketInput', policy: 'Policy') -> 'PolicyDecisionRunner'",
+    "decision_session": "(self, profile_id: 'str', run_id: 'str', maker_id: 'str') -> 'DecisionSession'",
+    "decision_timeline": "(self, profile_id: 'str', run_id: 'str') -> 'JsonObject'",
+    "delete_model_credential": "(self, reference: 'str') -> 'None'",
+    "diff_runs": "(self, profile_id: 'str', run_a: 'str', run_b: 'str') -> 'JsonObject'",
+    "disguise_recording": "(self, source: 'PathInput', output: 'Optional[PathInput]' = None, *, start_date: 'str' = '2100-01-04', price_scale: 'Optional[float]' = None, seed: 'int' = 2026, news: 'Optional[PathInput]' = None, fundamentals: 'Optional[PathInput]' = None, names: 'Optional[List[str]]' = None, symbol: 'str' = 'ASSET1', alias: 'str' = 'the company') -> 'JsonObject'",
+    "evaluation": "(self, profile_id: 'str', entries: 'Dict[str, List[str]]', *, baseline: 'Optional[str]' = None, metric: 'str' = 'total_return', seed: 'int' = 2026, resamples: 'int' = 10000, training_cutoffs: 'Optional[Dict[str, str]]' = None, token_prices: 'Optional[Dict[str, float]]' = None, trials: 'Optional[Dict[str, int]]' = None) -> 'JsonObject'",
+    "events": "(self, profile_id: 'str', account_id: 'str') -> 'List[JsonObject]'",
+    "execution_session": "(self, profile_id: 'str', run_id: 'str', maker_id: 'str', market: 'MarketInput') -> 'ExecutionSession'",
+    "export_agent_sdk": "(self, output: 'PathInput') -> 'JsonObject'",
+    "finish_run": "(self, profile_id: 'str', run_id: 'str', status: 'TerminalStatus' = 'completed') -> 'None'",
+    "import_agent": "(self, profile_id: 'str', source: 'PathInput', *, name: 'Optional[str]' = None, agent_id: 'Optional[str]' = None, expected_revision: 'Optional[int]' = None, integration: 'str' = 'python_strategy', initial_prompt: 'str' = 'Evaluate trading opportunities; no trade is required.', parameters: 'Optional[JsonObject]' = None, requires: 'Optional[List[str]]' = None, model_profile_ref: 'str' = 'user-model', schedule: 'Optional[JsonObject]' = None) -> 'AgentRevisionDetails'",
+    "import_reference_agent": "(self, profile_id: 'str', key: 'str', *, name: 'Optional[str]' = None, parameters: 'Optional[JsonObject]' = None, model_profile_ref: 'str' = 'user-model', initial_prompt: 'str' = 'Evaluate trading opportunities; no trade is required.', schedule: 'Optional[JsonObject]' = None) -> 'AgentRevisionDetails'",
+    "load_model_credential": "(self, reference: 'str', path: 'PathInput', *, variable: 'str' = 'OPENAI_API_KEY', persistence: 'CredentialPersistence' = 'session') -> 'None'",
+    "makers": "(self, profile_id: 'str') -> 'List[MakerDetails]'",
+    "model_environment": "(self, source: 'PathInput') -> 'Optional[str]'",
+    "model_risk_report": "(self, profile_id: 'str', run_ids: 'List[str]', *, path: \"Optional[Union[str, 'PathLike[str]']]\" = None, title: 'str' = 'Model risk report', baseline: 'Optional[str]' = None) -> 'JsonObject'",
+    "open_agent_experiment": "(self, profile: 'str', account: 'str', agent_id: 'str', revision: 'int', *, source: 'PathInput', settings: 'JsonObject', execution_config: 'Optional[ExecutionConfig]' = None, log_path: 'Optional[PathInput]' = None, library: 'Optional[PathInput]' = None, clock: 'Optional[SharedExperimentClock]' = None, execution_mode: 'ExecutionMode', agent_factory: 'Optional[AgentFactory]' = None) -> 'AgentResearchController'",
+    "open_agent_run": "(self, profile: 'str', experiment_id: 'str', market: 'PreparedSession', *, source: 'JsonObject', log_path: 'Optional[PathInput]' = None, clock: 'Optional[SharedExperimentClock]' = None, execution_mode: 'ExecutionMode', agent_factory: 'Optional[AgentFactory]' = None) -> 'AgentDecisionRunner'",
+    "open_batch": "(self, *, library: 'Optional[PathInput]' = None) -> 'ResearchBatch'",
+    "open_datasets": "(self, *, demo_source: 'Optional[Tuple[PathInput, Optional[PathInput]]]' = None) -> 'DatasetLibrary'",
+    "open_experiment": "(self, profile: 'str', account: 'str', *, source: 'Union[PathInput, Sequence[PathInput]]', method: 'ExperimentMethod' = 'human', settings: 'Optional[JsonObject]' = None, agent_id: 'Optional[str]' = None, revision: 'Optional[int]' = None, execution_config: 'Optional[ExecutionConfig]' = None, log_path: 'Optional[PathInput]' = None, library: 'Optional[PathInput]' = None, clock: 'Optional[SharedExperimentClock]' = None, execution_mode: 'ExecutionMode', agent_factory: 'Optional[AgentFactory]' = None, book: 'Optional[Dict[str, int]]' = None, allow_short: 'bool' = False) -> 'ResearchController'",
+    "open_jobs": "(self) -> 'BackgroundJob'",
+    "open_market": "(self, symbol: 'str' = 'AAPL', *, depth: 'int' = 5, library: 'Optional[PathInput]' = None) -> 'MarketPlayback'",
+    "open_replay": "(self, *, library: 'Optional[PathInput]' = None) -> 'ReplaySession'",
+    "open_research": "(self, *, method: 'ExperimentMethod' = 'human', library: 'Optional[PathInput]' = None, agent_factory: 'Optional[AgentFactory]' = None) -> 'ResearchController'",
+    "pnl_attribution": "(self, profile_id: 'str', run_id: 'str', *, factors: 'Optional[Dict[str, List[float]]]' = None) -> 'JsonObject'",
+    "prepare_agent_environment": "(self, profile_id: 'str', agent_id: 'str', revision: 'Optional[int]' = None, *, wheelhouse: 'Optional[PathInput]' = None, allow_download: 'bool' = False, allow_python_download: 'bool' = False, python_archive: 'Optional[PathInput]' = None) -> 'EnvironmentPreparation'",
+    "prepare_agent_experiment": "(self, profile_id: 'str', account_id: 'str', agent_id: 'str', revision: 'int', settings: 'JsonObject', execution_config: 'Optional[ExecutionConfig]' = None) -> 'AgentExperimentDetails'",
+    "prepare_model_environment": "(self, source: 'PathInput', *, wheelhouse: 'Optional[PathInput]' = None, allow_download: 'bool' = False, allow_python_download: 'bool' = False, python_archive: 'Optional[PathInput]' = None) -> 'EnvironmentPreparation'",
+    "prepare_python_runtime": "(self, python: 'str' = '3.12', *, allow_download: 'bool' = False, archive: 'Optional[PathInput]' = None) -> 'RuntimePreparation'",
+    "profiles": "(self) -> 'List[ProfileDetails]'",
+    "python_runtimes": "(self) -> 'List[JsonObject]'",
+    "rebuild_account": "(self, profile_id: 'str', account_id: 'str') -> 'AccountSnapshot'",
+    "reference_agents": "(self) -> 'List[JsonObject]'",
+    "replay_prepared_operations": "(self, profile: 'str', account: 'Optional[str]', log_path: 'PathInput', *, cancelled: 'Optional[Callable[[], bool]]' = None) -> 'PreparedReplayResult'",
+    "replay_snapshot": "(self, profile_id: 'str', account_id: 'str', events: 'List[JsonObject]') -> 'AccountSnapshot'",
+    "report_data": "(self, profile_id: 'str', run_id: 'str') -> 'ReportData'",
+    "report_stream": "(self, profile_id: 'str', run_id: 'str') -> 'ContextManager[Tuple[ReportViewData, ReportStreams]]'",
+    "report_view_data": "(self, profile_id: 'str', run_id: 'str') -> 'ReportViewData'",
+    "run": "(self, profile_id: 'str', run_id: 'str', *, include_records: 'bool' = True) -> 'RunDetails'",
+    "run_events": "(self, profile_id: 'str', run_id: 'str', *, limit: 'Optional[int]' = None) -> 'List[JsonObject]'",
+    "run_lineage": "(self, profile_id: 'str', run_id: 'str') -> 'JsonObject'",
+    "run_sweep": "(self, paths: 'List[PathInput]', base: 'JsonObject', grid: 'Dict[str, List[Any]]', *, metric: 'str' = 'total_return', library: 'Optional[PathInput]' = None, **arguments: 'Any') -> 'JsonObject'",
+    "runs": "(self, profile_id: 'str', *, include_records: 'bool' = True) -> 'List[RunDetails]'",
+    "set_model_credential": "(self, reference: 'str', secret: 'str', *, persistence: 'CredentialPersistence' = 'session') -> 'None'",
+    "snapshot": "(self, profile_id: 'str', account_id: 'str') -> 'AccountSnapshot'",
+    "split_recording": "(self, source: 'PathInput', output: 'PathInput', *, train_days: 'int', test_days: 'int', step_days: 'Optional[int]' = None, gap_days: 'int' = 0, anchored: 'bool' = False) -> 'List[JsonObject]'",
+    "update_agent": "(self, profile_id: 'str', agent_id: 'str', expected_revision: 'int', definition: 'JsonObject') -> 'AgentRevisionDetails'",
+    "verify_run": "(self, profile_id: 'str', run_id: 'str') -> 'JsonObject'"
+   },
+   "signature": "(directory: 'Optional[PathInput]' = None, *, database: 'bool' = True, python_manager: 'Optional[PathInput]' = None, agent_sdk_wheel: 'Optional[PathInput]' = None) -> 'None'"
+  },
+  "__version__": {
+   "kind": "value",
+   "type": "str"
+  }
+ },
+ "sim_platform.diagnostics": {
+  "configure_logging": {
+   "kind": "function",
+   "signature": "(level: 'Optional[str]' = None, *, json_format: 'Optional[bool]' = None, stream: 'Optional[TextIO]' = None) -> 'logging.Logger'"
+  }
+ },
+ "sim_platform.execution": {
+  "ExecutionConfig": {
+   "kind": "class",
+   "members": {
+    "max_delay_ns": null
+   },
+   "signature": "(model: 'str' = 'displayed-limit-v1', latency_ns: 'int' = 0, fee_per_share: 'int' = 0, max_order_quantity: 'int' = 1000000, latency_jitter_ns: 'int' = 0, impact_bps: 'int' = 0, latency_sigma_milli: 'int' = 0, borrow_bps_per_year: 'int' = 0) -> None"
+  }
+ },
+ "sim_platform.market.connectors": {
+  "DataConnector": {
+   "kind": "class",
+   "members": {
+    "documents": "(self, symbol: 'str') -> 'Iterable[Dict[str, Any]]'",
+    "fundamentals": "(self, symbol: 'str') -> 'Iterable[Dict[str, Any]]'",
+    "news": "(self, symbol: 'str') -> 'Iterable[Dict[str, Any]]'"
+   },
+   "signature": "(*args, **kwargs)"
+  },
+  "export_connector": {
+   "kind": "function",
+   "signature": "(connector: 'DataConnector', symbol: 'str', folder: 'PathInput', session_start: 'str', *, delay_seconds: 'int' = 0, provenance: 'Optional[str]' = None) -> 'Dict[str, Optional[str]]'"
+  }
+ },
+ "sim_platform.models.contracts": {
+  "ModelProfile": {
+   "kind": "class",
+   "members": {},
+   "signature": "(provider: 'str', model: 'str', credential_ref: 'str' = '', network_timeout_seconds: 'float' = 60, max_output_tokens: 'int' = 4096, temperature: 'Optional[float]' = None, base_url: 'Optional[str]' = None) -> None"
+  },
+  "ModelProvider": {
+   "kind": "class",
+   "members": {
+    "request": "(self, profile: 'ModelProfile', value: 'ModelPayload', secret: 'str') -> 'Awaitable[Any]'"
+   },
+   "signature": "(*args, **kwargs)"
+  },
+  "ProviderError": {
+   "kind": "class",
+   "members": {},
+   "signature": "(code: 'str', retry_after_seconds: 'Optional[str]' = None) -> 'None'"
+  }
+ },
+ "sim_platform.models.providers.local": {
+  "OpenAICompatibleChat": {
+   "kind": "class",
+   "members": {
+    "body": "(self, profile: 'ModelProfile', value: 'ModelPayload') -> 'Dict[str, Any]'",
+    "reply": "(self, data: 'Dict[str, Any]') -> 'ModelReply'",
+    "request": "(self, profile: 'ModelProfile', value: 'ModelPayload', secret: 'str') -> 'ModelReply'",
+    "request_received": "(self, profile: 'ModelProfile', value: 'ModelPayload', secret: 'str', received: 'Optional[ReceivedHook]') -> 'ModelReply'"
+   },
+   "signature": "() -> 'None'"
+  }
+ },
+ "sim_platform.models.providers.rehearsal": {
+  "RehearsalProvider": {
+   "kind": "class",
+   "members": {
+    "choose": "(self, payload: 'Dict[str, Any]') -> 'Dict[str, Any]'",
+    "request": "(self, profile: 'Any', payload: 'Dict[str, Any]', secret: 'str') -> 'Dict[str, Any]'"
+   },
+   "signature": "(symbol: 'str', *, trade: 'bool' = True) -> 'None'"
+  }
+ },
+ "sim_platform.network": {
+  "offline": {
+   "kind": "function",
+   "signature": "() -> 'bool'"
+  },
+  "set_offline": {
+   "kind": "function",
+   "signature": "(value: 'Optional[bool]') -> 'None'"
+  }
+ },
+ "sim_platform.research.attribution": {
+  "decision_timeline": {
+   "kind": "function",
+   "signature": "(archive: 'Optional[Dict[str, Any]]', events: 'List[Dict[str, Any]]') -> 'Dict[str, Any]'"
+  }
+ },
+ "sim_platform.research.forward": {
+  "BarFeed": {
+   "kind": "class",
+   "members": {
+    "bars": "(self, after: 'Optional[str]') -> 'Iterable[Mapping[str, Any]]'"
+   },
+   "signature": "(*args, **kwargs)"
+  },
+  "CsvFeed": {
+   "kind": "class",
+   "members": {
+    "bars": "(self, after: 'Optional[str]') -> 'List[Dict[str, Any]]'"
+   },
+   "signature": "(path: 'PathInput') -> 'None'"
+  },
+  "ForwardTest": {
+   "kind": "class",
+   "members": {
+    "run": "(self, *, poll_seconds: 'float' = 60, until: 'Optional[Callable[[], bool]]' = None, segments: 'Optional[int]' = None) -> 'List[Dict[str, Any]]'",
+    "segments": "(self) -> 'List[Dict[str, Any]]'",
+    "step": "(self) -> 'Optional[Dict[str, Any]]'"
+   },
+   "signature": "(platform: 'Any', profile: 'str', account: 'str', feed: 'BarFeed', folder: 'PathInput', *, symbol: 'str', method: 'str' = 'rule', settings: 'Optional[Dict[str, Any]]' = None, agent_id: 'Optional[str]' = None, revision: 'Optional[int]' = None, configure: 'Optional[Callable[[Any], Any]]' = None, execution_config: 'Optional[Any]' = None) -> 'None'"
+  }
+ },
+ "sim_platform.research.metrics": {
+  "daily_returns": {
+   "kind": "function",
+   "signature": "(initial_cash: 'int', rows: 'List[Dict[str, Any]]', closes: 'List[List[int]]') -> 'Optional[List[float]]'"
+  },
+  "daily_sharpe": {
+   "kind": "function",
+   "signature": "(initial_cash: 'int', rows: 'List[Dict[str, Any]]', closes: 'List[List[int]]') -> 'Optional[float]'"
+  },
+  "fill_rows": {
+   "kind": "function",
+   "signature": "(view: 'View') -> 'List[Dict[str, Any]]'"
+  },
+  "performance": {
+   "kind": "function",
+   "signature": "(view: 'View') -> 'Dict[str, Any]'"
+  },
+  "portfolio_daily_returns": {
+   "kind": "function",
+   "signature": "(initial_cash: 'int', rows: 'List[Dict[str, Any]]', closes: 'Dict[str, List[List[int]]]') -> 'Tuple[int, Optional[List[float]]]'"
+  },
+  "portfolio_daily_sharpe": {
+   "kind": "function",
+   "signature": "(initial_cash: 'int', rows: 'List[Dict[str, Any]]', closes: 'Dict[str, List[List[int]]]') -> 'Tuple[int, Optional[float]]'"
+  },
+  "portfolio_series": {
+   "kind": "function",
+   "signature": "(initial_cash: 'int', rows: 'List[Dict[str, Any]]', bars: 'Dict[str, List[Dict[str, Any]]]') -> 'Optional[List[List[int]]]'"
+  },
+  "round_trips": {
+   "kind": "function",
+   "signature": "(rows: 'List[Dict[str, Any]]') -> 'Dict[str, Any]'"
+  },
+  "sharpe_ratio": {
+   "kind": "function",
+   "signature": "(returns: 'Optional[List[float]]') -> 'Optional[float]'"
+  },
+  "sortino_ratio": {
+   "kind": "function",
+   "signature": "(returns: 'Optional[List[float]]') -> 'Optional[float]'"
+  },
+  "trade_statistics": {
+   "kind": "function",
+   "signature": "(view: 'View', rows: 'List[Dict[str, Any]]') -> 'Dict[str, Any]'"
+  }
+ },
+ "sim_platform.research.overfitting": {
+  "OverfittingEstimate": {
+   "kind": "class",
+   "members": {},
+   "signature": "(probability: 'float', splits: 'int', logits: 'Tuple[float, ...]') -> None"
+  },
+  "deflated_sharpe_ratio": {
+   "kind": "function",
+   "signature": "(returns: 'Sequence[float]', *, trial_sharpes: 'Optional[Sequence[float]]' = None, trials: 'Optional[int]' = None, sharpe_variance: 'Optional[float]' = None) -> 'Optional[float]'"
+  },
+  "expected_maximum_sharpe": {
+   "kind": "function",
+   "signature": "(trials: 'int', sharpe_variance: 'float') -> 'float'"
+  },
+  "per_period_sharpe": {
+   "kind": "function",
+   "signature": "(returns: 'Sequence[float]') -> 'Optional[float]'"
+  },
+  "probabilistic_sharpe_ratio": {
+   "kind": "function",
+   "signature": "(returns: 'Sequence[float]', benchmark_sharpe: 'float' = 0.0) -> 'Optional[float]'"
+  },
+  "probability_of_backtest_overfitting": {
+   "kind": "function",
+   "signature": "(returns_by_candidate: 'Sequence[Sequence[float]]', blocks: 'int' = 8) -> 'OverfittingEstimate'"
+  },
+  "purged_k_fold_splits": {
+   "kind": "function",
+   "signature": "(length: 'int', folds: 'int', *, label_horizon: 'int' = 0, embargo: 'int' = 0) -> 'List[Tuple[List[int], IndexRange]]'"
+  },
+  "walk_forward_splits": {
+   "kind": "function",
+   "signature": "(length: 'int', train: 'int', test: 'int', *, step: 'Optional[int]' = None, anchored: 'bool' = False, gap: 'int' = 0) -> 'List[Tuple[IndexRange, IndexRange]]'"
+  }
+ },
+ "sim_platform.research.pnl_attribution": {
+  "pnl_attribution": {
+   "kind": "function",
+   "signature": "(report: 'Report', factors: 'Optional[Mapping[str, Sequence[float]]]' = None) -> 'Dict[str, Any]'"
+  },
+  "regress": {
+   "kind": "function",
+   "signature": "(returns: 'Sequence[float]', factors: 'Mapping[str, Sequence[float]]') -> 'Dict[str, Any]'"
+  }
+ },
+ "sim_platform.research.portfolio": {
+  "apply_limits": {
+   "kind": "function",
+   "signature": "(weights: 'Mapping[str, float]', *, max_weight: 'Optional[float]' = None, max_gross: 'Optional[float]' = None, max_net: 'Optional[float]' = None) -> 'Weights'"
+  },
+  "equal_weights": {
+   "kind": "function",
+   "signature": "(symbols: 'Sequence[str]') -> 'Weights'"
+  },
+  "inverse_volatility": {
+   "kind": "function",
+   "signature": "(returns: 'Mapping[str, Sequence[float]]') -> 'Weights'"
+  },
+  "minimum_variance": {
+   "kind": "function",
+   "signature": "(returns: 'Mapping[str, Sequence[float]]', *, iterations: 'int' = 2000, step: 'Optional[float]' = None) -> 'Weights'"
+  },
+  "portfolio_volatility": {
+   "kind": "function",
+   "signature": "(weights: 'Mapping[str, float]', returns: 'Mapping[str, Sequence[float]]', periods_per_year: 'float') -> 'float'"
+  },
+  "rebalance_orders": {
+   "kind": "function",
+   "signature": "(current: 'Mapping[str, int]', target: 'Mapping[str, int]', *, min_shares: 'int' = 1) -> 'List[Dict[str, object]]'"
+  },
+  "risk_parity": {
+   "kind": "function",
+   "signature": "(returns: 'Mapping[str, Sequence[float]]', *, iterations: 'int' = 500, tolerance: 'float' = 1e-10) -> 'Weights'"
+  },
+  "signal_weights": {
+   "kind": "function",
+   "signature": "(signals: 'Mapping[str, float]', *, gross: 'float' = 1.0) -> 'Weights'"
+  },
+  "target_shares": {
+   "kind": "function",
+   "signature": "(weights: 'Mapping[str, float]', prices: 'Mapping[str, int]', equity: 'int', *, lot: 'int' = 1) -> 'Dict[str, int]'"
+  },
+  "volatility_target": {
+   "kind": "function",
+   "signature": "(weights: 'Mapping[str, float]', returns: 'Mapping[str, Sequence[float]]', *, target: 'float', periods_per_year: 'float' = 252, max_leverage: 'float' = 1.0) -> 'Weights'"
+  }
+ },
+ "sim_platform.research.sweeps": {
+  "expand_grid": {
+   "kind": "function",
+   "signature": "(base: 'Mapping[str, Any]', grid: 'Mapping[str, Sequence[Any]]') -> 'List[Tuple[Dict[str, Any], Dict[str, Any]]]'"
+  },
+  "heatmap": {
+   "kind": "function",
+   "signature": "(rows: 'Sequence[Mapping[str, Any]]', x: 'str', y: 'str', *, value: 'str' = 'mean') -> 'Dict[str, Any]'"
+  },
+  "render_heatmap_svg": {
+   "kind": "function",
+   "signature": "(data: 'Mapping[str, Any]', *, title: 'Optional[str]' = None) -> 'str'"
+  }
+ },
+ "sim_platform.research.universe": {
+  "Membership": {
+   "kind": "class",
+   "members": {
+    "active": "(self, day: 'date') -> 'bool'"
+   },
+   "signature": "(symbol: 'str', start: 'date', end: 'Optional[date]', reason: 'str' = '') -> None"
+  },
+  "load_membership": {
+   "kind": "function",
+   "signature": "(path: 'PathInput') -> 'List[Membership]'"
+  },
+  "members_on": {
+   "kind": "function",
+   "signature": "(spells: 'Iterable[Membership]', day: 'str') -> 'List[str]'"
+  },
+  "survivorship_check": {
+   "kind": "function",
+   "signature": "(spells: 'Iterable[Membership]', symbols: 'Iterable[str]', start: 'str', end: 'str') -> 'Dict[str, Any]'"
+  }
+ },
+ "sim_platform.sdk": {
+  "AgentContext": {
+   "kind": "class",
+   "members": {
+    "next_task": "(self, instruction: str) -> sim_platform.agents.carrier.task.Task",
+    "settings": null,
+    "stopping": null,
+    "tool": "(self, name: str) -> sim_platform.agents.tools.client.base.PlatformTool"
+   },
+   "signature": "(client: sim_platform.sdk.context.TaskClient, model: sim_platform.sdk.context.AgentModel, tools: Iterable[sim_platform.agents.tools.client.base.PlatformTool], settings: sim_platform.sdk.context.AgentSettings) -> None"
+  },
+  "AgentFactory": {
+   "kind": "function",
+   "signature": "(*args, **kwargs)"
+  },
+  "ResidentAgent": {
+   "kind": "class",
+   "members": {
+    "run": "(self) -> None"
+   },
+   "signature": "(*args, **kwargs)"
+  },
+  "ScheduledAgent": {
+   "kind": "class",
+   "members": {
+    "run": "(self, task: sim_platform.agents.carrier.task.Task) -> Any"
+   },
+   "signature": "(*args, **kwargs)"
+  },
+  "Task": {
+   "kind": "class",
+   "members": {},
+   "signature": "(instruction: 'str', notification: 'Dict[str, Any]' = <factory>) -> None"
+  },
+  "Tool": {
+   "kind": "class",
+   "members": {
+    "function_name": null,
+    "input_schema": "(self, limits: 'dict') -> 'dict'",
+    "invoke": "(self, arguments: 'dict') -> 'Any'",
+    "run": "(self, *positional: 'Any', **arguments: 'Any') -> 'Any'"
+   },
+   "signature": "()"
+  },
+  "ToolError": {
+   "kind": "class",
+   "members": {},
+   "signature": "(code: 'str', message: 'str') -> 'None'"
+  },
+  "TradingAgent": {
+   "kind": "class",
+   "members": {
+    "run": "(self, task: 'Union[str, Task]') -> 'dict'"
+   },
+   "signature": "(model: 'AgentModel', tools: 'Iterable[Tool]', instructions: 'str', parameters: 'Optional[Dict[str, Any]]' = None, finish_tools: 'Iterable[str]' = (), label: 'Optional[str]' = None) -> 'None'"
+  }
+ }
+}

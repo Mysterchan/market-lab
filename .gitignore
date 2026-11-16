@@ -1,0 +1,24 @@
+build/
+__pycache__/
+*.bin
+*.NASDAQ_ITCH50.gz
+*.csv
+.venv/
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+
+.ruff_cache/
+node_modules/
+
+# Local model credentials; examples may be committed.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# macOS Finder metadata
+.DS_Store
+*.egg-info/

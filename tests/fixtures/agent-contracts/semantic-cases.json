@@ -1,0 +1,1285 @@
+{
+  "scope": "Independent expected fixtures; runtime traces not executed by design validator. All numeric time and money inputs in checks use seconds and USD in exact integer toy units, events carry active ns.",
+  "cases": [
+    {
+      "id": "C01",
+      "requirements": [
+        "D02",
+        "D17"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "model_dispatch",
+          "payload": {
+            "attempt": "a1"
+          }
+        },
+        {
+          "at_active_ns": "2000000000",
+          "kind": "source",
+          "payload": {
+            "sequence": "1"
+          }
+        },
+        {
+          "at_active_ns": "5000000000",
+          "kind": "source",
+          "payload": {
+            "sequence": "2"
+          }
+        },
+        {
+          "at_active_ns": "8000000000",
+          "kind": "source",
+          "payload": {
+            "sequence": "3"
+          }
+        },
+        {
+          "at_active_ns": "10000000000",
+          "kind": "model_reply",
+          "payload": {
+            "attempt": "a1"
+          }
+        }
+      ],
+      "expected": {
+        "source_sequences_before_reply": [
+          "1",
+          "2",
+          "3"
+        ],
+        "market_waits_for_model": false,
+        "trade_uses_old_quote": false
+      },
+      "checks": [
+        {
+          "kind": "source_prefix",
+          "input": {
+            "timestamps": [
+              2,
+              5,
+              8
+            ],
+            "cutoff": 10,
+            "end": 100
+          },
+          "expected": [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C02",
+      "requirements": [
+        "D06",
+        "D07"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "query",
+          "payload": {
+            "request": "q1"
+          }
+        },
+        {
+          "at_active_ns": "1000000000",
+          "kind": "query",
+          "payload": {
+            "request": "q2"
+          }
+        },
+        {
+          "at_active_ns": "2000000000",
+          "kind": "query",
+          "payload": {
+            "request": "q3"
+          }
+        },
+        {
+          "at_active_ns": "3000000000",
+          "kind": "finish",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "trades": 0,
+        "queries": 3,
+        "work_completed": true,
+        "context_preserved": true
+      },
+      "checks": []
+    },
+    {
+      "id": "C03",
+      "requirements": [
+        "D06"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "start",
+          "payload": {
+            "interval_seconds": 60
+          }
+        },
+        {
+          "at_active_ns": "12000000000",
+          "kind": "finish",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "next_due_active_seconds": 72
+      },
+      "checks": [
+        {
+          "kind": "interval",
+          "input": {
+            "finished": 12,
+            "interval": 60
+          },
+          "expected": 72
+        }
+      ]
+    },
+    {
+      "id": "C04",
+      "requirements": [
+        "D06"
+      ],
+      "events": [
+        {
+          "at_active_ns": "10000000000",
+          "kind": "matching_event",
+          "payload": {}
+        },
+        {
+          "at_active_ns": "12000000000",
+          "kind": "finish",
+          "payload": {
+            "interval_seconds": 60
+          }
+        }
+      ],
+      "expected": {
+        "preserve_interval_due": 72,
+        "wake_on_pending_event_due": 12,
+        "parallel_works": 0
+      },
+      "checks": [
+        {
+          "kind": "interval",
+          "input": {
+            "finished": 12,
+            "interval": 60
+          },
+          "expected": 72
+        }
+      ]
+    },
+    {
+      "id": "C05",
+      "requirements": [
+        "D03",
+        "D08"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "dispatch",
+          "payload": {
+            "timeout_seconds": 30
+          }
+        },
+        {
+          "at_active_ns": "10000000000",
+          "kind": "pause",
+          "payload": {}
+        },
+        {
+          "at_active_ns": "10000000000",
+          "kind": "resume",
+          "payload": {
+            "paused_wall_seconds": 100
+          }
+        }
+      ],
+      "expected": {
+        "remaining_seconds": 20,
+        "market_advanced_during_pause": false
+      },
+      "checks": [
+        {
+          "kind": "timeout_remaining",
+          "input": {
+            "timeout": 30,
+            "active_elapsed": 10
+          },
+          "expected": 20
+        }
+      ]
+    },
+    {
+      "id": "C06",
+      "requirements": [
+        "D08"
+      ],
+      "events": [
+        {
+          "at_active_ns": "10000000000",
+          "kind": "pause",
+          "payload": {}
+        },
+        {
+          "at_active_ns": "10000000000",
+          "kind": "reply_buffered",
+          "payload": {
+            "attempt": "a1"
+          }
+        },
+        {
+          "at_active_ns": "10000000000",
+          "kind": "stop",
+          "payload": {}
+        },
+        {
+          "at_active_ns": "10000000000",
+          "kind": "late_reply",
+          "payload": {
+            "attempt": "a1"
+          }
+        }
+      ],
+      "expected": {
+        "processed_while_paused": false,
+        "adopted_after_stop": false
+      },
+      "checks": [
+        {
+          "kind": "attempt_valid",
+          "input": {
+            "reply_attempt": "a1",
+            "current_attempt": "a1",
+            "reply_active": 10,
+            "deadline": 30,
+            "stopped": true
+          },
+          "expected": false
+        }
+      ]
+    },
+    {
+      "id": "C07",
+      "requirements": [
+        "D08",
+        "D09"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "accept",
+          "payload": {
+            "quantity": 5,
+            "limit": 100
+          }
+        },
+        {
+          "at_active_ns": "1000000000",
+          "kind": "fill",
+          "payload": {
+            "quantity": 2,
+            "price": 100
+          }
+        },
+        {
+          "at_active_ns": "2000000000",
+          "kind": "stop",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "spent": 200,
+        "released": 300,
+        "held": 2
+      },
+      "checks": [
+        {
+          "kind": "partial_cleanup",
+          "input": {
+            "quantity": 5,
+            "filled": 2,
+            "price": 100,
+            "limit": 100,
+            "fee": 0
+          },
+          "expected": {
+            "spent": 200,
+            "released": 300,
+            "held": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "C08",
+      "requirements": [
+        "D04"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "submit",
+          "payload": {
+            "request": "r1",
+            "quantity": 5
+          }
+        },
+        {
+          "at_active_ns": "1000000000",
+          "kind": "resend",
+          "payload": {
+            "request": "r1",
+            "quantity": 5
+          }
+        },
+        {
+          "at_active_ns": "2000000000",
+          "kind": "resend",
+          "payload": {
+            "request": "r1",
+            "quantity": 6
+          }
+        }
+      ],
+      "expected": {
+        "orders_created": 1,
+        "last_error": "REQUEST_ID_CONFLICT"
+      },
+      "checks": [
+        {
+          "kind": "dedup",
+          "input": {
+            "old_payload": {
+              "q": 5
+            },
+            "new_payload": {
+              "q": 5
+            }
+          },
+          "expected": "original_result"
+        },
+        {
+          "kind": "dedup",
+          "input": {
+            "old_payload": {
+              "q": 5
+            },
+            "new_payload": {
+              "q": 6
+            }
+          },
+          "expected": "REQUEST_ID_CONFLICT"
+        }
+      ]
+    },
+    {
+      "id": "C09",
+      "requirements": [
+        "D04"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "commit",
+          "payload": {
+            "request": "r1"
+          }
+        },
+        {
+          "at_active_ns": "1000000000",
+          "kind": "reply_lost",
+          "payload": {}
+        },
+        {
+          "at_active_ns": "2000000000",
+          "kind": "lookup",
+          "payload": {
+            "request": "r1"
+          }
+        }
+      ],
+      "expected": {
+        "original_result_found": true,
+        "orders_created": 1,
+        "resubmit_new_id": false
+      },
+      "checks": []
+    },
+    {
+      "id": "C10",
+      "requirements": [
+        "D17"
+      ],
+      "events": [
+        {
+          "at_active_ns": "20000000000",
+          "kind": "executed",
+          "payload": {
+            "sequence": "20"
+          }
+        },
+        {
+          "at_active_ns": "20000000000",
+          "kind": "prefetch",
+          "payload": {
+            "buffered_time": 100
+          }
+        },
+        {
+          "at_active_ns": "20000000000",
+          "kind": "history_query",
+          "payload": {
+            "requested_end": 30
+          }
+        }
+      ],
+      "expected": {
+        "error": "FUTURE_DATA",
+        "buffered_published": false
+      },
+      "checks": []
+    },
+    {
+      "id": "C11",
+      "requirements": [
+        "D09"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "supply",
+          "payload": {
+            "quantity": 100
+          }
+        },
+        {
+          "at_active_ns": "1000000000",
+          "kind": "buy",
+          "payload": {
+            "quantity": 80
+          }
+        },
+        {
+          "at_active_ns": "2000000000",
+          "kind": "buy",
+          "payload": {
+            "quantity": 80
+          }
+        }
+      ],
+      "expected": {
+        "fills": [
+          80,
+          20
+        ],
+        "total_filled": 100
+      },
+      "checks": [
+        {
+          "kind": "shared_supply",
+          "input": {
+            "supply": 100,
+            "requested": [
+              80,
+              80
+            ]
+          },
+          "expected": [
+            80,
+            20
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C12",
+      "requirements": [
+        "D04",
+        "D13"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "accept_order",
+          "payload": {
+            "quantity": 5
+          }
+        },
+        {
+          "at_active_ns": "1000000000",
+          "kind": "model_error",
+          "payload": {}
+        },
+        {
+          "at_active_ns": "2000000000",
+          "kind": "model_error",
+          "payload": {}
+        },
+        {
+          "at_active_ns": "4000000000",
+          "kind": "model_error",
+          "payload": {
+            "attempts": 3
+          }
+        },
+        {
+          "at_active_ns": "5000000000",
+          "kind": "source_matching_order",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "agent": "failed",
+        "run": "running",
+        "order_cancelled_on_agent_failure": false,
+        "order_can_fill": true
+      },
+      "checks": [
+        {
+          "kind": "retry_delay",
+          "input": {
+            "base": 1,
+            "cap": 8,
+            "failed_attempt": 1
+          },
+          "expected": 1
+        },
+        {
+          "kind": "retry_delay",
+          "input": {
+            "base": 1,
+            "cap": 8,
+            "failed_attempt": 2
+          },
+          "expected": 2
+        }
+      ]
+    },
+    {
+      "id": "C13",
+      "requirements": [
+        "D02",
+        "D17"
+      ],
+      "events": [
+        {
+          "at_active_ns": "10000000000",
+          "kind": "receive",
+          "payload": {
+            "executed_target": 8
+          }
+        },
+        {
+          "at_active_ns": "10000000000",
+          "kind": "catch_up",
+          "payload": {
+            "executed_target": 10
+          }
+        },
+        {
+          "at_active_ns": "10000000000",
+          "kind": "apply_request",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "pending_reservation": 0,
+        "effective": 10,
+        "lag_over_profile": "stop_with_platform_lag"
+      },
+      "checks": [
+        {
+          "kind": "effective_time",
+          "input": {
+            "receipt_target": 10,
+            "executed_target": 10
+          },
+          "expected": 10
+        }
+      ]
+    },
+    {
+      "id": "C14",
+      "requirements": [
+        "D15"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "model_tool_batch",
+          "payload": {
+            "tools": [
+              "orders.submit_limit",
+              "control.finish"
+            ]
+          }
+        }
+      ],
+      "expected": {
+        "error": "CONTROL_BATCH_CONFLICT",
+        "orders_created": 0,
+        "work_completed": false
+      },
+      "checks": []
+    },
+    {
+      "id": "C15",
+      "requirements": [
+        "D11"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "queue",
+          "payload": {
+            "requests": [
+              "b1",
+              "b2"
+            ]
+          }
+        },
+        {
+          "at_active_ns": "1000000000",
+          "kind": "accept",
+          "payload": {
+            "request": "b1",
+            "quantity": 5,
+            "limit": 100
+          }
+        },
+        {
+          "at_active_ns": "1000000000",
+          "kind": "check",
+          "payload": {
+            "request": "b2",
+            "quantity": 5,
+            "limit": 100
+          }
+        }
+      ],
+      "expected": {
+        "queue_reserved": 0,
+        "available_after_first": 0,
+        "second_outcome": "rejected",
+        "reason": "INSUFFICIENT_CASH"
+      },
+      "checks": [
+        {
+          "kind": "available_cash",
+          "input": {
+            "cash": 500,
+            "open_orders": [
+              [
+                5,
+                100
+              ]
+            ],
+            "fee": 0
+          },
+          "expected": 0
+        }
+      ]
+    },
+    {
+      "id": "C16",
+      "requirements": [
+        "D11"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "initial_holding",
+          "payload": {
+            "quantity": 100
+          }
+        },
+        {
+          "at_active_ns": "1000000000",
+          "kind": "accept_sell",
+          "payload": {
+            "quantity": 80
+          }
+        },
+        {
+          "at_active_ns": "2000000000",
+          "kind": "submit_sell",
+          "payload": {
+            "quantity": 80
+          }
+        }
+      ],
+      "expected": {
+        "available_after_first": 20,
+        "second_outcome": "rejected",
+        "auto_shrunk": false
+      },
+      "checks": [
+        {
+          "kind": "available_shares",
+          "input": {
+            "held": 100,
+            "reserved": [
+              80
+            ]
+          },
+          "expected": 20
+        }
+      ]
+    },
+    {
+      "id": "C17",
+      "requirements": [
+        "D17"
+      ],
+      "events": [
+        {
+          "at_active_ns": "20000000000",
+          "kind": "bar_query",
+          "payload": {
+            "period_end": 60
+          }
+        },
+        {
+          "at_active_ns": "30000000000",
+          "kind": "source_price_change",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "observed_through": 20,
+        "complete": false,
+        "first_reply_mutates": false
+      },
+      "checks": [
+        {
+          "kind": "bar_cutoff",
+          "input": {
+            "cutoff": 20,
+            "period_end": 60
+          },
+          "expected": {
+            "observed_through": 20,
+            "complete": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "C18",
+      "requirements": [
+        "D12"
+      ],
+      "events": [
+        {
+          "at_active_ns": "10000000000",
+          "kind": "same_boundary",
+          "payload": {
+            "events": [
+              {
+                "kind": "tool",
+                "receipt": 3
+              },
+              {
+                "kind": "market",
+                "receipt": 2
+              },
+              {
+                "kind": "pause",
+                "receipt": 1
+              }
+            ]
+          }
+        }
+      ],
+      "expected": {
+        "pause_retains_request": true,
+        "stop_invalidates_request": true,
+        "otherwise_market_before_tool": true
+      },
+      "checks": [
+        {
+          "kind": "boundary_order",
+          "input": {
+            "events": [
+              {
+                "kind": "tool",
+                "receipt": 3
+              },
+              {
+                "kind": "market",
+                "receipt": 2
+              },
+              {
+                "kind": "pause",
+                "receipt": 1
+              }
+            ]
+          },
+          "expected": [
+            {
+              "kind": "pause",
+              "receipt": 1
+            },
+            {
+              "kind": "market",
+              "receipt": 2
+            },
+            {
+              "kind": "tool",
+              "receipt": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C19",
+      "requirements": [
+        "D14",
+        "D18"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "partial_order",
+          "payload": {
+            "filled": 2,
+            "remaining": 3
+          }
+        },
+        {
+          "at_active_ns": "10000000000",
+          "kind": "end",
+          "payload": {}
+        },
+        {
+          "at_active_ns": "10000000000",
+          "kind": "source",
+          "payload": {}
+        },
+        {
+          "at_active_ns": "10000000000",
+          "kind": "model_reply",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "cancel_remaining": 3,
+        "held": 2,
+        "end_source_applied": false,
+        "end_model_adopted": false,
+        "early_eof_reason": "source_exhausted"
+      },
+      "checks": [
+        {
+          "kind": "source_prefix",
+          "input": {
+            "timestamps": [
+              0,
+              9,
+              10,
+              11
+            ],
+            "cutoff": 10,
+            "end": 10
+          },
+          "expected": [
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C20",
+      "requirements": [
+        "D10",
+        "D11"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "submit",
+          "payload": {}
+        },
+        {
+          "at_active_ns": "1000000000",
+          "kind": "prepare_publication",
+          "payload": {}
+        },
+        {
+          "at_active_ns": "1000000000",
+          "kind": "commit_failure",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "ledger_committed": false,
+        "success_reply": false,
+        "runtime_published": false,
+        "native_inconsistent_action": "fault"
+      },
+      "checks": []
+    },
+    {
+      "id": "C21",
+      "requirements": [
+        "D09"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "replay_start",
+          "payload": {
+            "source_run": "original"
+          }
+        },
+        {
+          "at_active_ns": "1000000000",
+          "kind": "apply_recorded_operations",
+          "payload": {}
+        },
+        {
+          "at_active_ns": "2000000000",
+          "kind": "compare",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "agent_calls": 0,
+        "model_calls": 0,
+        "original_modified": false,
+        "compare": [
+          "orders",
+          "fills",
+          "account",
+          "liquidity",
+          "termination"
+        ]
+      },
+      "checks": []
+    },
+    {
+      "id": "C22",
+      "requirements": [
+        "D15"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "invalid_requests",
+          "payload": {
+            "variants": [
+              "version",
+              "future",
+              "negative_seconds",
+              "fractional_shares",
+              "conflicting_id"
+            ]
+          }
+        }
+      ],
+      "expected": {
+        "errors": [
+          "UNKNOWN_VERSION",
+          "FUTURE_DATA",
+          "INVALID_ARGUMENT",
+          "INVALID_ARGUMENT",
+          "REQUEST_ID_CONFLICT"
+        ],
+        "financial_side_effects": 0
+      },
+      "checks": []
+    },
+    {
+      "id": "C23",
+      "requirements": [
+        "D17"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "quote",
+          "payload": {
+            "ask": 100
+          }
+        },
+        {
+          "at_active_ns": "10000000000",
+          "kind": "market",
+          "payload": {
+            "ask": 102
+          }
+        },
+        {
+          "at_active_ns": "10000000000",
+          "kind": "submit",
+          "payload": {
+            "limit": 100,
+            "executed_target": 8
+          }
+        },
+        {
+          "at_active_ns": "10000000000",
+          "kind": "catch_up",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "old_price_fill": false,
+        "order_can_be_accepted": true,
+        "current_matching_supply": 0,
+        "effective": 10
+      },
+      "checks": [
+        {
+          "kind": "effective_time",
+          "input": {
+            "receipt_target": 10,
+            "executed_target": 10
+          },
+          "expected": 10
+        }
+      ]
+    },
+    {
+      "id": "C24",
+      "requirements": [
+        "D10",
+        "D17"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "source_profile",
+          "payload": {
+            "timestamps": [
+              2,
+              5,
+              4
+            ]
+          }
+        }
+      ],
+      "expected": {
+        "fault": "SOURCE_ERROR",
+        "reordered": false
+      },
+      "checks": [
+        {
+          "kind": "source_prefix",
+          "input": {
+            "timestamps": [
+              2,
+              5,
+              4
+            ],
+            "cutoff": 10,
+            "end": 100
+          },
+          "expected": "SOURCE_ERROR"
+        }
+      ]
+    },
+    {
+      "id": "C25",
+      "requirements": [
+        "D03",
+        "D04"
+      ],
+      "events": [
+        {
+          "at_active_ns": "30000000000",
+          "kind": "model_reply",
+          "payload": {
+            "attempt": "a1",
+            "deadline": 30
+          }
+        }
+      ],
+      "expected": {
+        "adopted": false,
+        "error": "MODEL_TIMEOUT"
+      },
+      "checks": [
+        {
+          "kind": "attempt_valid",
+          "input": {
+            "reply_attempt": "a1",
+            "current_attempt": "a1",
+            "reply_active": 30,
+            "deadline": 30,
+            "stopped": false
+          },
+          "expected": false
+        }
+      ]
+    },
+    {
+      "id": "C26",
+      "requirements": [
+        "D17"
+      ],
+      "events": [
+        {
+          "at_active_ns": "10000000000",
+          "kind": "request_received",
+          "payload": {}
+        },
+        {
+          "at_active_ns": "12000000000",
+          "kind": "owner_handles_request",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "effective": 12,
+        "backdated": false
+      },
+      "checks": [
+        {
+          "kind": "effective_time",
+          "input": {
+            "receipt_target": 10,
+            "executed_target": 12
+          },
+          "expected": 12
+        }
+      ]
+    },
+    {
+      "id": "C27",
+      "requirements": [
+        "D08",
+        "D12"
+      ],
+      "events": [
+        {
+          "at_active_ns": "10000000000",
+          "kind": "same_boundary",
+          "payload": {
+            "controls": [
+              "pause",
+              "stop"
+            ]
+          }
+        }
+      ],
+      "expected": {
+        "run": "ended",
+        "resume_can_restart": false
+      },
+      "checks": [
+        {
+          "kind": "boundary_order",
+          "input": {
+            "events": [
+              {
+                "kind": "pause",
+                "receipt": 1
+              },
+              {
+                "kind": "stop",
+                "receipt": 2
+              }
+            ]
+          },
+          "expected": [
+            {
+              "kind": "stop",
+              "receipt": 2
+            },
+            {
+              "kind": "pause",
+              "receipt": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C28",
+      "requirements": [
+        "D04",
+        "D11"
+      ],
+      "events": [
+        {
+          "at_active_ns": "0",
+          "kind": "accept_buy",
+          "payload": {
+            "quantity": 5,
+            "limit": 100,
+            "fee": 1
+          }
+        },
+        {
+          "at_active_ns": "1000000000",
+          "kind": "fill",
+          "payload": {
+            "quantity": 2,
+            "price": 99
+          }
+        },
+        {
+          "at_active_ns": "2000000000",
+          "kind": "stop",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "spent": 200,
+        "released": 303,
+        "held": 2,
+        "pre_fill_reserved": 505
+      },
+      "checks": [
+        {
+          "kind": "partial_cleanup",
+          "input": {
+            "quantity": 5,
+            "filled": 2,
+            "price": 99,
+            "limit": 100,
+            "fee": 1
+          },
+          "expected": {
+            "spent": 200,
+            "released": 303,
+            "held": 2
+          }
+        },
+        {
+          "kind": "available_cash",
+          "input": {
+            "cash": 505,
+            "open_orders": [
+              [
+                5,
+                100
+              ]
+            ],
+            "fee": 1
+          },
+          "expected": 0
+        }
+      ]
+    }
+  ]
+}

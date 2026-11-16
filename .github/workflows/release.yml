@@ -1,0 +1,190 @@
+name: Release artifacts
+
+# Builds wheels with the native library and the Desktop installers as workflow
+# artifacts. On a version tag (v1.2.3) it then publishes, each step behind a GitHub
+# environment that a maintainer must approve: PyPI through trusted publishing (no API
+# token is stored) and a GitHub Release with the installers, checksums, SBOM and
+# build provenance attestations. A manual run only builds.
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  wheels:
+    name: Wheel / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-24.04-arm, macos-14, macos-13, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pypa/cibuildwheel@v2.23.3
+        with:
+          output-dir: wheelhouse
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheel-${{ matrix.os }}
+          path: wheelhouse/*.whl
+
+  sdist:
+    name: Source distribution
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Build and install the sdist (compiles the native library)
+        run: |
+          python -m pip install build
+          python -m build --sdist
+          MARKET_LAB_REQUIRE_NATIVE=1 python -m pip install dist/*.tar.gz
+          market-lab demo
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sdist
+          path: dist/*.tar.gz
+
+  desktop:
+    name: Desktop installer / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Linux builds on the oldest supported runner so the AppImage runs on older glibc.
+        os: [macos-14, windows-2022, ubuntu-22.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install packaging dependencies
+        run: python -m pip install -r requirements-packaging.txt
+      - name: Linux build tools
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libfuse2 libegl1 libgl1 libxkbcommon-x11-0 libxcb-cursor0 \
+            libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 \
+            libxcb-shape0 libxcb-xinerama0 libxcb-xkb1 xvfb
+          curl -fsSL -o appimagetool \
+            https://github.com/AppImage/appimagetool/releases/download/1.9.0/appimagetool-x86_64.AppImage
+          chmod +x appimagetool
+          echo "MARKET_LAB_APPIMAGETOOL=$PWD/appimagetool" >> "$GITHUB_ENV"
+      - name: Windows installer compiler
+        if: runner.os == 'Windows'
+        run: choco install innosetup --no-progress -y
+      - name: macOS signing identity (only when the maintainer has set the secrets)
+        if: runner.os == 'macOS' && env.MACOS_CERTIFICATE != ''
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+          MACOS_IDENTITY: ${{ secrets.MACOS_IDENTITY }}
+          NOTARY_APPLE_ID: ${{ secrets.NOTARY_APPLE_ID }}
+          NOTARY_TEAM_ID: ${{ secrets.NOTARY_TEAM_ID }}
+          NOTARY_PASSWORD: ${{ secrets.NOTARY_PASSWORD }}
+        run: |
+          keychain="$RUNNER_TEMP/signing.keychain-db"
+          security create-keychain -p "" "$keychain"
+          security set-keychain-settings "$keychain"
+          security unlock-keychain -p "" "$keychain"
+          echo "$MACOS_CERTIFICATE" | base64 --decode > "$RUNNER_TEMP/certificate.p12"
+          security import "$RUNNER_TEMP/certificate.p12" -k "$keychain" \
+            -P "$MACOS_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k "" "$keychain"
+          security list-keychains -d user -s "$keychain"
+          xcrun notarytool store-credentials market-lab-notary --apple-id "$NOTARY_APPLE_ID" \
+            --team-id "$NOTARY_TEAM_ID" --password "$NOTARY_PASSWORD" --keychain "$keychain"
+          echo "MARKET_LAB_CODESIGN_IDENTITY=$MACOS_IDENTITY" >> "$GITHUB_ENV"
+          echo "MARKET_LAB_NOTARY_PROFILE=market-lab-notary" >> "$GITHUB_ENV"
+      - name: Build the App and its installer
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            xvfb-run --auto-servernum python tools/build_desktop.py
+          else
+            QT_QPA_PLATFORM=offscreen python tools/build_desktop.py
+          fi
+      - name: Smoke-test the frozen App
+        shell: bash
+        run: |
+          case "$RUNNER_OS" in
+            macOS) app="build/desktop-dist/Market Lab.app/Contents/MacOS/Market Lab" ;;
+            Windows) app="build/desktop-dist/Market Lab/Market Lab.exe" ;;
+            *) app="build/desktop-dist/Market Lab/Market Lab" ;;
+          esac
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            xvfb-run --auto-servernum "$app" --smoke-test-report "$RUNNER_TEMP/smoke.json"
+          else
+            QT_QPA_PLATFORM=offscreen "$app" --smoke-test-report "$RUNNER_TEMP/smoke.json"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.os }}
+          path: build/installers/*
+
+  check-version:
+    name: Tag matches the package version
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          version=$(python3 -c "import ast,sys; t=ast.parse(open('sim_platform/__init__.py').read()); print(next(n.value.value for n in t.body if isinstance(n, ast.Assign) and n.targets[0].id == '__version__'))")
+          test "v$version" = "${GITHUB_REF_NAME}" || { echo "tag ${GITHUB_REF_NAME} != v$version"; exit 1; }
+          grep -q "^## $version" CHANGELOG.md || { echo "CHANGELOG.md has no $version section"; exit 1; }
+
+  pypi:
+    name: Publish to PyPI (trusted publishing)
+    needs: [wheels, sdist, check-version]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-24.04
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: '{wheel-*,sdist}'
+          path: dist
+          merge-multiple: true
+      - uses: pypa/gh-action-pypi-publish@v1.12.4
+
+  github-release:
+    name: GitHub Release with signed installers
+    needs: [desktop, wheels, sdist, check-version]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-24.04
+    environment: release
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          path: release
+          merge-multiple: true
+      - name: Checksums for every file
+        run: cd release && sha256sum * > SHA256SUMS
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: release/*
+      - name: Release notes from the changelog
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v v="## $version" '$0 ~ "^"v {on=1; next} /^## / && on {exit} on' CHANGELOG.md > notes.md
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" release/* --title "Market Lab ${GITHUB_REF_NAME#v}" --notes-file notes.md --verify-tag

@@ -1,0 +1,2631 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Agent tool request and response",
+  "description": "Market-only v2 responses carry no account sequence. Financial/state/control responses retain v1. ToolRequest remains v1.",
+  "$defs": {
+    "Id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "Symbol": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 8,
+      "pattern": "^[A-Z0-9. -]+$"
+    },
+    "Counter": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)$",
+      "maxLength": 20
+    },
+    "Money": {
+      "type": "string",
+      "maxLength": 24,
+      "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,4})?$"
+    },
+    "SignedMoney": {
+      "type": "string",
+      "maxLength": 24,
+      "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]{1,4})?$"
+    },
+    "Seconds": {
+      "type": "string",
+      "maxLength": 24,
+      "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,9})?$"
+    },
+    "Time": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)$",
+      "maxLength": 14
+    },
+    "Json": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Json"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/Json"
+          }
+        }
+      ]
+    },
+    "Position": {
+      "type": "object",
+      "properties": {
+        "sequence": {
+          "$ref": "#/$defs/Counter"
+        },
+        "time_ns": {
+          "$ref": "#/$defs/Time"
+        },
+        "boundary": {
+          "$ref": "#/$defs/Counter"
+        },
+        "ordinal": {
+          "$ref": "#/$defs/Counter"
+        }
+      },
+      "required": [
+        "sequence",
+        "time_ns",
+        "boundary",
+        "ordinal"
+      ],
+      "additionalProperties": false
+    },
+    "Cutoff": {
+      "type": "object",
+      "properties": {
+        "market_position": {
+          "$ref": "#/$defs/Position"
+        },
+        "account_sequence": {
+          "$ref": "#/$defs/Counter"
+        },
+        "source_id": {
+          "$ref": "#/$defs/Id"
+        }
+      },
+      "required": [
+        "market_position",
+        "account_sequence",
+        "source_id"
+      ],
+      "additionalProperties": false
+    },
+    "Limits": {
+      "type": "object",
+      "properties": {
+        "tool_request_bytes": {
+          "type": "integer",
+          "minimum": 1024,
+          "maximum": 1048576
+        },
+        "tool_response_bytes": {
+          "type": "integer",
+          "minimum": 1024,
+          "maximum": 1048576
+        },
+        "pending_requests": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1024
+        },
+        "page_items": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "event_buckets": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16
+        },
+        "depth_levels": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "json_depth": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        }
+      },
+      "required": [
+        "tool_request_bytes",
+        "tool_response_bytes",
+        "pending_requests",
+        "page_items",
+        "event_buckets",
+        "depth_levels",
+        "json_depth"
+      ],
+      "additionalProperties": false
+    },
+    "WaitCondition": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "after"
+            },
+            "seconds": {
+              "$ref": "#/$defs/Seconds"
+            }
+          },
+          "required": [
+            "kind",
+            "seconds"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "order_changed"
+            },
+            "order_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "after_version": {
+              "$ref": "#/$defs/Counter"
+            }
+          },
+          "required": [
+            "kind",
+            "order_id",
+            "after_version"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "market_changed"
+            },
+            "symbol": {
+              "$ref": "#/$defs/Symbol"
+            },
+            "after_sequence": {
+              "$ref": "#/$defs/Counter"
+            }
+          },
+          "required": [
+            "kind",
+            "symbol",
+            "after_sequence"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ToolName": {
+      "enum": [
+        "environment.describe",
+        "market.quote",
+        "market.depth",
+        "market.trades",
+        "market.bars",
+        "account.snapshot",
+        "orders.list",
+        "orders.get",
+        "state.snapshot",
+        "orders.submit_limit",
+        "orders.cancel",
+        "requests.get",
+        "control.finish",
+        "control.wait",
+        "model.request",
+        "news.list",
+        "fundamentals.get",
+        "documents.search",
+        "documents.read",
+        "journal.write"
+      ]
+    },
+    "ToolRequest": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "environment.describe"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "market.quote"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "symbol": {
+                  "$ref": "#/$defs/Symbol"
+                }
+              },
+              "required": [
+                "symbol"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "market.depth"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "symbol": {
+                  "$ref": "#/$defs/Symbol"
+                },
+                "levels": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 5
+                }
+              },
+              "required": [
+                "symbol",
+                "levels"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "market.trades"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "symbol": {
+                  "$ref": "#/$defs/Symbol"
+                },
+                "limit": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 100
+                },
+                "cursor": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "symbol",
+                "limit"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "market.bars"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "symbol": {
+                  "$ref": "#/$defs/Symbol"
+                },
+                "start_ns": {
+                  "$ref": "#/$defs/Time"
+                },
+                "end_ns": {
+                  "$ref": "#/$defs/Time"
+                },
+                "interval_seconds": {
+                  "const": "60"
+                },
+                "limit": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 100
+                },
+                "cursor": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "symbol",
+                "start_ns",
+                "end_ns",
+                "interval_seconds",
+                "limit"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "account.snapshot"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "orders.list"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 100
+                },
+                "cursor": {
+                  "$ref": "#/$defs/Id"
+                },
+                "status": {
+                  "enum": [
+                    "open",
+                    "all"
+                  ]
+                }
+              },
+              "required": [
+                "limit",
+                "status"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "orders.get"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "order_id": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "order_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "state.snapshot"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "symbol": {
+                  "$ref": "#/$defs/Symbol"
+                },
+                "order_limit": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100
+                }
+              },
+              "required": [
+                "symbol",
+                "order_limit"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "orders.submit_limit"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "symbol": {
+                  "$ref": "#/$defs/Symbol"
+                },
+                "side": {
+                  "enum": [
+                    "buy",
+                    "sell"
+                  ]
+                },
+                "quantity_shares": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4294967295
+                },
+                "limit_price_usd": {
+                  "$ref": "#/$defs/Money"
+                }
+              },
+              "required": [
+                "symbol",
+                "side",
+                "quantity_shares",
+                "limit_price_usd"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "orders.cancel"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "order_id": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "order_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "requests.get"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "target_request_id": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "target_request_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "control.finish"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "control.wait"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "conditions": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/WaitCondition"
+                  },
+                  "minItems": 1,
+                  "maxItems": 8
+                }
+              },
+              "required": [
+                "conditions"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "arguments"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "model.request"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {
+                "context_ref": {
+                  "$ref": "#/$defs/Id"
+                },
+                "expected_revision": {
+                  "$ref": "#/$defs/Counter"
+                }
+              },
+              "required": [
+                "context_ref",
+                "expected_revision"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "arguments"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "Level": {
+      "type": "object",
+      "properties": {
+        "price_usd": {
+          "$ref": "#/$defs/Money"
+        },
+        "quantity_shares": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        }
+      },
+      "required": [
+        "price_usd",
+        "quantity_shares"
+      ],
+      "additionalProperties": false
+    },
+    "Quote": {
+      "type": "object",
+      "properties": {
+        "symbol": {
+          "$ref": "#/$defs/Symbol"
+        },
+        "bid": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Level"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ask": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Level"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "last": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "price_usd": {
+                  "$ref": "#/$defs/Money"
+                },
+                "quantity_shares": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9223372036854775807
+                },
+                "time_ns": {
+                  "$ref": "#/$defs/Time"
+                }
+              },
+              "required": [
+                "price_usd",
+                "quantity_shares",
+                "time_ns"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "missing": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "enum": [
+                  "bid",
+                  "ask",
+                  "last"
+                ]
+              },
+              "reason": {
+                "enum": [
+                  "not_observed",
+                  "no_visible_liquidity",
+                  "not_retained"
+                ]
+              }
+            },
+            "required": [
+              "field",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 3
+        },
+        "book_time_ns": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "integrity": {
+          "enum": [
+            "ordered_unverified",
+            "sequenced"
+          ]
+        },
+        "trading_state": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        }
+      },
+      "required": [
+        "symbol",
+        "bid",
+        "ask",
+        "last",
+        "missing",
+        "book_time_ns",
+        "integrity",
+        "trading_state"
+      ],
+      "additionalProperties": false
+    },
+    "Account": {
+      "type": "object",
+      "properties": {
+        "cash_usd": {
+          "$ref": "#/$defs/Money"
+        },
+        "available_cash_usd": {
+          "$ref": "#/$defs/Money"
+        },
+        "reserved_cash_usd": {
+          "$ref": "#/$defs/Money"
+        },
+        "fees_usd": {
+          "$ref": "#/$defs/Money"
+        },
+        "realized_pnl_usd": {
+          "$ref": "#/$defs/SignedMoney"
+        },
+        "positions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "symbol": {
+                "$ref": "#/$defs/Symbol"
+              },
+              "quantity_shares": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9223372036854775807
+              },
+              "available_shares": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9223372036854775807
+              },
+              "reserved_shares": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9223372036854775807
+              },
+              "cost_usd": {
+                "$ref": "#/$defs/Money"
+              }
+            },
+            "required": [
+              "symbol",
+              "quantity_shares",
+              "available_shares",
+              "reserved_shares",
+              "cost_usd"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 1
+        }
+      },
+      "required": [
+        "cash_usd",
+        "available_cash_usd",
+        "reserved_cash_usd",
+        "fees_usd",
+        "realized_pnl_usd",
+        "positions"
+      ],
+      "additionalProperties": false
+    },
+    "Order": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "symbol": {
+          "$ref": "#/$defs/Symbol"
+        },
+        "side": {
+          "enum": [
+            "buy",
+            "sell"
+          ]
+        },
+        "quantity_shares": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        },
+        "filled_shares": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9223372036854775807
+        },
+        "remaining_shares": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9223372036854775807
+        },
+        "limit_price_usd": {
+          "$ref": "#/$defs/Money"
+        },
+        "status": {
+          "enum": [
+            "accepted",
+            "partial",
+            "filled",
+            "cancelled",
+            "rejected"
+          ]
+        },
+        "version": {
+          "$ref": "#/$defs/Counter"
+        }
+      },
+      "required": [
+        "order_id",
+        "symbol",
+        "side",
+        "quantity_shares",
+        "filled_shares",
+        "remaining_shares",
+        "limit_price_usd",
+        "status",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "OrdersPage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Order"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "items",
+        "next_cursor"
+      ],
+      "additionalProperties": false
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "enum": [
+            "INVALID_JSON",
+            "INVALID_SCHEMA",
+            "INVALID_ARGUMENT",
+            "FUTURE_DATA",
+            "CONTROL_BATCH_CONFLICT",
+            "WORK_HAS_PENDING_OPERATIONS",
+            "UNKNOWN_VERSION",
+            "TOOL_UNAVAILABLE",
+            "FORBIDDEN",
+            "STALE_WORK",
+            "RUN_ENDED",
+            "REQUEST_ID_CONFLICT",
+            "CURSOR_INVALID",
+            "CONTEXT_REVISION_CONFLICT",
+            "ORDER_NOT_FOUND",
+            "REQUEST_NOT_FOUND",
+            "DATA_UNAVAILABLE",
+            "TRANSPORT_ERROR",
+            "RATE_LIMIT",
+            "PROVIDER_TEMPORARY",
+            "MODEL_TIMEOUT",
+            "AUTH_FAILED",
+            "CONTEXT_TOO_LONG",
+            "MODEL_UNSUPPORTED",
+            "RETRY_EXHAUSTED",
+            "AGENT_CRASH",
+            "QUEUE_FULL",
+            "RESULT_UNKNOWN",
+            "STORAGE_ERROR",
+            "SOURCE_ERROR",
+            "NATIVE_ERROR",
+            "PLATFORM_LAG",
+            "INTERNAL_STATE_ERROR",
+            "OUTPUT_TOO_LARGE"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "retry_action": {
+          "enum": [
+            "none",
+            "lookup_original",
+            "correct_input",
+            "retry_same_request",
+            "retry_model"
+          ]
+        },
+        "details": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/Json"
+          }
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "retry_action",
+        "details"
+      ],
+      "additionalProperties": false
+    },
+    "ToolResponse": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "$ref": "#/$defs/ToolName"
+            },
+            "receipt_event_index": {
+              "$ref": "#/$defs/Counter"
+            },
+            "status": {
+              "const": "pending"
+            },
+            "target_ns": {
+              "$ref": "#/$defs/Time"
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "target_ns"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "$ref": "#/$defs/ToolName"
+            },
+            "receipt_event_index": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Counter"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "status": {
+              "const": "error"
+            },
+            "position": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Position"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "error": {
+              "$ref": "#/$defs/Error"
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "position",
+            "error"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "environment.describe"
+            },
+            "receipt_event_index": {
+              "$ref": "#/$defs/Counter"
+            },
+            "status": {
+              "const": "ok"
+            },
+            "cutoff": {
+              "$ref": "#/$defs/MarketCutoff"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "symbol": {
+                  "$ref": "#/$defs/Symbol"
+                },
+                "symbols": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/Symbol"
+                  },
+                  "minItems": 1,
+                  "maxItems": 20
+                },
+                "start_ns": {
+                  "$ref": "#/$defs/Time"
+                },
+                "end_ns": {
+                  "$ref": "#/$defs/Time"
+                },
+                "currency": {
+                  "const": "USD"
+                },
+                "price_scale": {
+                  "const": 10000
+                },
+                "source_manifest_ref": {
+                  "$ref": "#/$defs/Id"
+                },
+                "execution_config_ref": {
+                  "$ref": "#/$defs/Id"
+                },
+                "granted_tools": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/ToolName"
+                  },
+                  "minItems": 0,
+                  "maxItems": 32
+                },
+                "limits": {
+                  "$ref": "#/$defs/Limits"
+                },
+                "execution_rules": {
+                  "type": "object",
+                  "properties": {
+                    "model": {
+                      "const": "displayed-limit-v1"
+                    },
+                    "latency_ns": {
+                      "$ref": "#/$defs/Counter"
+                    },
+                    "fee_per_share_usd": {
+                      "$ref": "#/$defs/Money"
+                    },
+                    "max_order_quantity": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 9223372036854775807
+                    },
+                    "short_selling": {
+                      "const": false
+                    },
+                    "leverage": {
+                      "const": false
+                    }
+                  },
+                  "required": [
+                    "model",
+                    "latency_ns",
+                    "fee_per_share_usd",
+                    "max_order_quantity",
+                    "short_selling",
+                    "leverage"
+                  ],
+                  "additionalProperties": false
+                },
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "scope": {
+                      "const": "single_venue"
+                    },
+                    "status": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 32
+                    },
+                    "integrity": {
+                      "enum": [
+                        "ordered_unverified",
+                        "sequenced"
+                      ]
+                    },
+                    "source_time_ns": {
+                      "$ref": "#/$defs/Time"
+                    },
+                    "system_event": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 32
+                    }
+                  },
+                  "required": [
+                    "scope",
+                    "status",
+                    "integrity",
+                    "source_time_ns",
+                    "system_event"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "symbol",
+                "start_ns",
+                "end_ns",
+                "currency",
+                "price_scale",
+                "source_manifest_ref",
+                "execution_config_ref",
+                "granted_tools",
+                "limits"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "cutoff",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "market.quote"
+            },
+            "receipt_event_index": {
+              "$ref": "#/$defs/Counter"
+            },
+            "status": {
+              "const": "ok"
+            },
+            "cutoff": {
+              "$ref": "#/$defs/MarketCutoff"
+            },
+            "data": {
+              "$ref": "#/$defs/Quote"
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "cutoff",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "market.depth"
+            },
+            "receipt_event_index": {
+              "$ref": "#/$defs/Counter"
+            },
+            "status": {
+              "const": "ok"
+            },
+            "cutoff": {
+              "$ref": "#/$defs/MarketCutoff"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "symbol": {
+                  "$ref": "#/$defs/Symbol"
+                },
+                "bids": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/Level"
+                  },
+                  "minItems": 0,
+                  "maxItems": 5
+                },
+                "asks": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/Level"
+                  },
+                  "minItems": 0,
+                  "maxItems": 5
+                },
+                "bid_levels": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9223372036854775807
+                },
+                "ask_levels": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9223372036854775807
+                },
+                "book_time_ns": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/Time"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "symbol",
+                "bids",
+                "asks",
+                "bid_levels",
+                "ask_levels",
+                "book_time_ns"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "cutoff",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "market.trades"
+            },
+            "receipt_event_index": {
+              "$ref": "#/$defs/Counter"
+            },
+            "status": {
+              "const": "ok"
+            },
+            "cutoff": {
+              "$ref": "#/$defs/MarketCutoff"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "sequence": {
+                        "$ref": "#/$defs/Counter"
+                      },
+                      "time_ns": {
+                        "$ref": "#/$defs/Time"
+                      },
+                      "match_id": {
+                        "$ref": "#/$defs/Counter"
+                      },
+                      "price_usd": {
+                        "$ref": "#/$defs/Money"
+                      },
+                      "quantity_shares": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 9223372036854775807
+                      },
+                      "printable": {
+                        "type": "boolean"
+                      },
+                      "kind": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 8
+                      }
+                    },
+                    "required": [
+                      "sequence",
+                      "time_ns",
+                      "match_id",
+                      "price_usd",
+                      "quantity_shares",
+                      "printable",
+                      "kind"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0,
+                  "maxItems": 100
+                },
+                "next_cursor": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/Id"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "items",
+                "next_cursor"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "cutoff",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "market.bars"
+            },
+            "receipt_event_index": {
+              "$ref": "#/$defs/Counter"
+            },
+            "status": {
+              "const": "ok"
+            },
+            "cutoff": {
+              "$ref": "#/$defs/MarketCutoff"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start_ns": {
+                        "$ref": "#/$defs/Time"
+                      },
+                      "end_ns": {
+                        "$ref": "#/$defs/Time"
+                      },
+                      "observed_through_ns": {
+                        "$ref": "#/$defs/Time"
+                      },
+                      "complete": {
+                        "type": "boolean"
+                      },
+                      "open_usd": {
+                        "$ref": "#/$defs/Money"
+                      },
+                      "high_usd": {
+                        "$ref": "#/$defs/Money"
+                      },
+                      "low_usd": {
+                        "$ref": "#/$defs/Money"
+                      },
+                      "close_usd": {
+                        "$ref": "#/$defs/Money"
+                      },
+                      "volume_shares": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9223372036854775807
+                      },
+                      "trade_count": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9223372036854775807
+                      },
+                      "notional_usd": {
+                        "$ref": "#/$defs/Money"
+                      }
+                    },
+                    "required": [
+                      "start_ns",
+                      "end_ns",
+                      "observed_through_ns",
+                      "complete",
+                      "open_usd",
+                      "high_usd",
+                      "low_usd",
+                      "close_usd",
+                      "volume_shares",
+                      "trade_count",
+                      "notional_usd"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0,
+                  "maxItems": 100
+                },
+                "next_start_ns": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/Time"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "next_cursor": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/Id"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "items",
+                "next_start_ns"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "cutoff",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "account.snapshot"
+            },
+            "receipt_event_index": {
+              "$ref": "#/$defs/Counter"
+            },
+            "status": {
+              "const": "ok"
+            },
+            "cutoff": {
+              "$ref": "#/$defs/Cutoff"
+            },
+            "data": {
+              "$ref": "#/$defs/Account"
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "cutoff",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "orders.list"
+            },
+            "receipt_event_index": {
+              "$ref": "#/$defs/Counter"
+            },
+            "status": {
+              "const": "ok"
+            },
+            "cutoff": {
+              "$ref": "#/$defs/Cutoff"
+            },
+            "data": {
+              "$ref": "#/$defs/OrdersPage"
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "cutoff",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "orders.get"
+            },
+            "receipt_event_index": {
+              "$ref": "#/$defs/Counter"
+            },
+            "status": {
+              "const": "ok"
+            },
+            "cutoff": {
+              "$ref": "#/$defs/Cutoff"
+            },
+            "data": {
+              "$ref": "#/$defs/Order"
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "cutoff",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "state.snapshot"
+            },
+            "receipt_event_index": {
+              "$ref": "#/$defs/Counter"
+            },
+            "status": {
+              "const": "ok"
+            },
+            "cutoff": {
+              "$ref": "#/$defs/Cutoff"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "quote": {
+                  "$ref": "#/$defs/Quote"
+                },
+                "account": {
+                  "$ref": "#/$defs/Account"
+                },
+                "orders": {
+                  "$ref": "#/$defs/OrdersPage"
+                }
+              },
+              "required": [
+                "quote",
+                "account",
+                "orders"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "cutoff",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "orders.submit_limit"
+            },
+            "receipt_event_index": {
+              "$ref": "#/$defs/Counter"
+            },
+            "status": {
+              "const": "ok"
+            },
+            "cutoff": {
+              "$ref": "#/$defs/Cutoff"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "outcome": {
+                  "enum": [
+                    "accepted",
+                    "rejected"
+                  ]
+                },
+                "order": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/Order"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "reason_code": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/RejectReason"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "outcome",
+                "order",
+                "reason_code"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "cutoff",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "orders.cancel"
+            },
+            "receipt_event_index": {
+              "$ref": "#/$defs/Counter"
+            },
+            "status": {
+              "const": "ok"
+            },
+            "cutoff": {
+              "$ref": "#/$defs/Cutoff"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "outcome": {
+                  "enum": [
+                    "cancelled",
+                    "already_terminal",
+                    "cancel_pending"
+                  ]
+                },
+                "order": {
+                  "$ref": "#/$defs/Order"
+                }
+              },
+              "required": [
+                "outcome",
+                "order"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "cutoff",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "requests.get"
+            },
+            "receipt_event_index": {
+              "$ref": "#/$defs/Counter"
+            },
+            "status": {
+              "const": "ok"
+            },
+            "cutoff": {
+              "$ref": "#/$defs/Cutoff"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "target_request_id": {
+                  "$ref": "#/$defs/Id"
+                },
+                "found": {
+                  "type": "boolean"
+                },
+                "original_response": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/ToolResponse"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "target_request_id",
+                "found",
+                "original_response"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "cutoff",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "control.finish"
+            },
+            "receipt_event_index": {
+              "$ref": "#/$defs/Counter"
+            },
+            "status": {
+              "const": "ok"
+            },
+            "cutoff": {
+              "$ref": "#/$defs/Cutoff"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "work_state": {
+                  "const": "idle"
+                },
+                "next_due_ns": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/Time"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "work_state",
+                "next_due_ns"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "cutoff",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "control.wait"
+            },
+            "receipt_event_index": {
+              "$ref": "#/$defs/Counter"
+            },
+            "status": {
+              "const": "ok"
+            },
+            "cutoff": {
+              "$ref": "#/$defs/Cutoff"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "work_state": {
+                  "const": "waiting"
+                },
+                "wait_id": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "work_state",
+                "wait_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "cutoff",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "work_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "epoch": {
+              "$ref": "#/$defs/Counter"
+            },
+            "request_id": {
+              "$ref": "#/$defs/Id"
+            },
+            "tool": {
+              "const": "model.request"
+            },
+            "receipt_event_index": {
+              "$ref": "#/$defs/Counter"
+            },
+            "status": {
+              "const": "ok"
+            },
+            "cutoff": {
+              "$ref": "#/$defs/Cutoff"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "context_ref": {
+                  "$ref": "#/$defs/Id"
+                },
+                "context_revision": {
+                  "$ref": "#/$defs/Counter"
+                },
+                "attempt_id": {
+                  "$ref": "#/$defs/Id"
+                },
+                "text": {
+                  "type": "string",
+                  "maxLength": 65536
+                },
+                "tool_calls": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "call_id": {
+                        "$ref": "#/$defs/Id"
+                      },
+                      "tool": {
+                        "$ref": "#/$defs/ToolName"
+                      },
+                      "arguments": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "$ref": "#/$defs/Json"
+                        }
+                      }
+                    },
+                    "required": [
+                      "call_id",
+                      "tool",
+                      "arguments"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0,
+                  "maxItems": 16
+                },
+                "usage": {
+                  "type": "object",
+                  "properties": {
+                    "input_tokens": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9223372036854775807
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "output_tokens": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9223372036854775807
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "input_tokens",
+                    "output_tokens"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "context_ref",
+                "context_revision",
+                "attempt_id",
+                "text",
+                "tool_calls",
+                "usage"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "run_id",
+            "work_id",
+            "epoch",
+            "request_id",
+            "tool",
+            "receipt_event_index",
+            "status",
+            "cutoff",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "RejectReason": {
+      "enum": [
+        "INSUFFICIENT_CASH",
+        "INSUFFICIENT_SHARES",
+        "MARKET_NOT_TRADABLE",
+        "ORDER_LIMIT_EXCEEDED",
+        "SYMBOL_MISMATCH",
+        "LIMIT_BELOW_FEE",
+        "VALUE_OUT_OF_RANGE"
+      ]
+    },
+    "MarketCutoff": {
+      "type": "object",
+      "properties": {
+        "market_position": {
+          "$ref": "#/$defs/Position"
+        },
+        "account_sequence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Counter"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_id": {
+          "$ref": "#/$defs/Id"
+        }
+      },
+      "required": [
+        "market_position",
+        "account_sequence",
+        "source_id"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/$defs/ToolResponse",
+  "$id": "https://local.invalid/agent-tools.schema.json"
+}

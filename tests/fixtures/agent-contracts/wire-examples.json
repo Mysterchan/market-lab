@@ -1,0 +1,1534 @@
+{
+  "examples": [
+    {
+      "id": "definition-platform",
+      "valid": true,
+      "value": {
+        "agent_id": "demo",
+        "revision": "1",
+        "name": "Demo",
+        "integration": "configured",
+        "carrier": "platform",
+        "model_profile_ref": "local-model",
+        "initial_prompt": "Use tools to evaluate opportunities.",
+        "parameters": {},
+        "requires": [
+          "market.quote",
+          "orders.submit_limit"
+        ],
+        "schedule": {
+          "mode": "interval",
+          "interval_seconds": "60",
+          "busy_event_policy": "preserve_interval",
+          "events": []
+        }
+      }
+    },
+    {
+      "id": "definition-custom",
+      "valid": true,
+      "value": {
+        "agent_id": "demo",
+        "revision": "1",
+        "name": "Demo",
+        "integration": "python_carrier",
+        "carrier": "custom",
+        "model_profile_ref": "local-model",
+        "initial_prompt": "Use tools to evaluate opportunities.",
+        "parameters": {},
+        "requires": [
+          "market.quote",
+          "orders.submit_limit"
+        ],
+        "package": {
+          "project_ref": "example-project"
+        }
+      }
+    },
+    {
+      "id": "submit-request",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-1",
+        "tool": "orders.submit_limit",
+        "arguments": {
+          "symbol": "AAPL",
+          "side": "buy",
+          "quantity_shares": 5,
+          "limit_price_usd": "100.0000"
+        }
+      }
+    },
+    {
+      "id": "submit-result",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-1",
+        "tool": "orders.submit_limit",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "outcome": "accepted",
+          "order": {
+            "order_id": "order-1",
+            "symbol": "AAPL",
+            "side": "buy",
+            "quantity_shares": 5,
+            "filled_shares": 0,
+            "remaining_shares": 5,
+            "limit_price_usd": "100.0000",
+            "status": "accepted",
+            "version": "1"
+          },
+          "reason_code": null
+        }
+      }
+    },
+    {
+      "id": "pending",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-1",
+        "tool": "orders.submit_limit",
+        "receipt_event_index": "4",
+        "status": "pending",
+        "target_ns": "36010000000000"
+      }
+    },
+    {
+      "id": "error",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-1",
+        "tool": "orders.submit_limit",
+        "receipt_event_index": null,
+        "status": "error",
+        "position": null,
+        "error": {
+          "code": "INVALID_ARGUMENT",
+          "message": "Invalid quantity",
+          "retry_action": "correct_input",
+          "details": {}
+        }
+      }
+    },
+    {
+      "id": "request-environment.describe",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-environment.describe",
+        "tool": "environment.describe",
+        "arguments": {}
+      }
+    },
+    {
+      "id": "request-market.quote",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-market.quote",
+        "tool": "market.quote",
+        "arguments": {
+          "symbol": "AAPL"
+        }
+      }
+    },
+    {
+      "id": "request-market.depth",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-market.depth",
+        "tool": "market.depth",
+        "arguments": {
+          "symbol": "AAPL",
+          "levels": 5
+        }
+      }
+    },
+    {
+      "id": "request-market.trades",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-market.trades",
+        "tool": "market.trades",
+        "arguments": {
+          "symbol": "AAPL",
+          "limit": 10
+        }
+      }
+    },
+    {
+      "id": "request-market.bars",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-market.bars",
+        "tool": "market.bars",
+        "arguments": {
+          "symbol": "AAPL",
+          "start_ns": "36000000000000",
+          "end_ns": "36010000000000",
+          "interval_seconds": "60",
+          "limit": 10
+        }
+      }
+    },
+    {
+      "id": "request-account.snapshot",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-account.snapshot",
+        "tool": "account.snapshot",
+        "arguments": {}
+      }
+    },
+    {
+      "id": "request-orders.list",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-orders.list",
+        "tool": "orders.list",
+        "arguments": {
+          "limit": 10,
+          "status": "open"
+        }
+      }
+    },
+    {
+      "id": "request-orders.get",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-orders.get",
+        "tool": "orders.get",
+        "arguments": {
+          "order_id": "order-1"
+        }
+      }
+    },
+    {
+      "id": "request-state.snapshot",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-state.snapshot",
+        "tool": "state.snapshot",
+        "arguments": {
+          "symbol": "AAPL",
+          "order_limit": 10
+        }
+      }
+    },
+    {
+      "id": "request-orders.cancel",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-orders.cancel",
+        "tool": "orders.cancel",
+        "arguments": {
+          "order_id": "order-1"
+        }
+      }
+    },
+    {
+      "id": "request-requests.get",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-requests.get",
+        "tool": "requests.get",
+        "arguments": {
+          "target_request_id": "req-1"
+        }
+      }
+    },
+    {
+      "id": "request-control.finish",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-control.finish",
+        "tool": "control.finish",
+        "arguments": {}
+      }
+    },
+    {
+      "id": "request-control.wait",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-control.wait",
+        "tool": "control.wait",
+        "arguments": {
+          "conditions": [
+            {
+              "kind": "after",
+              "seconds": "30"
+            },
+            {
+              "kind": "order_changed",
+              "order_id": "order-1",
+              "after_version": "1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "request-model.request",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-model.request",
+        "tool": "model.request",
+        "arguments": {
+          "context_ref": "context-1",
+          "expected_revision": "2"
+        }
+      }
+    },
+    {
+      "id": "fractional-shares",
+      "valid": false,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-1",
+        "tool": "orders.submit_limit",
+        "arguments": {
+          "symbol": "AAPL",
+          "side": "buy",
+          "quantity_shares": 1.5,
+          "limit_price_usd": "100.0000"
+        }
+      }
+    },
+    {
+      "id": "boolean-shares",
+      "valid": false,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-1",
+        "tool": "orders.submit_limit",
+        "arguments": {
+          "symbol": "AAPL",
+          "side": "buy",
+          "quantity_shares": true,
+          "limit_price_usd": "100.0000"
+        }
+      }
+    },
+    {
+      "id": "numeric-money",
+      "valid": false,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-1",
+        "tool": "orders.submit_limit",
+        "arguments": {
+          "symbol": "AAPL",
+          "side": "buy",
+          "quantity_shares": 5,
+          "limit_price_usd": 100
+        }
+      }
+    },
+    {
+      "id": "excess-price-scale",
+      "valid": false,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-1",
+        "tool": "orders.submit_limit",
+        "arguments": {
+          "symbol": "AAPL",
+          "side": "buy",
+          "quantity_shares": 5,
+          "limit_price_usd": "100.00001"
+        }
+      }
+    },
+    {
+      "id": "raw-key",
+      "valid": false,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-1",
+        "tool": "orders.submit_limit",
+        "arguments": {
+          "symbol": "AAPL",
+          "side": "buy",
+          "quantity_shares": 5,
+          "limit_price_usd": "100.0000"
+        },
+        "api_key": "secret"
+      }
+    },
+    {
+      "id": "unsupported-tool",
+      "valid": false,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-1",
+        "tool": "files.read",
+        "arguments": {
+          "symbol": "AAPL",
+          "side": "buy",
+          "quantity_shares": 5,
+          "limit_price_usd": "100.0000"
+        }
+      }
+    },
+    {
+      "id": "unknown-configuration-field",
+      "valid": false,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-1",
+        "tool": "orders.submit_limit",
+        "arguments": {
+          "symbol": "AAPL",
+          "side": "buy",
+          "quantity_shares": 5,
+          "limit_price_usd": "100.0000"
+        },
+        "unexpected_setting": true
+      }
+    },
+    {
+      "id": "custom-schedule",
+      "valid": false,
+      "value": {
+        "agent_id": "demo",
+        "revision": "1",
+        "name": "Demo",
+        "integration": "python_carrier",
+        "carrier": "custom",
+        "model_profile_ref": "local-model",
+        "initial_prompt": "Use tools to evaluate opportunities.",
+        "parameters": {},
+        "requires": [
+          "market.quote",
+          "orders.submit_limit"
+        ],
+        "package": {
+          "project_ref": "example-project"
+        },
+        "schedule": {
+          "mode": "interval",
+          "interval_seconds": "60",
+          "busy_event_policy": "preserve_interval",
+          "events": []
+        }
+      }
+    },
+    {
+      "id": "envelope-not-fill",
+      "valid": false,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-1",
+        "tool": "orders.submit_limit",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "outcome": "filled",
+          "order": {
+            "order_id": "order-1",
+            "symbol": "AAPL",
+            "side": "buy",
+            "quantity_shares": 5,
+            "filled_shares": 0,
+            "remaining_shares": 5,
+            "limit_price_usd": "100.0000",
+            "status": "accepted",
+            "version": "1"
+          },
+          "reason_code": null
+        }
+      }
+    },
+    {
+      "id": "semantic-zero-price",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-1",
+        "tool": "orders.submit_limit",
+        "arguments": {
+          "symbol": "AAPL",
+          "side": "buy",
+          "quantity_shares": 5,
+          "limit_price_usd": "0"
+        }
+      },
+      "semantic_error": "INVALID_ARGUMENT"
+    },
+    {
+      "id": "semantic-symbol-whitespace",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-1",
+        "tool": "orders.submit_limit",
+        "arguments": {
+          "symbol": " AAPL",
+          "side": "buy",
+          "quantity_shares": 5,
+          "limit_price_usd": "100.0000"
+        }
+      },
+      "semantic_error": "INVALID_ARGUMENT"
+    },
+    {
+      "id": "semantic-notional-overflow",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-1",
+        "tool": "orders.submit_limit",
+        "arguments": {
+          "symbol": "AAPL",
+          "side": "buy",
+          "quantity_shares": 5,
+          "limit_price_usd": "200000000000000"
+        }
+      },
+      "semantic_error": "INVALID_ARGUMENT"
+    },
+    {
+      "id": "semantic-zero-epoch",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "0",
+        "request_id": "req-1",
+        "tool": "orders.submit_limit",
+        "arguments": {
+          "symbol": "AAPL",
+          "side": "buy",
+          "quantity_shares": 5,
+          "limit_price_usd": "100.0000"
+        }
+      },
+      "semantic_error": "INVALID_ARGUMENT"
+    },
+    {
+      "id": "semantic-zero-wait",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-control.wait",
+        "tool": "control.wait",
+        "arguments": {
+          "conditions": [
+            {
+              "kind": "after",
+              "seconds": "0"
+            },
+            {
+              "kind": "order_changed",
+              "order_id": "order-1",
+              "after_version": "1"
+            }
+          ]
+        }
+      },
+      "semantic_error": "INVALID_ARGUMENT"
+    },
+    {
+      "id": "semantic-zero-interval",
+      "valid": true,
+      "value": {
+        "agent_id": "demo",
+        "revision": "1",
+        "name": "Demo",
+        "integration": "configured",
+        "carrier": "platform",
+        "model_profile_ref": "local-model",
+        "initial_prompt": "Use tools to evaluate opportunities.",
+        "parameters": {},
+        "requires": [
+          "market.quote",
+          "orders.submit_limit"
+        ],
+        "schedule": {
+          "mode": "interval",
+          "interval_seconds": "0",
+          "busy_event_policy": "preserve_interval",
+          "events": []
+        }
+      },
+      "semantic_error": "INVALID_ARGUMENT"
+    },
+    {
+      "id": "semantic-inconsistent-order",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "req-1",
+        "tool": "orders.submit_limit",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "outcome": "accepted",
+          "order": {
+            "order_id": "order-1",
+            "symbol": "AAPL",
+            "side": "buy",
+            "quantity_shares": 5,
+            "filled_shares": 0,
+            "remaining_shares": 6,
+            "limit_price_usd": "100.0000",
+            "status": "accepted",
+            "version": "1"
+          },
+          "reason_code": null
+        }
+      },
+      "semantic_error": "INTERNAL_STATE_ERROR"
+    },
+    {
+      "id": "run-config-fixture-only",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "definition": {
+          "agent_id": "demo",
+          "revision": "1",
+          "name": "Demo",
+          "integration": "configured",
+          "carrier": "platform",
+          "model_profile_ref": "local-model",
+          "initial_prompt": "Use tools to evaluate opportunities.",
+          "parameters": {},
+          "requires": [
+            "market.quote",
+            "orders.submit_limit"
+          ],
+          "schedule": {
+            "mode": "interval",
+            "interval_seconds": "60",
+            "busy_event_policy": "preserve_interval",
+            "events": []
+          }
+        },
+        "model_profile_revision": "1",
+        "model_parameters": {},
+        "granted_tools": [
+          "market.quote",
+          "orders.submit_limit"
+        ],
+        "symbol": "AAPL",
+        "start_ns": "36000000000000",
+        "end_ns": "57600000000000",
+        "speed": "1x",
+        "source_manifest_ref": "source-1",
+        "initial_account_ref": "account-1",
+        "execution_config_ref": "execution-1",
+        "timeout_seconds": "30",
+        "retry": {
+          "max_attempts": 3,
+          "base_delay_seconds": "1",
+          "max_delay_seconds": "8",
+          "format_max_attempts": 3,
+          "retry_classes": [
+            "transport",
+            "rate_limit",
+            "temporary_provider",
+            "timeout"
+          ]
+        },
+        "limits": {
+          "tool_request_bytes": 1048576,
+          "tool_response_bytes": 1048576,
+          "pending_requests": 128,
+          "page_items": 100,
+          "event_buckets": 16,
+          "depth_levels": 5,
+          "json_depth": 32
+        },
+        "lag": {
+          "threshold_seconds": "2",
+          "window_seconds": "5",
+          "profile_ref": "fixture-only-not-production"
+        },
+        "support_profile_ref": "fixture-support"
+      }
+    },
+    {
+      "id": "semantic-empty-session",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "definition": {
+          "agent_id": "demo",
+          "revision": "1",
+          "name": "Demo",
+          "integration": "configured",
+          "carrier": "platform",
+          "model_profile_ref": "local-model",
+          "initial_prompt": "Use tools to evaluate opportunities.",
+          "parameters": {},
+          "requires": [
+            "market.quote",
+            "orders.submit_limit"
+          ],
+          "schedule": {
+            "mode": "interval",
+            "interval_seconds": "60",
+            "busy_event_policy": "preserve_interval",
+            "events": []
+          }
+        },
+        "model_profile_revision": "1",
+        "model_parameters": {},
+        "granted_tools": [
+          "market.quote",
+          "orders.submit_limit"
+        ],
+        "symbol": "AAPL",
+        "start_ns": "36000000000000",
+        "end_ns": "36000000000000",
+        "speed": "1x",
+        "source_manifest_ref": "source-1",
+        "initial_account_ref": "account-1",
+        "execution_config_ref": "execution-1",
+        "timeout_seconds": "30",
+        "retry": {
+          "max_attempts": 3,
+          "base_delay_seconds": "1",
+          "max_delay_seconds": "8",
+          "format_max_attempts": 3,
+          "retry_classes": [
+            "transport",
+            "rate_limit",
+            "temporary_provider",
+            "timeout"
+          ]
+        },
+        "limits": {
+          "tool_request_bytes": 1048576,
+          "tool_response_bytes": 1048576,
+          "pending_requests": 128,
+          "page_items": 100,
+          "event_buckets": 16,
+          "depth_levels": 5,
+          "json_depth": 32
+        },
+        "lag": {
+          "threshold_seconds": "2",
+          "window_seconds": "5",
+          "profile_ref": "fixture-only-not-production"
+        },
+        "support_profile_ref": "fixture-support"
+      },
+      "semantic_error": "INVALID_ARGUMENT"
+    },
+    {
+      "id": "semantic-missing-capability",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "definition": {
+          "agent_id": "demo",
+          "revision": "1",
+          "name": "Demo",
+          "integration": "configured",
+          "carrier": "platform",
+          "model_profile_ref": "local-model",
+          "initial_prompt": "Use tools to evaluate opportunities.",
+          "parameters": {},
+          "requires": [
+            "market.quote",
+            "orders.submit_limit"
+          ],
+          "schedule": {
+            "mode": "interval",
+            "interval_seconds": "60",
+            "busy_event_policy": "preserve_interval",
+            "events": []
+          }
+        },
+        "model_profile_revision": "1",
+        "model_parameters": {},
+        "granted_tools": [],
+        "symbol": "AAPL",
+        "start_ns": "36000000000000",
+        "end_ns": "57600000000000",
+        "speed": "1x",
+        "source_manifest_ref": "source-1",
+        "initial_account_ref": "account-1",
+        "execution_config_ref": "execution-1",
+        "timeout_seconds": "30",
+        "retry": {
+          "max_attempts": 3,
+          "base_delay_seconds": "1",
+          "max_delay_seconds": "8",
+          "format_max_attempts": 3,
+          "retry_classes": [
+            "transport",
+            "rate_limit",
+            "temporary_provider",
+            "timeout"
+          ]
+        },
+        "limits": {
+          "tool_request_bytes": 1048576,
+          "tool_response_bytes": 1048576,
+          "pending_requests": 128,
+          "page_items": 100,
+          "event_buckets": 16,
+          "depth_levels": 5,
+          "json_depth": 32
+        },
+        "lag": {
+          "threshold_seconds": "2",
+          "window_seconds": "5",
+          "profile_ref": "fixture-only-not-production"
+        },
+        "support_profile_ref": "fixture-support"
+      },
+      "semantic_error": "TOOL_UNAVAILABLE"
+    },
+    {
+      "id": "semantic-zero-timeout",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "definition": {
+          "agent_id": "demo",
+          "revision": "1",
+          "name": "Demo",
+          "integration": "configured",
+          "carrier": "platform",
+          "model_profile_ref": "local-model",
+          "initial_prompt": "Use tools to evaluate opportunities.",
+          "parameters": {},
+          "requires": [
+            "market.quote",
+            "orders.submit_limit"
+          ],
+          "schedule": {
+            "mode": "interval",
+            "interval_seconds": "60",
+            "busy_event_policy": "preserve_interval",
+            "events": []
+          }
+        },
+        "model_profile_revision": "1",
+        "model_parameters": {},
+        "granted_tools": [
+          "market.quote",
+          "orders.submit_limit"
+        ],
+        "symbol": "AAPL",
+        "start_ns": "36000000000000",
+        "end_ns": "57600000000000",
+        "speed": "1x",
+        "source_manifest_ref": "source-1",
+        "initial_account_ref": "account-1",
+        "execution_config_ref": "execution-1",
+        "timeout_seconds": "0",
+        "retry": {
+          "max_attempts": 3,
+          "base_delay_seconds": "1",
+          "max_delay_seconds": "8",
+          "format_max_attempts": 3,
+          "retry_classes": [
+            "transport",
+            "rate_limit",
+            "temporary_provider",
+            "timeout"
+          ]
+        },
+        "limits": {
+          "tool_request_bytes": 1048576,
+          "tool_response_bytes": 1048576,
+          "pending_requests": 128,
+          "page_items": 100,
+          "event_buckets": 16,
+          "depth_levels": 5,
+          "json_depth": 32
+        },
+        "lag": {
+          "threshold_seconds": "2",
+          "window_seconds": "5",
+          "profile_ref": "fixture-only-not-production"
+        },
+        "support_profile_ref": "fixture-support"
+      },
+      "semantic_error": "INVALID_ARGUMENT"
+    },
+    {
+      "id": "response-environment.describe",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "result-environment.describe",
+        "tool": "environment.describe",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "symbol": "AAPL",
+          "start_ns": "36000000000000",
+          "end_ns": "57600000000000",
+          "currency": "USD",
+          "price_scale": 10000,
+          "source_manifest_ref": "source-1",
+          "execution_config_ref": "execution-1",
+          "granted_tools": [
+            "market.quote",
+            "orders.submit_limit"
+          ],
+          "limits": {
+            "tool_request_bytes": 1048576,
+            "tool_response_bytes": 1048576,
+            "pending_requests": 128,
+            "page_items": 100,
+            "event_buckets": 16,
+            "depth_levels": 5,
+            "json_depth": 32
+          }
+        }
+      }
+    },
+    {
+      "id": "response-market.quote",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "result-market.quote",
+        "tool": "market.quote",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "symbol": "AAPL",
+          "bid": {
+            "price_usd": "99.0000",
+            "quantity_shares": 100
+          },
+          "ask": {
+            "price_usd": "102.0000",
+            "quantity_shares": 100
+          },
+          "last": null,
+          "missing": [
+            {
+              "field": "last",
+              "reason": "not_observed"
+            }
+          ],
+          "book_time_ns": "36010000000000",
+          "integrity": "ordered_unverified",
+          "trading_state": "T"
+        }
+      }
+    },
+    {
+      "id": "response-market.depth",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "result-market.depth",
+        "tool": "market.depth",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "symbol": "AAPL",
+          "bids": [
+            {
+              "price_usd": "99.0000",
+              "quantity_shares": 100
+            }
+          ],
+          "asks": [
+            {
+              "price_usd": "102.0000",
+              "quantity_shares": 100
+            }
+          ],
+          "bid_levels": 1,
+          "ask_levels": 1,
+          "book_time_ns": "36010000000000"
+        }
+      }
+    },
+    {
+      "id": "response-market.trades",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "result-market.trades",
+        "tool": "market.trades",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "items": [
+            {
+              "sequence": "9",
+              "time_ns": "36009000000000",
+              "match_id": "1",
+              "price_usd": "100.0000",
+              "quantity_shares": 2,
+              "printable": true,
+              "kind": "P"
+            }
+          ],
+          "next_cursor": null
+        }
+      }
+    },
+    {
+      "id": "response-market.bars",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "result-market.bars",
+        "tool": "market.bars",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "items": [
+            {
+              "start_ns": "36000000000000",
+              "end_ns": "36060000000000",
+              "observed_through_ns": "36010000000000",
+              "complete": false,
+              "open_usd": "100.0000",
+              "high_usd": "100.0000",
+              "low_usd": "100.0000",
+              "close_usd": "100.0000",
+              "volume_shares": 2,
+              "trade_count": 1,
+              "notional_usd": "200.0000"
+            }
+          ],
+          "next_start_ns": null
+        }
+      }
+    },
+    {
+      "id": "response-account.snapshot",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "result-account.snapshot",
+        "tool": "account.snapshot",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "cash_usd": "500.0000",
+          "available_cash_usd": "0.0000",
+          "reserved_cash_usd": "500.0000",
+          "fees_usd": "0.0000",
+          "realized_pnl_usd": "0.0000",
+          "positions": []
+        }
+      }
+    },
+    {
+      "id": "response-orders.list",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "result-orders.list",
+        "tool": "orders.list",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "items": [
+            {
+              "order_id": "order-1",
+              "symbol": "AAPL",
+              "side": "buy",
+              "quantity_shares": 5,
+              "filled_shares": 0,
+              "remaining_shares": 5,
+              "limit_price_usd": "100.0000",
+              "status": "accepted",
+              "version": "1"
+            }
+          ],
+          "next_cursor": null
+        }
+      }
+    },
+    {
+      "id": "response-orders.get",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "result-orders.get",
+        "tool": "orders.get",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "order_id": "order-1",
+          "symbol": "AAPL",
+          "side": "buy",
+          "quantity_shares": 5,
+          "filled_shares": 0,
+          "remaining_shares": 5,
+          "limit_price_usd": "100.0000",
+          "status": "accepted",
+          "version": "1"
+        }
+      }
+    },
+    {
+      "id": "response-state.snapshot",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "result-state.snapshot",
+        "tool": "state.snapshot",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "quote": {
+            "symbol": "AAPL",
+            "bid": {
+              "price_usd": "99.0000",
+              "quantity_shares": 100
+            },
+            "ask": {
+              "price_usd": "102.0000",
+              "quantity_shares": 100
+            },
+            "last": null,
+            "missing": [
+              {
+                "field": "last",
+                "reason": "not_observed"
+              }
+            ],
+            "book_time_ns": "36010000000000",
+            "integrity": "ordered_unverified",
+            "trading_state": "T"
+          },
+          "account": {
+            "cash_usd": "500.0000",
+            "available_cash_usd": "0.0000",
+            "reserved_cash_usd": "500.0000",
+            "fees_usd": "0.0000",
+            "realized_pnl_usd": "0.0000",
+            "positions": []
+          },
+          "orders": {
+            "items": [
+              {
+                "order_id": "order-1",
+                "symbol": "AAPL",
+                "side": "buy",
+                "quantity_shares": 5,
+                "filled_shares": 0,
+                "remaining_shares": 5,
+                "limit_price_usd": "100.0000",
+                "status": "accepted",
+                "version": "1"
+              }
+            ],
+            "next_cursor": null
+          }
+        }
+      }
+    },
+    {
+      "id": "response-orders.cancel",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "result-orders.cancel",
+        "tool": "orders.cancel",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "outcome": "cancelled",
+          "order": {
+            "order_id": "order-1",
+            "symbol": "AAPL",
+            "side": "buy",
+            "quantity_shares": 5,
+            "filled_shares": 0,
+            "remaining_shares": 5,
+            "limit_price_usd": "100.0000",
+            "status": "cancelled",
+            "version": "2"
+          }
+        }
+      }
+    },
+    {
+      "id": "response-requests.get",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "result-requests.get",
+        "tool": "requests.get",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "target_request_id": "req-1",
+          "found": true,
+          "original_response": {
+            "run_id": "run-1",
+            "work_id": "work-1",
+            "epoch": "1",
+            "request_id": "req-1",
+            "tool": "orders.submit_limit",
+            "receipt_event_index": "4",
+            "status": "ok",
+            "cutoff": {
+              "market_position": {
+                "sequence": "10",
+                "time_ns": "36010000000000",
+                "boundary": "0",
+                "ordinal": "1"
+              },
+              "account_sequence": "3",
+              "source_id": "source-1"
+            },
+            "data": {
+              "outcome": "accepted",
+              "order": {
+                "order_id": "order-1",
+                "symbol": "AAPL",
+                "side": "buy",
+                "quantity_shares": 5,
+                "filled_shares": 0,
+                "remaining_shares": 5,
+                "limit_price_usd": "100.0000",
+                "status": "accepted",
+                "version": "1"
+              },
+              "reason_code": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "response-control.finish",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "result-control.finish",
+        "tool": "control.finish",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "work_state": "idle",
+          "next_due_ns": "36070000000000"
+        }
+      }
+    },
+    {
+      "id": "response-control.wait",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "result-control.wait",
+        "tool": "control.wait",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "work_state": "waiting",
+          "wait_id": "wait-1"
+        }
+      }
+    },
+    {
+      "id": "response-model.request",
+      "valid": true,
+      "value": {
+        "run_id": "run-1",
+        "work_id": "work-1",
+        "epoch": "1",
+        "request_id": "result-model.request",
+        "tool": "model.request",
+        "receipt_event_index": "4",
+        "status": "ok",
+        "cutoff": {
+          "market_position": {
+            "sequence": "10",
+            "time_ns": "36010000000000",
+            "boundary": "0",
+            "ordinal": "1"
+          },
+          "account_sequence": "3",
+          "source_id": "source-1"
+        },
+        "data": {
+          "context_ref": "context-1",
+          "context_revision": "3",
+          "attempt_id": "a1",
+          "text": "No trade yet.",
+          "tool_calls": [],
+          "usage": {
+            "input_tokens": null,
+            "output_tokens": null
+          }
+        }
+      }
+    }
+  ]
+}

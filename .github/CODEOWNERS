@@ -1,0 +1,10 @@
+# Maintainers who review each area (see GOVERNANCE.md). Changes to financial rules,
+# statistics and the public API always need a maintainer's review.
+*                                   @Mysterchan
+/sim_platform/execution/            @Mysterchan
+/sim_platform/domain/ledger/        @Mysterchan
+/sim_platform/research/             @Mysterchan
+/src/                               @Mysterchan
+/include/                           @Mysterchan
+/tests/fixtures/public-api.json     @Mysterchan
+/docs/reference/methodology.md      @Mysterchan

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Market Lab
+Comment=Test AI trading Agents against human, rule and model baselines
+Exec=market-lab %F
+Icon=market-lab
+Categories=Office;Finance;Science;
+Terminal=false

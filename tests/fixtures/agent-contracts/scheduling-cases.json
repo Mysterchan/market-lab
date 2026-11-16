@@ -1,0 +1,163 @@
+{
+  "version": "experiment-runtime/v2",
+  "cases": [
+    {
+      "id": "finish-interval",
+      "input": {
+        "finish_ns": "10000000000",
+        "interval_seconds": "30"
+      },
+      "expected": {
+        "due_ns": "40000000000"
+      },
+      "verification": "Monotonic clock and work deadline checks"
+    },
+    {
+      "id": "busy-owner",
+      "input": {
+        "due_ns": "30000000000",
+        "market_executed_ns": "29900000000",
+        "owner_busy": true
+      },
+      "expected": {
+        "dispatch_without_market_ack": true,
+        "market_position_in_work": false
+      },
+      "verification": "Scheduling while the financial owner is blocked"
+    },
+    {
+      "id": "late-dispatch",
+      "input": {
+        "due_ns": "40000000000",
+        "dispatch_ns": "41000000000"
+      },
+      "expected": {
+        "recorded_due_ns": "40000000000",
+        "platform_delay_ns": "1000000000"
+      },
+      "verification": "Exclusive work identity checks"
+    },
+    {
+      "id": "market-ahead",
+      "input": {
+        "receipt_ns": "30000000000",
+        "executed_ns": "31000000000"
+      },
+      "expected": {
+        "effective_min_ns": "31000000000",
+        "historical_rollback": false
+      },
+      "verification": "Financial receipt time and source ordering"
+    },
+    {
+      "id": "source-tie",
+      "input": {
+        "source_frame_order": [
+          7,
+          8
+        ],
+        "timestamps_ns": [
+          100,
+          100
+        ],
+        "new_command_ns": 100
+      },
+      "expected": {
+        "source_order": [
+          7,
+          8
+        ],
+        "new_command_after_prefix": true
+      },
+      "verification": "Source ordering and financial admission checks"
+    },
+    {
+      "id": "wait-update-first",
+      "input": {
+        "known_order_version": 4,
+        "wait_after_version": 3
+      },
+      "expected": {
+        "wake_count": 1
+      },
+      "verification": "Pause gates and active-time checks"
+    },
+    {
+      "id": "wait-registration-first",
+      "input": {
+        "known_order_version": 3,
+        "wait_after_version": 3,
+        "next_order_version": 4
+      },
+      "expected": {
+        "wake_count": 1
+      },
+      "verification": "Terminal event handling"
+    },
+    {
+      "id": "event-duplicate-gap",
+      "input": {
+        "accepted_sequence": 1,
+        "duplicate_sequence": 1,
+        "next_sequence": 3
+      },
+      "expected": {
+        "duplicate_ignored": true,
+        "gap_rejected": true,
+        "baseline_sequence": 1
+      },
+      "verification": "Retained event replay and gap recovery"
+    },
+    {
+      "id": "model-deadline",
+      "input": {
+        "deadline_ns": "30000000000",
+        "receive_ns": "30000000000"
+      },
+      "expected": {
+        "accepted": false
+      },
+      "verification": "Attempt policy and model mailbox deadline checks"
+    },
+    {
+      "id": "pause-remainder",
+      "input": {
+        "timeout_seconds": "30",
+        "active_seconds": "10",
+        "paused_wall_seconds": "100"
+      },
+      "expected": {
+        "remaining_seconds": "20",
+        "market_catch_up": false
+      },
+      "verification": "Paused clock, participant barrier and held-reply checks"
+    },
+    {
+      "id": "stop-partial",
+      "input": {
+        "order_shares": 5,
+        "filled_shares": 2,
+        "remaining_shares": 3
+      },
+      "expected": {
+        "cancelled_shares": 3,
+        "preserved_filled_shares": 2,
+        "late_reply_applied": false
+      },
+      "verification": "Partial-fill stop and reservation checks"
+    },
+    {
+      "id": "runtime-crash",
+      "input": {
+        "pending_work": 1,
+        "runtime_exits": true
+      },
+      "expected": {
+        "pending_failed": true,
+        "no_automatic_restart": true,
+        "platform_fault": true
+      },
+      "verification": "Runtime startup, failure reporting and process cleanup"
+    }
+  ]
+}

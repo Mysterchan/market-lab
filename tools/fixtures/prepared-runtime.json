@@ -1,0 +1,25 @@
+{
+  "status": "fixed synthetic regression workload; not ranking certification",
+  "scope": "one trusted local experiment, AAPL, depth 5, 1x, prepared immutable source",
+  "repetitions": 3,
+  "case_seconds": 3,
+  "source_events_per_second": 1000,
+  "market_queries_per_second": 10,
+  "orders_per_second": 1,
+  "tool_response_bytes_max": 1048576,
+  "thresholds": {
+    "market_processing_delay_p99_ms": 100,
+    "command_roundtrip_p99_ms": 250,
+    "market_query_roundtrip_p99_ms": 50,
+    "shutdown_seconds_max": 5,
+    "missing_or_reordered_events": 0
+  },
+  "cases": [
+    "idle",
+    "passive_orders_and_reads",
+    "fills_and_reads"
+  ],
+  "deployment_rule": "Keep App owner thread only if the profile passes; otherwise compare the actual financial owner in a separate process or remove the measured financial bottleneck and repeat.",
+  "limitations": "No hard realtime guarantee, multi-run support, cold storage guarantee or arbitrary user-code isolation. Full-day import/history and dense source regions are reported separately. This profile does not certify all real-day event rates.",
+  "agent_load": "Optional Agent-process model IO, CPU parsing and complete tool calls use the same source and thresholds."
+}

@@ -1,0 +1,27 @@
+name: Feature request
+description: Propose a capability for research, data, Agents or the Desktop.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Research problem
+      description: What are you trying to study or measure, and what stops you today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: How it could work. Mention any paper or method it follows.
+    validations:
+      required: true
+  - type: textarea
+    id: validity
+    attributes:
+      label: Effect on result validity
+      description: Could this introduce look-ahead, survivorship or other bias? How would we test it?
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

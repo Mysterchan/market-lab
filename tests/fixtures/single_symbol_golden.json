@@ -1,0 +1,784 @@
+{
+ "csv_model": {
+  "cash": 99806000,
+  "events": [
+   {
+    "data": {
+     "asks": [
+      [
+       1000100,
+       151,
+       151
+      ],
+      [
+       1000200,
+       151,
+       151
+      ],
+      [
+       1000300,
+       151,
+       151
+      ],
+      [
+       1000400,
+       151,
+       151
+      ],
+      [
+       1000500,
+       151,
+       151
+      ]
+     ],
+     "bids": [
+      [
+       999500,
+       151,
+       151
+      ],
+      [
+       999600,
+       151,
+       151
+      ],
+      [
+       999700,
+       151,
+       151
+      ],
+      [
+       999800,
+       151,
+       151
+      ],
+      [
+       999900,
+       151,
+       151
+      ]
+     ],
+     "event_kind": "bound",
+     "market": {
+      "ask_levels": 5,
+      "asks": [
+       [
+        1000100,
+        151
+       ],
+       [
+        1000200,
+        151
+       ],
+       [
+        1000300,
+        151
+       ],
+       [
+        1000400,
+        151
+       ],
+       [
+        1000500,
+        151
+       ]
+      ],
+      "bid_levels": 5,
+      "bids": [
+       [
+        999900,
+        151
+       ],
+       [
+        999800,
+        151
+       ],
+       [
+        999700,
+        151
+       ],
+       [
+        999600,
+        151
+       ],
+       [
+        999500,
+        151
+       ]
+      ],
+      "book_time_ns": 34200000000000,
+      "error": null,
+      "integrity": "ordered_unverified",
+      "sequence": 2,
+      "status": "paused",
+      "symbol": "AAPL",
+      "system_event": "Q",
+      "time_ns": 34200000000000,
+      "trading_state": "T"
+     },
+     "market_sequence": 2,
+     "source_type": "",
+     "tick": 1
+    },
+    "kind": "execution_tick",
+    "time_ns": 34200000000000
+   },
+   {
+    "data": {
+     "intent": {
+      "client_id": "model-64",
+      "limit_price": 1010100,
+      "quantity": 10,
+      "side": "buy",
+      "symbol": "AAPL"
+     },
+     "intent_id": "ID0:intent:model-64",
+     "maker_id": "ID1",
+     "position": {
+      "boundary": 64,
+      "ordinal": 2,
+      "sequence": 66,
+      "time_ns": 120600000000000
+     },
+     "run_id": "ID0"
+    },
+    "kind": "intent",
+    "time_ns": 120600000000000
+   },
+   {
+    "data": {
+     "eligible_ns": 120600000000000,
+     "fee_per_share": 100,
+     "intent_id": "ID0:intent:model-64",
+     "order_id": "ID0:order:ID2ID3",
+     "position": {
+      "boundary": 64,
+      "ordinal": 2,
+      "sequence": 66,
+      "time_ns": 120600000000000
+     },
+     "submitted_sequence": 66
+    },
+    "kind": "accepted",
+    "time_ns": 120600000000000
+   },
+   {
+    "data": {
+     "fee": 1000,
+     "market_sequence": 68,
+     "model": "displayed-limit-v1",
+     "order_id": "ID0:order:ID2ID3",
+     "position": {
+      "boundary": 66,
+      "ordinal": 2,
+      "sequence": 68,
+      "time_ns": 120990000000000
+     },
+     "price": 1009600,
+     "quantity": 10,
+     "tick": 67
+    },
+    "kind": "fill",
+    "time_ns": 120990000000000
+   },
+   {
+    "data": {
+     "intent": {
+      "client_id": "model-129",
+      "limit_price": 989900,
+      "quantity": 10,
+      "side": "sell",
+      "symbol": "AAPL"
+     },
+     "intent_id": "ID0:intent:model-129",
+     "maker_id": "ID1",
+     "position": {
+      "boundary": 129,
+      "ordinal": 3,
+      "sequence": 131,
+      "time_ns": 207000000000000
+     },
+     "run_id": "ID0"
+    },
+    "kind": "intent",
+    "time_ns": 207000000000000
+   },
+   {
+    "data": {
+     "eligible_ns": 207000000000000,
+     "fee_per_share": 100,
+     "intent_id": "ID0:intent:model-129",
+     "order_id": "ID0:order:ID4ID5",
+     "position": {
+      "boundary": 129,
+      "ordinal": 3,
+      "sequence": 131,
+      "time_ns": 207000000000000
+     },
+     "submitted_sequence": 131
+    },
+    "kind": "accepted",
+    "time_ns": 207000000000000
+   },
+   {
+    "data": {
+     "fee": 1000,
+     "market_sequence": 133,
+     "model": "displayed-limit-v1",
+     "order_id": "ID0:order:ID4ID5",
+     "position": {
+      "boundary": 131,
+      "ordinal": 3,
+      "sequence": 133,
+      "time_ns": 207390000000000
+     },
+     "price": 990400,
+     "quantity": 10,
+     "tick": 132
+    },
+    "kind": "fill",
+    "time_ns": 207390000000000
+   },
+   {
+    "data": {
+     "position": {
+      "boundary": 193,
+      "ordinal": 4,
+      "sequence": 195,
+      "time_ns": 230399000000000
+     },
+     "reason": "market completed",
+     "status": "completed"
+    },
+    "kind": "execution_end",
+    "time_ns": 230399000000000
+   }
+  ],
+  "fees": 2000,
+  "fingerprints": [],
+  "orders": [
+   [
+    "buy",
+    10,
+    1010100,
+    10,
+    "filled"
+   ],
+   [
+    "sell",
+    10,
+    989900,
+    10,
+    "filled"
+   ]
+  ],
+  "positions": [],
+  "realized_pnl": -194000,
+  "replay": {
+   "decisions": 3,
+   "fills": 2,
+   "verified": true
+  },
+  "results": []
+ },
+ "itch_manual": {
+  "cash": 98989700,
+  "events": [
+   {
+    "data": {
+     "asks": [
+      [
+       1000000,
+       2,
+       2
+      ]
+     ],
+     "bids": [
+      [
+       990000,
+       100,
+       100
+      ]
+     ],
+     "event_kind": "bound",
+     "market": {
+      "ask_levels": 1,
+      "asks": [
+       [
+        1000000,
+        2
+       ]
+      ],
+      "bid_levels": 1,
+      "bids": [
+       [
+        990000,
+        100
+       ]
+      ],
+      "book_time_ns": 34202000000000,
+      "error": null,
+      "integrity": "ordered_unverified",
+      "sequence": 3,
+      "status": "paused",
+      "symbol": "AAPL",
+      "system_event": "unknown",
+      "time_ns": 34202000000000,
+      "trading_state": "unknown"
+     },
+     "market_sequence": 3,
+     "source_type": "",
+     "tick": 1
+    },
+    "kind": "execution_tick",
+    "time_ns": 34202000000000
+   },
+   {
+    "data": {
+     "intent": {
+      "client_id": "buy-1",
+      "limit_price": 1000000,
+      "quantity": 2,
+      "side": "buy",
+      "symbol": "AAPL"
+     },
+     "intent_id": "ID0:intent:buy-1",
+     "maker_id": "ID1",
+     "position": {
+      "boundary": 1,
+      "ordinal": 1,
+      "sequence": 4,
+      "time_ns": 34203000000000
+     },
+     "run_id": "ID0"
+    },
+    "kind": "intent",
+    "time_ns": 34203000000000
+   },
+   {
+    "data": {
+     "eligible_ns": 34203000000000,
+     "fee_per_share": 100,
+     "intent_id": "ID0:intent:buy-1",
+     "order_id": "ID0:order:ID2ID3",
+     "position": {
+      "boundary": 1,
+      "ordinal": 1,
+      "sequence": 4,
+      "time_ns": 34203000000000
+     },
+     "submitted_sequence": 4
+    },
+    "kind": "accepted",
+    "time_ns": 34203000000000
+   },
+   {
+    "data": {
+     "intent": {
+      "client_id": "buy-2",
+      "limit_price": 990000,
+      "quantity": 50,
+      "side": "buy",
+      "symbol": "AAPL"
+     },
+     "intent_id": "ID0:intent:buy-2",
+     "maker_id": "ID1",
+     "position": {
+      "boundary": 1,
+      "ordinal": 2,
+      "sequence": 4,
+      "time_ns": 34203000000000
+     },
+     "run_id": "ID0"
+    },
+    "kind": "intent",
+    "time_ns": 34203000000000
+   },
+   {
+    "data": {
+     "eligible_ns": 34203000000000,
+     "fee_per_share": 100,
+     "intent_id": "ID0:intent:buy-2",
+     "order_id": "ID0:order:ID4ID5",
+     "position": {
+      "boundary": 1,
+      "ordinal": 2,
+      "sequence": 4,
+      "time_ns": 34203000000000
+     },
+     "submitted_sequence": 4
+    },
+    "kind": "accepted",
+    "time_ns": 34203000000000
+   },
+   {
+    "data": {
+     "fee": 200,
+     "market_sequence": 5,
+     "model": "displayed-limit-v1",
+     "order_id": "ID0:order:ID2ID3",
+     "position": {
+      "boundary": 2,
+      "ordinal": 2,
+      "sequence": 5,
+      "time_ns": 34204000000000
+     },
+     "price": 1000000,
+     "quantity": 2,
+     "tick": 3
+    },
+    "kind": "fill",
+    "time_ns": 34204000000000
+   },
+   {
+    "data": {
+     "order_id": "ID0:order:ID4ID5",
+     "position": {
+      "boundary": 2,
+      "ordinal": 3,
+      "sequence": 5,
+      "time_ns": 34204000000000
+     },
+     "reason": "user cancellation"
+    },
+    "kind": "cancelled",
+    "time_ns": 34204000000000
+   },
+   {
+    "data": {
+     "intent": {
+      "client_id": "sell-1",
+      "limit_price": 990000,
+      "quantity": 1,
+      "side": "sell",
+      "symbol": "AAPL"
+     },
+     "intent_id": "ID0:intent:sell-1",
+     "maker_id": "ID1",
+     "position": {
+      "boundary": 2,
+      "ordinal": 4,
+      "sequence": 5,
+      "time_ns": 34204000000000
+     },
+     "run_id": "ID0"
+    },
+    "kind": "intent",
+    "time_ns": 34204000000000
+   },
+   {
+    "data": {
+     "eligible_ns": 34204000000000,
+     "fee_per_share": 100,
+     "intent_id": "ID0:intent:sell-1",
+     "order_id": "ID0:order:ID6ID7",
+     "position": {
+      "boundary": 2,
+      "ordinal": 4,
+      "sequence": 5,
+      "time_ns": 34204000000000
+     },
+     "submitted_sequence": 5
+    },
+    "kind": "accepted",
+    "time_ns": 34204000000000
+   },
+   {
+    "data": {
+     "fee": 100,
+     "market_sequence": 6,
+     "model": "displayed-limit-v1",
+     "order_id": "ID0:order:ID6ID7",
+     "position": {
+      "boundary": 3,
+      "ordinal": 4,
+      "sequence": 6,
+      "time_ns": 34205000000000
+     },
+     "price": 990000,
+     "quantity": 1,
+     "tick": 4
+    },
+    "kind": "fill",
+    "time_ns": 34205000000000
+   },
+   {
+    "data": {
+     "position": {
+      "boundary": 6,
+      "ordinal": 5,
+      "sequence": 9,
+      "time_ns": 34208000000000
+     },
+     "reason": "market completed",
+     "status": "completed"
+    },
+    "kind": "execution_end",
+    "time_ns": 34208000000000
+   }
+  ],
+  "fees": 300,
+  "fingerprints": [],
+  "orders": [
+   [
+    "buy",
+    50,
+    990000,
+    0,
+    "cancelled"
+   ],
+   [
+    "buy",
+    2,
+    1000000,
+    2,
+    "filled"
+   ],
+   [
+    "sell",
+    1,
+    990000,
+    1,
+    "filled"
+   ]
+  ],
+  "positions": [
+   [
+    "AAPL",
+    1,
+    1000100
+   ]
+  ],
+  "realized_pnl": -10200,
+  "replay": {
+   "decisions": 4,
+   "fills": 2,
+   "verified": true
+  },
+  "results": []
+ },
+ "itch_rule": {
+  "cash": 99979600,
+  "events": [
+   {
+    "data": {
+     "asks": [
+      [
+       1000000,
+       2,
+       2
+      ]
+     ],
+     "bids": [
+      [
+       990000,
+       100,
+       100
+      ]
+     ],
+     "event_kind": "bound",
+     "market": {
+      "ask_levels": 1,
+      "asks": [
+       [
+        1000000,
+        2
+       ]
+      ],
+      "bid_levels": 1,
+      "bids": [
+       [
+        990000,
+        100
+       ]
+      ],
+      "book_time_ns": 34202000000000,
+      "error": null,
+      "integrity": "ordered_unverified",
+      "sequence": 3,
+      "status": "paused",
+      "symbol": "AAPL",
+      "system_event": "unknown",
+      "time_ns": 34202000000000,
+      "trading_state": "unknown"
+     },
+     "market_sequence": 3,
+     "source_type": "",
+     "tick": 1
+    },
+    "kind": "execution_tick",
+    "time_ns": 34202000000000
+   },
+   {
+    "data": {
+     "intent": {
+      "client_id": "rule-buy",
+      "limit_price": 1000000,
+      "quantity": 10,
+      "side": "buy",
+      "symbol": "AAPL"
+     },
+     "intent_id": "ID0:intent:rule-buy",
+     "maker_id": "ID1",
+     "position": {
+      "boundary": 1,
+      "ordinal": 1,
+      "sequence": 4,
+      "time_ns": 34203000000000
+     },
+     "run_id": "ID0"
+    },
+    "kind": "intent",
+    "time_ns": 34203000000000
+   },
+   {
+    "data": {
+     "eligible_ns": 34203000000000,
+     "fee_per_share": 100,
+     "intent_id": "ID0:intent:rule-buy",
+     "order_id": "ID0:order:ID2ID3",
+     "position": {
+      "boundary": 1,
+      "ordinal": 1,
+      "sequence": 4,
+      "time_ns": 34203000000000
+     },
+     "submitted_sequence": 4
+    },
+    "kind": "accepted",
+    "time_ns": 34203000000000
+   },
+   {
+    "data": {
+     "fee": 200,
+     "market_sequence": 5,
+     "model": "displayed-limit-v1",
+     "order_id": "ID0:order:ID2ID3",
+     "position": {
+      "boundary": 2,
+      "ordinal": 1,
+      "sequence": 5,
+      "time_ns": 34204000000000
+     },
+     "price": 1000000,
+     "quantity": 2,
+     "tick": 3
+    },
+    "kind": "fill",
+    "time_ns": 34204000000000
+   },
+   {
+    "data": {
+     "intent": {
+      "client_id": "rule-sell",
+      "limit_price": 990000,
+      "quantity": 2,
+      "side": "sell",
+      "symbol": "AAPL"
+     },
+     "intent_id": "ID0:intent:rule-sell",
+     "maker_id": "ID1",
+     "position": {
+      "boundary": 4,
+      "ordinal": 4,
+      "sequence": 7,
+      "time_ns": 34206000000000
+     },
+     "run_id": "ID0"
+    },
+    "kind": "intent",
+    "time_ns": 34206000000000
+   },
+   {
+    "data": {
+     "eligible_ns": 34206000000000,
+     "fee_per_share": 100,
+     "intent_id": "ID0:intent:rule-sell",
+     "order_id": "ID0:order:ID4ID5",
+     "position": {
+      "boundary": 4,
+      "ordinal": 4,
+      "sequence": 7,
+      "time_ns": 34206000000000
+     },
+     "submitted_sequence": 7
+    },
+    "kind": "accepted",
+    "time_ns": 34206000000000
+   },
+   {
+    "data": {
+     "fee": 200,
+     "market_sequence": 8,
+     "model": "displayed-limit-v1",
+     "order_id": "ID0:order:ID4ID5",
+     "position": {
+      "boundary": 5,
+      "ordinal": 4,
+      "sequence": 8,
+      "time_ns": 34207000000000
+     },
+     "price": 990000,
+     "quantity": 2,
+     "tick": 6
+    },
+    "kind": "fill",
+    "time_ns": 34207000000000
+   },
+   {
+    "data": {
+     "order_id": "ID0:order:ID2ID3",
+     "position": {
+      "boundary": 6,
+      "ordinal": 7,
+      "sequence": 9,
+      "time_ns": 34208000000000
+     },
+     "reason": "market completed"
+    },
+    "kind": "cancelled",
+    "time_ns": 34208000000000
+   },
+   {
+    "data": {
+     "position": {
+      "boundary": 6,
+      "ordinal": 7,
+      "sequence": 9,
+      "time_ns": 34208000000000
+     },
+     "reason": "market completed",
+     "status": "completed"
+    },
+    "kind": "execution_end",
+    "time_ns": 34208000000000
+   }
+  ],
+  "fees": 400,
+  "fingerprints": [],
+  "orders": [
+   [
+    "sell",
+    2,
+    990000,
+    2,
+    "filled"
+   ],
+   [
+    "buy",
+    10,
+    1000000,
+    2,
+    "cancelled"
+   ]
+  ],
+  "positions": [],
+  "realized_pnl": -20400,
+  "replay": {
+   "decisions": 6,
+   "fills": 2,
+   "verified": true
+  },
+  "results": []
+ }
+}
