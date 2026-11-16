@@ -1,5 +1,5 @@
 # Build tools only; install into a separate build environment.
 -r requirements-desktop.txt
 PyInstaller==6.16.0
-uv==0.13.4
+uv==0.13.8
 certifi==2026.10.23
