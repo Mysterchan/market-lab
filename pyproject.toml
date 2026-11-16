@@ -34,7 +34,7 @@ dependencies = [
 desktop = ["PySide6==6.8.3"]
 parquet = ["pyarrow>=14"]
 dataframes = ["pandas>=2.0"]
-dev = ["black==24.8.0", "ruff==0.8.6", "mypy==1.11.2", "coverage[toml]==7.6.1"]
+dev = ["black==26.10.1", "ruff==0.17.5", "mypy==2.4.1", "coverage[toml]==7.16.2"]
 
 [project.scripts]
 market-lab = "sim_platform.cli.main:main"
