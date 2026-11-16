@@ -19,7 +19,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, ubuntu-24.04-arm, macos-14, macos-13, windows-2022]
+        # macos-15 builds Apple Silicon wheels, macos-15-intel x86_64 wheels.
+        os: [ubuntu-24.04, ubuntu-24.04-arm, macos-15, macos-15-intel, windows-2022]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 40
     steps:
@@ -57,7 +58,7 @@ jobs:
       fail-fast: false
       matrix:
         # Linux builds on the oldest supported runner so the AppImage runs on older glibc.
-        os: [macos-14, windows-2022, ubuntu-22.04]
+        os: [macos-15, windows-2022, ubuntu-22.04]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     env:
@@ -73,7 +74,8 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libfuse2 libegl1 libgl1 libxkbcommon-x11-0 libxcb-cursor0 \
+          # appimagetool stops without desktop-file-validate (desktop-file-utils).
+          sudo apt-get install -y desktop-file-utils libfuse2 libegl1 libgl1 libxkbcommon-x11-0 libxcb-cursor0 \
             libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 \
             libxcb-shape0 libxcb-xinerama0 libxcb-xkb1 xvfb
           curl -fsSL -o appimagetool \
