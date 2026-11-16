@@ -51,7 +51,7 @@ jobs:
           mkdir -p build/sbom
           cyclonedx-py requirements requirements.txt -o build/sbom/market-lab-core.cdx.json
           cyclonedx-py requirements requirements-desktop.txt -o build/sbom/market-lab-desktop.cdx.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: sbom
           path: build/sbom/*.json
@@ -83,7 +83,7 @@ jobs:
           # they are kept as a SARIF artifact; set upload to always once it can.
           upload: never
           output: sarif
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: codeql-${{ matrix.language }}
           path: sarif

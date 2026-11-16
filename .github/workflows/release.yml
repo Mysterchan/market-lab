@@ -27,7 +27,7 @@ jobs:
       - uses: pypa/cibuildwheel@v2.23.3
         with:
           output-dir: wheelhouse
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: wheel-${{ matrix.os }}
           path: wheelhouse/*.whl
@@ -46,7 +46,7 @@ jobs:
           python -m build --sdist
           MARKET_LAB_REQUIRE_NATIVE=1 python -m pip install dist/*.tar.gz
           market-lab demo
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: sdist
           path: dist/*.tar.gz
@@ -127,7 +127,7 @@ jobs:
           else
             QT_QPA_PLATFORM=offscreen "$app" --smoke-test-report "$RUNNER_TEMP/smoke.json"
           fi
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: desktop-${{ matrix.os }}
           path: build/installers/*
