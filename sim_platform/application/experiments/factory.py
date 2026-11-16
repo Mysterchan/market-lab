@@ -37,6 +37,11 @@ SESSION_END_NS = 86_399_999_999_999
 # Live policy Runtime settings.
 EVENT_BUCKETS = 64
 LAG_LIMIT_NS = 100_000_000
+# A run fails only if execution stays more than LAG_LIMIT_NS behind live time for this
+# long. A single stall (a cold first decision on a loaded machine) is tolerated; commands
+# still apply at their stamped time against the exact market prefix, so lag never shows a
+# decision later data.
+LAG_WINDOW_NS = 1_000_000_000
 # Rule child pipe limits: message bytes, pending bytes and pending messages.
 RULE_TRANSPORT_LIMITS = (65536, 262144, 8)
 
@@ -144,6 +149,7 @@ def assemble_live_policy(
             clock=clock,
             end_ns=config['end_ns'],
             lag_limit_ns=LAG_LIMIT_NS,
+            lag_window_ns=LAG_WINDOW_NS,
             sink=recorder,
             operation=owner.perform,
         )

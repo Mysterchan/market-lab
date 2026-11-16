@@ -655,6 +655,8 @@ class PreparedOperationReplayTests(unittest.TestCase):
                 settings=dict(quantity=1),
                 execution_mode='live',
             )
+            # One slow first decision must not fail the run; only sustained lag does.
+            self.assertEqual(run.runner.pipeline.lag_window_ns, 1_000_000_000)
             run.play()
             # Correctness, not speed: a loaded CI runner under coverage can be slow.
             deadline = time.monotonic() + 30

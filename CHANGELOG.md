@@ -7,6 +7,9 @@ installers and wheels are built for macOS, Windows and Linux, and CI runs on all
 
 - Agents on several symbols read the experiment's news with `news.list`, point in time.
 
+- Live human, rule, hold and model-file runs fail on lag only when execution stays over
+  100 ms behind live time for 1 s; a single stall no longer ends the run.
+
 - Borrow on a short still open at the end of a run is accrued in the run's costs
   (`pnl_attribution()['costs']['borrow_accrued']`); the cash ledger still charges borrow
   at cover.
