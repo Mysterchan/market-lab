@@ -1,3 +1,3 @@
 # Python 3.9+; pinned to the versions used for the ORM migration acceptance.
-SQLAlchemy==2.0.54
+SQLAlchemy==2.0.57
 alembic==1.16.5
