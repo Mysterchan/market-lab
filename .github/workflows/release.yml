@@ -159,7 +159,7 @@ jobs:
           pattern: '{wheel-*,sdist}'
           path: dist
           merge-multiple: true
-      - uses: pypa/gh-action-pypi-publish@v1.12.4
+      - uses: pypa/gh-action-pypi-publish@v1.14.3
 
   github-release:
     name: GitHub Release with signed installers
