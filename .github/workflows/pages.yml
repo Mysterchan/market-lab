@@ -47,7 +47,7 @@ jobs:
         run: python tools/build_pages.py
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: build/pages
           retention-days: 7
